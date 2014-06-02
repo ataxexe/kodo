@@ -74,6 +74,24 @@ public class ShouldTests {
   }
 
   @Test
+  public void testShouldEqual() {
+    test(Should.equal("test"), "test");
+    testFail(Should.equal("test"), "");
+
+    test(Should.equal(1), 1);
+    testFail(Should.equal(1), 2);
+  }
+
+  @Test
+  public void testShouldNotEqual() {
+    testFail(Should.notEqual("test"), "test");
+    test(Should.notEqual("test"), "");
+
+    testFail(Should.notEqual(1), 1);
+    test(Should.notEqual(1), 2);
+  }
+
+  @Test
   public void testShouldBeWithPredicate() {
     test(Should.be(value -> value.toString().length() > 5), "123456");
     test(Should.be(value -> value.toString().length() > 5), 123456);
