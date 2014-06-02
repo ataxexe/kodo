@@ -26,14 +26,50 @@
 
 package org.kodo;
 
-import org.kodo.impl.ScenarioImpl;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * A class to create scenarios for testing.
  *
  * @author Marcelo Guimarães
  */
-public class TestScenario {
+public class TestScenario<T> implements Scenario<T> {
+
+  private final T target;
+
+  public TestScenario(T target) {
+    this.target = target;
+  }
+
+  @Override
+  public Scenario<T> when(Consumer<? super T> operation) {
+    operation.accept(target);
+    return this;
+  }
+
+  @Override
+  public Scenario<T> then(Consumer operation, Consumer test) {
+    try {
+      operation.accept(target);
+      test.accept(null);
+    } catch (Throwable t) {
+      test.accept(t);
+    }
+    return this;
+  }
+
+  @Override
+  public Scenario<T> the(Function function, Consumer test) {
+    Object result = function.apply(target);
+    test.accept(result);
+    return this;
+  }
+
+  public Scenario<T> each(Consumer test) {
+    ((Iterable) target).forEach(test);
+    return this;
+  }
 
   /**
    * Start defining a new {@link Scenario} based on the given target.
@@ -43,7 +79,7 @@ public class TestScenario {
    * @return a new {@link Scenario}.
    */
   public static <T> Scenario<T> given(T object) {
-    return new ScenarioImpl<>(object);
+    return new TestScenario<>(object);
   }
 
 }
