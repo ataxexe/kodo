@@ -59,6 +59,20 @@ public interface Scenario<T> {
   Scenario<T> then(Consumer<? super T> operation, Consumer<?> test);
 
   /**
+   * Defines operations to execute as
+   * {@link #then(java.util.function.Consumer, java.util.function.Consumer)}.
+   *
+   * @param consumer the operation to execute with the target object.
+   * @param test     the test to do with the raised exception (if no exception
+   *                 is thrown, a <code>null</code> value will be given to this
+   *                 consumer
+   * @return a reference to this object
+   */
+  default Scenario<T> and(Consumer<? super T> consumer, Consumer test) {
+    return then(consumer, test);
+  }
+
+  /**
    * Defines a test for some target operation that returns a value.
    *
    * @param function the operation to do with the target

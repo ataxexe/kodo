@@ -115,11 +115,27 @@ public class Should {
   }
 
   /**
+   * Indicates that the value should
+   * {@link java.lang.Object#equals(Object) equal} the given value.
+   */
+  public static Consumer equal(Object value) {
+    return be(value);
+  }
+
+  /**
    * Indicates that the value should not
    * {@link java.lang.Object#equals(Object) equal} the given value.
    */
   public static Consumer notBe(Object value) {
     return (obj) -> assertNotEquals(value, obj);
+  }
+
+  /**
+   * Indicates that the value should not
+   * {@link java.lang.Object#equals(Object) equal} the given value.
+   */
+  public static Consumer notEqual(Object value) {
+    return notBe(value);
   }
 
   /**
