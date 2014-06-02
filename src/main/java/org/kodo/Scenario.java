@@ -47,7 +47,7 @@ public interface Scenario<T> {
   Scenario<T> when(Consumer<? super T> operation);
 
   /**
-   * Defines an operation that will throw an exception.
+   * Defines an operation that may throw an exception.
    *
    * @param operation the operation to do with the target
    * @param test      the test to do with the raised exception (if no exception

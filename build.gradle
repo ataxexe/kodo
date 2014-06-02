@@ -31,8 +31,8 @@ configurations {
   project.group = "org.kodo"
   project.version = "0.1"
 
-  project.description = "Kodo is a project to help the use of BDD by exposing a " +
-      "fluent interface to describe test scenarios"
+  project.description = "Kodo is a test framework that helps you creating test " +
+      "scenarios with the help of a fluent interface."
 
   project.targetCompatibility = "1.8"
   project.sourceCompatibility = "1.8"
