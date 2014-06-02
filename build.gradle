@@ -1,0 +1,99 @@
+/*
+ * Copyright 2009-2014 Marcelo Guimarães
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ *
+ * You may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *           http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+apply plugin: 'java'
+apply plugin: 'maven'
+
+configurations {
+  project.group = "org.kodo"
+  project.version = "1.0"
+
+  project.description = "Kodo is a project to help the use of BDD by exposing a " +
+      "fluent interface to describe test scenarios"
+
+  project.targetCompatibility = "1.8"
+  project.sourceCompatibility = "1.8"
+}
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+}
+
+dependencies {
+  compile group: 'junit', name: 'junit', version: '4.11'
+}
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+  classifier = 'sources'
+  from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+  classifier = 'javadoc'
+  from javadoc.destinationDir
+}
+
+artifacts {
+  archives sourcesJar
+  archives javadocJar
+}
+
+task pom << {
+  pom {
+    project {
+      groupId 'org.kodo'
+      artifactId 'kodo'
+      packaging 'jar'
+
+      name 'kodo'
+      description project.description
+
+      url 'https://github.com/ataxexe/kodo'
+
+      scm {
+        url 'git@github.com:ataxexe/kodo.git'
+      }
+
+      licenses {
+        license {
+          name 'The Apache Software License, Version 2.0'
+          url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+          distribution 'repo'
+        }
+      }
+    }
+  }.writeTo("$buildDir/pom.xml")
+}
+
+task pdf(type: Exec) {
+  commandLine 'pandoc', '-S', '-s', '-o',
+      "$buildDir/kodo.pdf", '--highlight-style=kate', 'kodo.md',
+      'README.md', 'changelog.md'
+}
+
+task dist(type: Zip,
+    dependsOn: [clean, jar, sourcesJar, javadocJar, test, pom, pdf]) {
+  from "$buildDir/libs"
+  from "$buildDir/pom.xml"
+  from "$buildDir/kodo.pdf"
+  from "changelog.md"
+  from "README.md"
+}
+
