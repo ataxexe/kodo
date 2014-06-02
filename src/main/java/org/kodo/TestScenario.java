@@ -38,9 +38,9 @@ public class TestScenario {
   /**
    * Start defining a new {@link Scenario} based on the given target.
    *
-   * @param object
-   * @param <T>
-   * @return
+   * @param object the target object
+   * @param <T>    the type of the target
+   * @return a new {@link Scenario}.
    */
   public static <T> Scenario<T> given(T object) {
     return new ScenarioImpl<>(object);
