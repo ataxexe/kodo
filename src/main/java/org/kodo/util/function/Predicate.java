@@ -27,6 +27,8 @@
 package org.kodo.util.function;
 
 /**
+ * Represents the new functional interface Predicate in JDK 8.
+ *
  * @author Marcelo Guimarães
  */
 public interface Predicate<T> {
