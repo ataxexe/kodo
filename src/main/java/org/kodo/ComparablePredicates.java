@@ -36,22 +36,42 @@ import java.util.function.Predicate;
  */
 public interface ComparablePredicates {
 
+  /**
+   * Predicate that returns <code>true</code> if the value is the same as
+   * the given one
+   */
   public static Predicate<Comparable> equal(Comparable value) {
     return comparable -> comparable.compareTo(value) == 0;
   }
 
+  /**
+   * Predicate that returns <code>true</code> if the value is greather than
+   * the given one
+   */
   public static Predicate<Comparable> greatherThan(Comparable value) {
     return comparable -> comparable.compareTo(value) > 0;
   }
 
+  /**
+   * Predicate that returns <code>true</code> if the value is greather or equal
+   * than the given one
+   */
   public static Predicate<Comparable> greatherThanOrEqual(Comparable value) {
     return comparable -> comparable.compareTo(value) >= 0;
   }
 
+  /**
+   * Predicate that returns <code>true</code> if the value is less than
+   * the given one
+   */
   public static Predicate<Comparable> lessThan(Comparable value) {
     return comparable -> comparable.compareTo(value) < 0;
   }
 
+  /**
+   * Predicate that returns <code>true</code> if the value is less or equal
+   * than the given one
+   */
   public static Predicate<Comparable> lessThanOrEqual(Comparable value) {
     return comparable -> comparable.compareTo(value) <= 0;
   }
