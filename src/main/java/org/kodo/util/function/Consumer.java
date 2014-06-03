@@ -24,62 +24,18 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package org.kodo.test;
-
-import org.junit.Test;
-
-import org.kodo.util.function.Predicate;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.kodo.ComparablePredicates.*;
+package org.kodo.util.function;
 
 /**
  * @author Marcelo Guimarães
  */
-public class ComparablePredicatesTest {
+public interface Consumer<T> {
 
-  private void test(Predicate predicate, Object value) {
-    assertTrue(predicate.test(value));
-  }
-
-  private void testFail(Predicate predicate, Object value) {
-    assertFalse(predicate.test(value));
-  }
-
-  @Test
-  public void testEqual() {
-    test(equal(10), 10);
-    testFail(equal(10), 11);
-    testFail(equal(10), 9);
-  }
-
-  @Test
-  public void testGreatherThan() {
-    test(greatherThan(10), 11);
-    testFail(greatherThan(10), 10);
-    testFail(greatherThan(10), 9);
-  }
-
-  @Test
-  public void testGreatherThanOrEqual() {
-    test(greatherThanOrEqual(10), 11);
-    test(greatherThanOrEqual(10), 10);
-    testFail(greatherThanOrEqual(10), 9);
-  }
-
-  @Test
-  public void testLessThan() {
-    test(lessThan(10), 9);
-    testFail(lessThan(10), 10);
-    testFail(lessThan(10), 11);
-  }
-
-  @Test
-  public void testLessThanOrEqual() {
-    test(lessThanOrEqual(10), 9);
-    test(lessThanOrEqual(10), 10);
-    testFail(lessThanOrEqual(10), 11);
-  }
+  /**
+   * Performs this operation on the given argument.
+   *
+   * @param t the input argument
+   */
+  void accept(T t);
 
 }

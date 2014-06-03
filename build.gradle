@@ -29,13 +29,13 @@ apply plugin: 'maven'
 
 configurations {
   project.group = "org.kodo"
-  project.version = "0.1"
+  project.version = "0.1-jdk5"
 
   project.description = "Kodo is a test framework that helps you creating test " +
       "scenarios with the help of a fluent interface."
 
-  project.targetCompatibility = "1.8"
-  project.sourceCompatibility = "1.8"
+  project.targetCompatibility = "1.5"
+  project.sourceCompatibility = "1.5"
 }
 
 repositories {

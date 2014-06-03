@@ -29,11 +29,11 @@ package org.kodo.test;
 import org.junit.Test;
 import org.kodo.Should;
 import org.kodo.TestScenario;
+import org.kodo.util.function.Consumer;
+import org.kodo.util.function.Function;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 import static org.kodo.ComparablePredicates.greatherThan;
 
@@ -42,20 +42,36 @@ import static org.kodo.ComparablePredicates.greatherThan;
  */
 public class ScenarioTests {
 
-  private Consumer<String> concat(String value) {
-    return s -> s.concat(value);
+  private Consumer<String> concat(final String value) {
+    return new Consumer<String>() {
+      public void accept(String s) {
+        s.concat(value);
+      }
+    };
   }
 
   private Function<String, Integer> length() {
-    return s -> s.length();
+    return new Function<String, Integer>() {
+      public Integer apply(String s) {
+        return s.length();
+      }
+    };
   }
 
-  private Consumer<String> charAt(int position) {
-    return s -> s.charAt(position);
+  private Consumer<String> charAt(final int position) {
+    return new Consumer<String>() {
+      public void accept(String s) {
+        s.charAt(position);
+      }
+    };
   }
 
   private Function<Collection, Integer> size() {
-    return s -> s.size();
+    return new Function<Collection, Integer>() {
+      public Integer apply(Collection collection) {
+        return collection.size();
+      }
+    };
   }
 
   @Test

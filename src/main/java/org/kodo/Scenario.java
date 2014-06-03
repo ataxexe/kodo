@@ -26,8 +26,8 @@
 
 package org.kodo;
 
-import java.util.function.Consumer;
-import java.util.function.Function;
+import org.kodo.util.function.Consumer;
+import org.kodo.util.function.Function;
 
 /**
  * Interface that defines a common set of methods to define test scenarios for
@@ -68,9 +68,7 @@ public interface Scenario<T> {
    *                 consumer
    * @return a reference to this object
    */
-  default Scenario<T> and(Consumer<? super T> consumer, Consumer test) {
-    return then(consumer, test);
-  }
+  Scenario<T> and(Consumer<? super T> consumer, Consumer test);
 
   /**
    * Defines a test for some target operation that returns a value.
@@ -100,9 +98,7 @@ public interface Scenario<T> {
    * @param test the test to do with the values in the target
    * @return a reference to this object.
    */
-  default <E> Scenario<T> each(Class<E> type, Consumer<? super E> test) {
-    return each(test);
-  }
+  <E> Scenario<T> each(Class<E> type, Consumer<? super E> test);
 
   /**
    * Defines a set of tests to do with the target.
@@ -110,20 +106,16 @@ public interface Scenario<T> {
    * @param tests the tests to do with the target
    * @return a reference to this object.
    */
-  default Scenario<T> thenIt(Consumer<? super T> tests) {
-    return when(tests);
-  }
+  Scenario<T> thenIt(Consumer<? super T> tests);
 
   /**
-   * Defines operations to execute as {@link #when(java.util.function.Consumer)}
-   * or {@link #thenIt(java.util.function.Consumer)}.
+   * Defines operations to execute as {@link #when(org.kodo.util.function.Consumer)}
+   * or {@link #thenIt(org.kodo.util.function.Consumer)}.
    *
    * @param consumer the operation to execute with the target object.
    * @return a reference to this object
    */
-  default Scenario<T> and(Consumer<? super T> consumer) {
-    return when(consumer);
-  }
+  Scenario<T> and(Consumer<? super T> consumer);
 
   /**
    * Defines a test to do with the target.
@@ -131,9 +123,7 @@ public interface Scenario<T> {
    * @param tests
    * @return
    */
-  default Scenario<T> it(Consumer<? super T> tests) {
-    return when(tests);
-  }
+  Scenario<T> it(Consumer<? super T> tests);
 
   /**
    * Defines a test to do with a value.
@@ -142,10 +132,7 @@ public interface Scenario<T> {
    * @param test  the test to do with the value
    * @return a reference to this object
    */
-  default Scenario<T> the(Object value, Consumer test) {
-    test.accept(value);
-    return this;
-  }
+  Scenario<T> the(Object value, Consumer test);
 
   /**
    * Defines a test to do with a value.
@@ -154,9 +141,6 @@ public interface Scenario<T> {
    * @param test  the test to do with the value
    * @return a reference to this object
    */
-  default Scenario<T> then(Object value, Consumer test) {
-    test.accept(value);
-    return this;
-  }
+  Scenario<T> then(Object value, Consumer test);
 
 }

@@ -26,54 +26,81 @@
 
 package org.kodo;
 
-import java.util.function.Predicate;
+import org.kodo.util.function.Predicate;
 
 /**
- * Interface that holds {@link java.util.function.Predicate predicates} to deal
+ * Interface that holds {@link org.kodo.util.function.Predicate predicates} to deal
  * with {@link java.lang.Comparable} objects.
  *
  * @author Marcelo Guimarães
  */
-public interface ComparablePredicates {
+public class ComparablePredicates {
+
+  private ComparablePredicates() {
+
+  }
 
   /**
    * Predicate that returns <code>true</code> if the value is the same as
    * the given one
    */
-  public static Predicate<Comparable> equal(Comparable value) {
-    return comparable -> comparable.compareTo(value) == 0;
+  public static Predicate<Comparable> equal(final Comparable value) {
+
+    return new Predicate<Comparable>() {
+
+      public boolean test(Comparable comparable) {
+        return comparable.compareTo(value) == 0;
+      }
+    };
+
   }
 
   /**
    * Predicate that returns <code>true</code> if the value is greather than
    * the given one
    */
-  public static Predicate<Comparable> greatherThan(Comparable value) {
-    return comparable -> comparable.compareTo(value) > 0;
+  public static Predicate<Comparable> greatherThan(final Comparable value) {
+    return new Predicate<Comparable>() {
+      public boolean test(Comparable comparable) {
+        return comparable.compareTo(value) > 0;
+      }
+    };
   }
 
   /**
    * Predicate that returns <code>true</code> if the value is greather or equal
    * than the given one
    */
-  public static Predicate<Comparable> greatherThanOrEqual(Comparable value) {
-    return comparable -> comparable.compareTo(value) >= 0;
+  public static Predicate<Comparable> greatherThanOrEqual(final Comparable value) {
+    return new Predicate<Comparable>() {
+      public boolean test(Comparable comparable) {
+        return comparable.compareTo(value) >= 0;
+      }
+    };
   }
 
   /**
    * Predicate that returns <code>true</code> if the value is less than
    * the given one
    */
-  public static Predicate<Comparable> lessThan(Comparable value) {
-    return comparable -> comparable.compareTo(value) < 0;
+  public static Predicate<Comparable> lessThan(final Comparable value) {
+    return new Predicate<Comparable>() {
+      public boolean test(Comparable comparable) {
+        return comparable.compareTo(value) < 0;
+      }
+    };
   }
 
   /**
    * Predicate that returns <code>true</code> if the value is less or equal
    * than the given one
    */
-  public static Predicate<Comparable> lessThanOrEqual(Comparable value) {
-    return comparable -> comparable.compareTo(value) <= 0;
+  public static Predicate<Comparable> lessThanOrEqual(final Comparable value) {
+    return new Predicate<Comparable>() {
+      public boolean test(Comparable comparable) {
+        return comparable.compareTo(value) <= 0;
+      }
+    };
   }
 
 }

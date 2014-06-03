@@ -26,8 +26,8 @@
 
 package org.kodo;
 
-import java.util.function.Consumer;
-import java.util.function.Function;
+import org.kodo.util.function.Consumer;
+import org.kodo.util.function.Function;
 
 /**
  * A class to create scenarios for testing.
@@ -42,13 +42,11 @@ public class TestScenario<T> implements Scenario<T> {
     this.target = target;
   }
 
-  @Override
   public Scenario<T> when(Consumer<? super T> operation) {
     operation.accept(target);
     return this;
   }
 
-  @Override
   public Scenario<T> then(Consumer operation, Consumer test) {
     try {
       operation.accept(target);
@@ -59,7 +57,6 @@ public class TestScenario<T> implements Scenario<T> {
     return this;
   }
 
-  @Override
   public Scenario<T> the(Function function, Consumer test) {
     Object result = function.apply(target);
     test.accept(result);
@@ -67,7 +64,39 @@ public class TestScenario<T> implements Scenario<T> {
   }
 
   public Scenario<T> each(Consumer test) {
-    ((Iterable) target).forEach(test);
+    for (Object obj : (Iterable) target) {
+      test.accept(obj);
+    }
+    return this;
+  }
+
+  public Scenario<T> and(Consumer<? super T> consumer, Consumer test) {
+    return then(consumer, test);
+  }
+
+  public <E> Scenario<T> each(Class<E> type, Consumer<? super E> test) {
+    return each(test);
+  }
+
+  public Scenario<T> thenIt(Consumer<? super T> tests) {
+    return when(tests);
+  }
+
+  public Scenario<T> and(Consumer<? super T> consumer) {
+    return when(consumer);
+  }
+
+  public Scenario<T> it(Consumer<? super T> tests) {
+    return when(tests);
+  }
+
+  public Scenario<T> the(Object value, Consumer test) {
+    test.accept(value);
+    return this;
+  }
+
+  public Scenario<T> then(Object value, Consumer test) {
+    test.accept(value);
     return this;
   }
 
@@ -79,7 +108,7 @@ public class TestScenario<T> implements Scenario<T> {
    * @return a new {@link Scenario}.
    */
   public static <T> Scenario<T> given(T object) {
-    return new TestScenario<>(object);
+    return new TestScenario<T>(object);
   }
 
 }

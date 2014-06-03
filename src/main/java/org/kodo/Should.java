@@ -27,10 +27,10 @@
 package org.kodo;
 
 import org.hamcrest.Matcher;
+import org.kodo.util.function.Consumer;
+import org.kodo.util.function.Predicate;
 
 import java.util.Collection;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 import static org.junit.Assert.*;
 
@@ -40,7 +40,10 @@ import static org.junit.Assert.*;
  *
  * @author Marcelo Guimarães
  */
-public interface Should {
+public class Should {
+
+  private Should() {
+  }
 
   /**
    * Indicates that the value should be <code>true</code>
@@ -92,22 +95,34 @@ public interface Should {
    * Indicates that the value should be <code>null</code>
    */
   public static Consumer beNull() {
-    return (obj) -> assertNull(obj);
+    return new Consumer() {
+      public void accept(Object obj) {
+        assertNull(obj);
+      }
+    };
   }
 
   /**
    * Indicates that the value should not be <code>null</code>
    */
   public static Consumer notBeNull() {
-    return (obj) -> assertNotNull(obj);
+    return new Consumer() {
+      public void accept(Object obj) {
+        assertNotNull(obj);
+      }
+    };
   }
 
   /**
    * Indicates that the value should
    * {@link java.lang.Object#equals(Object) equal} the given value.
    */
-  public static Consumer be(Object value) {
-    return (obj) -> assertEquals(value, obj);
+  public static Consumer be(final Object value) {
+    return new Consumer() {
+      public void accept(Object obj) {
+        assertEquals(value, obj);
+      }
+    };
   }
 
   /**
@@ -122,8 +137,12 @@ public interface Should {
    * Indicates that the value should not
    * {@link java.lang.Object#equals(Object) equal} the given value.
    */
-  public static Consumer notBe(Object value) {
-    return (obj) -> assertNotEquals(value, obj);
+  public static Consumer notBe(final Object value) {
+    return new Consumer() {
+      public void accept(Object obj) {
+        assertNotEquals(value, obj);
+      }
+    };
   }
 
   /**
@@ -138,16 +157,24 @@ public interface Should {
    * Indicates that the value should {@link Predicate#test(Object) match} the
    * given predicate.
    */
-  public static Consumer be(Predicate predicate) {
-    return (obj) -> assertTrue(predicate.test(obj));
+  public static Consumer be(final Predicate predicate) {
+    return new Consumer() {
+      public void accept(Object obj) {
+        assertTrue(predicate.test(obj));
+      }
+    };
   }
 
   /**
    * Indicates that the value should not {@link Predicate#test(Object) match}
    * the given predicate.
    */
-  public static Consumer notBe(Predicate predicate) {
-    return (obj) -> assertFalse(predicate.test(obj));
+  public static Consumer notBe(final Predicate predicate) {
+    return new Consumer() {
+      public void accept(Object obj) {
+        assertFalse(predicate.test(obj));
+      }
+    };
   }
 
   /**
@@ -155,7 +182,11 @@ public interface Should {
    * {@link java.util.Collection#isEmpty() empty}
    */
   public static Consumer<Collection> beEmpty() {
-    return (collection) -> assertTrue(collection.isEmpty());
+    return new Consumer<Collection>() {
+      public void accept(Collection collection) {
+        assertTrue(collection.isEmpty());
+      }
+    };
   }
 
   /**
@@ -163,25 +194,35 @@ public interface Should {
    * {@link java.util.Collection#isEmpty() empty}
    */
   public static Consumer<Collection> notBeEmpty() {
-    return (collection) -> assertFalse(collection.isEmpty());
+    return new Consumer<Collection>() {
+      public void accept(Collection collection) {
+        assertFalse(collection.isEmpty());
+      }
+    };
   }
 
   /**
    * Indicates that the value should match the given matcher.
    */
-  public static Consumer match(Matcher matcher) {
-    return obj -> assertThat(obj, matcher);
+  public static Consumer match(final Matcher matcher) {
+    return new Consumer() {
+      public void accept(Object obj) {
+        assertThat(obj, matcher);
+      }
+    };
   }
 
   /**
    * Indicates that the operation should throw the given exception.
    */
-  public static Consumer raise(Class<? extends Throwable> exception) {
-    return (error) -> {
-      if (error != null) {
-        assertTrue(exception.isAssignableFrom(error.getClass()));
-      } else {
-        throw new AssertionError("No Exception was thrown.");
+  public static Consumer raise(final Class<? extends Throwable> exception) {
+    return new Consumer() {
+      public void accept(Object result) {
+        if (result != null) {
+          assertTrue(exception.isAssignableFrom(result.getClass()));
+        } else {
+          throw new AssertionError("No Exception was thrown.");
+        }
       }
     };
   }
@@ -190,10 +231,12 @@ public interface Should {
    * Indicates that the operation should not throw any exceptions.
    */
   public static Consumer succeed() {
-    return (error) -> {
-      if (error != null) {
-        throw new AssertionError("Exception " +
-            error.getClass().getCanonicalName() + " was thrown.");
+    return new Consumer() {
+      public void accept(Object result) {
+        if (result != null) {
+          throw new AssertionError("Exception " +
+              result.getClass().getCanonicalName() + " was thrown.");
+        }
       }
     };
   }

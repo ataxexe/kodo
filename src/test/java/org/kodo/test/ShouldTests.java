@@ -28,11 +28,12 @@ package org.kodo.test;
 
 import org.junit.Test;
 import org.kodo.Should;
+import org.kodo.util.function.Consumer;
+import org.kodo.util.function.Predicate;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.function.Consumer;
 
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
@@ -91,34 +92,54 @@ public class ShouldTests {
     test(Should.notEqual(1), 2);
   }
 
+  private Predicate lengthGreatherThan(final int lenght) {
+    return new Predicate() {
+      public boolean test(Object obj) {
+        return obj.toString().length() > lenght;
+      }
+    };
+  }
+
+  private Predicate TRUE = new Predicate() {
+    public boolean test(Object o) {
+      return true;
+    }
+  };
+
+  private Predicate FALSE = new Predicate() {
+    public boolean test(Object o) {
+      return false;
+    }
+  };
+
   @Test
   public void testShouldBeWithPredicate() {
-    test(Should.be(value -> value.toString().length() > 5), "123456");
-    test(Should.be(value -> value.toString().length() > 5), 123456);
-    test(Should.be(value -> true), null);
-    test(Should.be(value -> true), "");
-    test(Should.be(value -> true), 1);
+    test(Should.be(lengthGreatherThan(5)), "123456");
+    test(Should.be(lengthGreatherThan(5)), 123456);
+    test(Should.be(TRUE), null);
+    test(Should.be(TRUE), "");
+    test(Should.be(TRUE), 1);
 
-    testFail(Should.be(value -> value.toString().length() > 5), "12345");
-    testFail(Should.be(value -> value.toString().length() > 5), 12345);
-    testFail(Should.be(value -> false), null);
-    testFail(Should.be(value -> false), "");
-    testFail(Should.be(value -> false), 1);
+    testFail(Should.be(lengthGreatherThan(5)), "12345");
+    testFail(Should.be(lengthGreatherThan(5)), 12345);
+    testFail(Should.be(FALSE), null);
+    testFail(Should.be(FALSE), "");
+    testFail(Should.be(FALSE), 1);
   }
 
   @Test
   public void testShouldNotBeWithPredicate() {
-    testFail(Should.notBe(value -> value.toString().length() > 5), "123456");
-    testFail(Should.notBe(value -> value.toString().length() > 5), 123456);
-    testFail(Should.notBe(value -> true), null);
-    testFail(Should.notBe(value -> true), "");
-    testFail(Should.notBe(value -> true), 1);
+    testFail(Should.notBe(lengthGreatherThan(5)), "123456");
+    testFail(Should.notBe(lengthGreatherThan(5)), 123456);
+    testFail(Should.notBe(TRUE), null);
+    testFail(Should.notBe(TRUE), "");
+    testFail(Should.notBe(TRUE), 1);
 
-    test(Should.notBe(value -> value.toString().length() > 5), "12345");
-    test(Should.notBe(value -> value.toString().length() > 5), 12345);
-    test(Should.notBe(value -> false), null);
-    test(Should.notBe(value -> false), "");
-    test(Should.notBe(value -> false), 1);
+    test(Should.notBe(lengthGreatherThan(5)), "12345");
+    test(Should.notBe(lengthGreatherThan(5)), 12345);
+    test(Should.notBe(FALSE), null);
+    test(Should.notBe(FALSE), "");
+    test(Should.notBe(FALSE), 1);
   }
 
   @Test
