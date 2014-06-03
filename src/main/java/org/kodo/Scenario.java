@@ -60,7 +60,7 @@ public interface Scenario<T> {
 
   /**
    * Defines operations to execute as
-   * {@link #then(java.util.function.Consumer, java.util.function.Consumer)}.
+   * {@link #then(org.kodo.util.function.Consumer, org.kodo.util.function.Consumer)}.
    *
    * @param consumer the operation to execute with the target object.
    * @param test     the test to do with the raised exception (if no exception
