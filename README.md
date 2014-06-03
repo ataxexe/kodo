@@ -1,6 +1,6 @@
 # Overview
 
-Kodo is a test framework that helps you creating test scenarios with the help of a fluent interface.
+Kodo is a test framework that helps you creating test scenarios with the help of a fluent interface. This branch is for bring compatibility with JDK 5 for those who can't upgrade right now.
 
 ## How To Build
 
@@ -23,26 +23,20 @@ TestScenario.given(someObject);
 
 With the `Scenario` interface returned, you can use a set of methods to describe behaviours:
 
-~~~java
-TestScenario.given(someObject)
-  .when(obj -> obj.foo())
-  .thenIt(Should.be(obj -> obj.isValid());
-~~~
-
 This can be refactored to a more elegant code:
 
 ~~~java
 TestScenario.given(someObject)
-  .when(itExecutes()) // an extracted method
-  .thenIt(Should.be(valid()); // an extracted method
+  .when(itExecutes())
+  .thenIt(Should.be(valid());
 ~~~
 
 Here is some real example:
 
 ~~~java
 TestScenario.given(element("name").in(annotation()))
-  .the(Element::value, Should.be("some name"))
-  .the(Element::name, Should.be("name"))
+  .the(value(), Should.be("some name"))
+  .the(name(), Should.be("name"))
   .it(Should.NOT_BE_NULL.andThen(Should.notBe(writable())))
   .then(attempToChangeValue(), Should.raise(HandlingException.class));
 
