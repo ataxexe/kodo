@@ -91,12 +91,6 @@ task pom << {
   }.writeTo("$buildDir/pom.xml")
 }
 
-task pdf(type: Exec) {
-  commandLine 'pandoc', '-S', '-s', '-o',
-      "$buildDir/kodo.pdf", '--highlight-style=kate', 'kodo.md',
-      'README.md', 'changelog.md'
-}
-
 task dist(type: Zip,
     dependsOn: [clean, jar, sourcesJar, javadocJar, test, pom, pdf]) {
   from "$buildDir/libs"
