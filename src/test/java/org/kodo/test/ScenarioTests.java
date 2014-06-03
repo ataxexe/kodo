@@ -35,6 +35,8 @@ import java.util.Collection;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import static org.kodo.ComparablePredicates.greatherThan;
+
 /**
  * @author Marcelo Guimarães
  */
@@ -75,6 +77,7 @@ public class ScenarioTests {
   public void testCollectionScenario() {
     TestScenario.given(Arrays.asList("kobo is a test framework".split("\\s")))
         .the(size(), Should.be(5))
+        .the(size(), Should.be(greatherThan(4)))
         .each(String.class, Should.NOT_BE_NULL)
         .each(Should.notBeNull());
   }

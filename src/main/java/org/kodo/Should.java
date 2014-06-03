@@ -40,11 +40,7 @@ import static org.junit.Assert.*;
  *
  * @author Marcelo Guimarães
  */
-public class Should {
-
-  private Should() {
-
-  }
+public interface Should {
 
   /**
    * Indicates that the value should be <code>true</code>
