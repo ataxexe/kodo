@@ -27,7 +27,7 @@
 package org.kodo.test;
 
 import org.junit.Test;
-import org.kodo.Should;
+import org.kodo.Spec;
 import org.kodo.TestScenario;
 
 import java.util.Arrays;
@@ -39,7 +39,7 @@ import java.util.function.Predicate;
 import static org.kodo.ComparablePredicates.greatherThan;
 
 import static org.kodo.Scenario.*;
-import static org.kodo.Should.*;
+import static org.kodo.Spec.*;
 
 /**
  * @author Marcelo Guimarães
@@ -73,26 +73,26 @@ public class ScenarioTests {
   @Test
   public void testObjectScenario() {
     TestScenario.given("kodo is a test framework")
-        .the(length(), Should.be(24))
-        .it(Should.equal("kodo is a test framework"))
+        .the(length(), Spec.be(24))
+        .it(Spec.equal("kodo is a test framework"))
         .when(concat("some string that should not affect the original"))
-        .the(length(), Should.be(24))
+        .the(length(), Spec.be(24))
         .the("other string", should(notBe(NULL)))
         .then("other string", should(notBe(NULL)))
-        .thenIt(Should.equal("kodo is a test framework"))
+        .thenIt(Spec.equal("kodo is a test framework"))
         .and(should(notBe(NULL)))
         .and(should(have(characters(24))))
         .and(should(notHave(characters(25))))
         .and(should(beAString()))
-        .then(charAt(0), Should.succeed())
-        .and(charAt(25), Should.raise(StringIndexOutOfBoundsException.class));
+        .then(charAt(0), Spec.succeed())
+        .and(charAt(25), Spec.raise(StringIndexOutOfBoundsException.class));
   }
 
   @Test
   public void testCollectionScenario() {
     TestScenario.given(Arrays.asList("kobo is a test framework".split("\\s")))
-        .the(size(), Should.be(5))
-        .the(size(), Should.be(greatherThan(4)))
+        .the(size(), Spec.be(5))
+        .the(size(), Spec.be(greatherThan(4)))
         .each(String.class, should(notBe(NULL)))
         .each(should(notBe(NULL)));
   }

@@ -57,7 +57,7 @@ public interface Scenario<T> {
    *                  is thrown, a <code>null</code> value will be given to this
    *                  consumer
    * @return a reference to this object.
-   * @see Should#raise(Class)
+   * @see Spec#raise(Class)
    */
   Scenario<T> then(Consumer<? super T> operation, Consumer<?> test);
 
@@ -82,7 +82,7 @@ public interface Scenario<T> {
    * @param test     the test to do with the value returned by the given
    *                 function
    * @return a reference to this object
-   * @see Should
+   * @see Spec
    */
   Scenario<T> the(Function<? super T, ?> function, Consumer<?> test);
 
@@ -162,12 +162,27 @@ public interface Scenario<T> {
     return this;
   }
 
+  /**
+   * Transform a predicate into a consumer for testing.
+   *
+   * @param predicate the predicate to test the target.
+   * @param <T>       the type of the target
+   * @return a consumer that tests the target
+   */
   public static <T> Consumer<T> should(Predicate<T> predicate) {
     return obj -> assertTrue(predicate.test(obj));
   }
 
+  /**
+   * Helper method. It returns the given consumer. Use this to write a more
+   * readable code.
+   *
+   * @param consumer the consumer to use
+   * @param <T>      the type of the target
+   * @return the given consumer.
+   */
   public static <T> Consumer<T> should(Consumer<T> consumer) {
-    return obj -> consumer.accept(obj);
+    return consumer;
   }
 
 }

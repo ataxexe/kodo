@@ -40,7 +40,7 @@ import static org.junit.Assert.*;
  *
  * @author Marcelo Guimarães
  */
-public interface Should {
+public interface Spec {
 
   /**
    * Indicates that the value should be <code>true</code>
@@ -117,10 +117,24 @@ public interface Should {
     return obj -> assertFalse(predicate.test(obj));
   }
 
+  /**
+   * Indicates that the target should have something that is tested with
+   * the given predicate.
+   *
+   * @param predicate the predicate to test the target.
+   * @return a consumer that uses the given predicate to test the target.
+   */
   public static <T> Consumer<T> have(Predicate<T> predicate) {
     return obj -> assertTrue(predicate.test(obj));
   }
 
+  /**
+   * Indicates that the target should not have something that is tested with
+   * the given predicate.
+   *
+   * @param predicate the predicate to test the target.
+   * @return a consumer that uses the given predicate to test the target.
+   */
   public static <T> Consumer<T> notHave(Predicate<T> predicate) {
     return obj -> assertTrue(predicate.negate().test(obj));
   }
