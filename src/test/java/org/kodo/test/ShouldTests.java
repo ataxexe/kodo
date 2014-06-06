@@ -123,62 +123,29 @@ public class ShouldTests {
 
   @Test
   public void testShouldBeEmpty() {
-    test(Should.BE_EMPTY, Collections.emptyList());
-    test(Should.BE_EMPTY, Collections.emptySet());
-    test(Should.beEmpty(), Collections.emptyList());
-    test(Should.beEmpty(), Collections.emptySet());
+    test(Should.EMPTY, Collections.emptyList());
+    test(Should.EMPTY, Collections.emptySet());
 
-    testFail(Should.BE_EMPTY, Arrays.asList(1, 2, 3));
-    testFail(Should.BE_EMPTY, new HashSet(Arrays.asList(1, 2, 3)));
-    testFail(Should.beEmpty(), Arrays.asList(1, 2, 3));
-    testFail(Should.beEmpty(), new HashSet(Arrays.asList(1, 2, 3)));
-  }
-
-  @Test
-  public void testShouldNotBeEmpty() {
-    test(Should.NOT_BE_EMPTY, Arrays.asList(1, 2, 3));
-    test(Should.NOT_BE_EMPTY, new HashSet(Arrays.asList(1, 2, 3)));
-    test(Should.notBeEmpty(), Arrays.asList(1, 2, 3));
-    test(Should.notBeEmpty(), new HashSet(Arrays.asList(1, 2, 3)));
-
-    testFail(Should.notBeEmpty(), Collections.emptyList());
-    testFail(Should.notBeEmpty(), Collections.emptySet());
+    testFail(Should.EMPTY, Arrays.asList(1, 2, 3));
+    testFail(Should.EMPTY, new HashSet(Arrays.asList(1, 2, 3)));
   }
 
   @Test
   public void testShouldBeTrue() {
-    test(Should.BE_TRUE, true);
-    test(Should.beTrue(), true);
-
-    testFail(Should.BE_TRUE, false);
-    testFail(Should.beTrue(), false);
+    test(Should.TRUE, true);
+    testFail(Should.TRUE, false);
   }
 
   @Test
   public void testShouldBeFalse() {
-    test(Should.BE_FALSE, false);
-    test(Should.beFalse(), false);
-
-    testFail(Should.BE_FALSE, true);
-    testFail(Should.beFalse(), true);
+    test(Should.FALSE, false);
+    testFail(Should.FALSE, true);
   }
 
   @Test
   public void testShouldBeNull() {
-    test(Should.BE_NULL, null);
-    test(Should.beNull(), null);
-
-    testFail(Should.BE_NULL, "string");
-    testFail(Should.beNull(), "string");
-  }
-
-  @Test
-  public void testShouldNotBeNull() {
-    test(Should.NOT_BE_NULL, "string");
-    test(Should.notBeNull(), "string");
-
-    testFail(Should.NOT_BE_NULL, null);
-    testFail(Should.notBeNull(), null);
+    test(Should.NULL, null);
+    testFail(Should.NULL, "string");
   }
 
   @Test

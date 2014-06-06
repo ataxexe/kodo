@@ -45,69 +45,36 @@ public interface Should {
   /**
    * Indicates that the value should be <code>true</code>
    */
-  public static Consumer<Boolean> BE_TRUE = beTrue();
+  public static Consumer<Boolean> TRUE = be(true);
 
   /**
    * Indicates that the value should be <code>false</code>
    */
-  public static Consumer<Boolean> BE_FALSE = beFalse();
+  public static Consumer<Boolean> FALSE = be(false);
 
   /**
    * Indicates that the value should be <code>null</code>
    */
-  public static Consumer BE_NULL = beNull();
+  public static Consumer NULL = obj -> assertNull(obj);
 
   /**
    * Indicates that the value should not be <code>null</code>
    */
-  public static Consumer NOT_BE_NULL = notBeNull();
+  public static Consumer NOT_NULL = obj -> assertNotNull(obj);
 
   /**
    * Indicates that the value should be a collection and
    * {@link java.util.Collection#isEmpty() empty}
    */
-  public static Consumer<Collection> BE_EMPTY = beEmpty();
-
-  /**
-   * Indicates that the value should not be a collection and
-   * {@link java.util.Collection#isEmpty() empty}
-   */
-  public static Consumer<Collection> NOT_BE_EMPTY = notBeEmpty();
-
-  /**
-   * Indicates that the value should be <code>true</code>
-   */
-  public static Consumer<Boolean> beTrue() {
-    return be(true);
-  }
-
-  /**
-   * Indicates that the value should be <code>false</code>
-   */
-  public static Consumer<Boolean> beFalse() {
-    return be(false);
-  }
-
-  /**
-   * Indicates that the value should be <code>null</code>
-   */
-  public static Consumer beNull() {
-    return (obj) -> assertNull(obj);
-  }
-
-  /**
-   * Indicates that the value should not be <code>null</code>
-   */
-  public static Consumer notBeNull() {
-    return (obj) -> assertNotNull(obj);
-  }
+  public static Consumer<Collection> EMPTY =
+      collection -> assertTrue(collection.isEmpty());
 
   /**
    * Indicates that the value should
    * {@link java.lang.Object#equals(Object) equal} the given value.
    */
   public static Consumer be(Object value) {
-    return (obj) -> assertEquals(value, obj);
+    return obj -> assertEquals(value, obj);
   }
 
   /**
@@ -123,7 +90,7 @@ public interface Should {
    * {@link java.lang.Object#equals(Object) equal} the given value.
    */
   public static Consumer notBe(Object value) {
-    return (obj) -> assertNotEquals(value, obj);
+    return obj -> assertNotEquals(value, obj);
   }
 
   /**
@@ -139,7 +106,7 @@ public interface Should {
    * given predicate.
    */
   public static Consumer be(Predicate predicate) {
-    return (obj) -> assertTrue(predicate.test(obj));
+    return obj -> assertTrue(predicate.test(obj));
   }
 
   /**
@@ -147,23 +114,15 @@ public interface Should {
    * the given predicate.
    */
   public static Consumer notBe(Predicate predicate) {
-    return (obj) -> assertFalse(predicate.test(obj));
+    return obj -> assertFalse(predicate.test(obj));
   }
 
-  /**
-   * Indicates that the value should be a collection and
-   * {@link java.util.Collection#isEmpty() empty}
-   */
-  public static Consumer<Collection> beEmpty() {
-    return (collection) -> assertTrue(collection.isEmpty());
+  public static <T> Consumer<T> have(Predicate<T> predicate) {
+    return obj -> assertTrue(predicate.test(obj));
   }
 
-  /**
-   * Indicates that the value should not be a collection and
-   * {@link java.util.Collection#isEmpty() empty}
-   */
-  public static Consumer<Collection> notBeEmpty() {
-    return (collection) -> assertFalse(collection.isEmpty());
+  public static <T> Consumer<T> notHave(Predicate<T> predicate) {
+    return obj -> assertTrue(predicate.negate().test(obj));
   }
 
   /**

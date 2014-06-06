@@ -29,7 +29,7 @@ apply plugin: 'maven'
 
 configurations {
   project.group = "org.kodo"
-  project.version = "0.1"
+  project.version = "0.2"
 
   project.description = "Kodo is a test framework that helps you creating test " +
       "scenarios with the help of a fluent interface."

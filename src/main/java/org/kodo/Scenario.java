@@ -28,6 +28,9 @@ package org.kodo;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * Interface that defines a common set of methods to define test scenarios for
@@ -157,6 +160,14 @@ public interface Scenario<T> {
   default Scenario<T> then(Object value, Consumer test) {
     test.accept(value);
     return this;
+  }
+
+  public static <T> Consumer<T> should(Predicate<T> predicate) {
+    return obj -> assertTrue(predicate.test(obj));
+  }
+
+  public static <T> Consumer<T> should(Consumer<T> consumer) {
+    return obj -> consumer.accept(obj);
   }
 
 }
