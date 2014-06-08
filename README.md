@@ -26,7 +26,7 @@ With the `Scenario` interface returned, you can use a set of methods to describe
 ~~~java
 TestScenario.given(someObject)
   .when(obj -> obj.foo())
-  .thenIt(Should.be(obj -> obj.isValid());
+  .thenIt(should(be(obj -> obj.isValid()));
 ~~~
 
 This can be refactored to a more elegant code:
@@ -34,24 +34,25 @@ This can be refactored to a more elegant code:
 ~~~java
 TestScenario.given(someObject)
   .when(itExecutes()) // an extracted method
-  .thenIt(Should.be(valid()); // an extracted method
+  .thenIt(should(be(valid()); // an extracted method
 ~~~
 
 Here is some real example:
 
 ~~~java
 TestScenario.given(element("name").in(annotation()))
-  .the(Element::value, Should.be("some name"))
-  .the(Element::name, Should.be("name"))
-  .it(Should.NOT_BE_NULL.andThen(Should.notBe(writable())))
-  .then(attempToChangeValue(), Should.raise(HandlingException.class));
+  .the(Element::value, should(be("some name"))
+  .the(Element::name, should(be("name"))
+  .it(should(notBe(NULL))
+  .and(should(notBe(writable())))
+  .then(attempToChangeValue(), should(raise(HandlingException.class)));
 
 // using a collection
 TestScenario.given(elements().in(annotation()))
-  .thenIt(Should.NOT_BE_EMPTY)
-  .each(Should.notBe(writable())) // \
-  .each(Should.be(readable()))    //  > iterates through all elements
-  .each(shouldHaveAValue());      // /
+  .thenIt(should(NOT_BE_EMPTY))
+  .each(should(notBe(writable())))  // \
+  .each(should(be(readable())))     //  > iterates through all elements
+  .each(should(have(aValue())));    // /
 ~~~
 
 You can always use the helper class `Should`. It contains a set of useful methods to help you write your tests.
