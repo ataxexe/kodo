@@ -27,15 +27,18 @@
 package org.kodo.test;
 
 import org.junit.Test;
-import org.kodo.Spec;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.kodo.Spec.*;
 
 /**
  * @author Marcelo Guimarães
@@ -55,121 +58,166 @@ public class SpecTests {
     }
   }
 
-  @Test
-  public void testShouldBeWithObject() {
-    test(Spec.be("test"), "test");
-    testFail(Spec.be("test"), "");
+  private void test(Predicate predicate, Object value) {
+    assertTrue(predicate.test(value));
+  }
 
-    test(Spec.be(1), 1);
-    testFail(Spec.be(1), 2);
+  private void testFail(Predicate predicate, Object value) {
+    assertFalse(predicate.test(value));
   }
 
   @Test
-  public void testShouldNotBeWithObject() {
-    testFail(Spec.notBe("test"), "test");
-    test(Spec.notBe("test"), "");
+  public void testBeWithObject() {
+    test(be("test"), "test");
+    testFail(be("test"), "");
 
-    testFail(Spec.notBe(1), 1);
-    test(Spec.notBe(1), 2);
+    test(be(1), 1);
+    testFail(be(1), 2);
   }
 
   @Test
-  public void testShouldEqual() {
-    test(Spec.equal("test"), "test");
-    testFail(Spec.equal("test"), "");
+  public void testNotBeWithObject() {
+    testFail(notBe("test"), "test");
+    test(notBe("test"), "");
 
-    test(Spec.equal(1), 1);
-    testFail(Spec.equal(1), 2);
+    testFail(notBe(1), 1);
+    test(notBe(1), 2);
   }
 
   @Test
-  public void testShouldNotEqual() {
-    testFail(Spec.notEqual("test"), "test");
-    test(Spec.notEqual("test"), "");
+  public void testEqual() {
+    test(equal("test"), "test");
+    testFail(equal("test"), "");
 
-    testFail(Spec.notEqual(1), 1);
-    test(Spec.notEqual(1), 2);
+    test(equal(1), 1);
+    testFail(equal(1), 2);
   }
 
   @Test
-  public void testShouldBeWithPredicate() {
-    test(Spec.be(value -> value.toString().length() > 5), "123456");
-    test(Spec.be(value -> value.toString().length() > 5), 123456);
-    test(Spec.be(value -> true), null);
-    test(Spec.be(value -> true), "");
-    test(Spec.be(value -> true), 1);
+  public void testNotEqual() {
+    testFail(notEqual("test"), "test");
+    test(notEqual("test"), "");
 
-    testFail(Spec.be(value -> value.toString().length() > 5), "12345");
-    testFail(Spec.be(value -> value.toString().length() > 5), 12345);
-    testFail(Spec.be(value -> false), null);
-    testFail(Spec.be(value -> false), "");
-    testFail(Spec.be(value -> false), 1);
+    testFail(notEqual(1), 1);
+    test(notEqual(1), 2);
   }
 
   @Test
-  public void testShouldNotBeWithPredicate() {
-    testFail(Spec.notBe(value -> value.toString().length() > 5), "123456");
-    testFail(Spec.notBe(value -> value.toString().length() > 5), 123456);
-    testFail(Spec.notBe(value -> true), null);
-    testFail(Spec.notBe(value -> true), "");
-    testFail(Spec.notBe(value -> true), 1);
+  public void testBeWithPredicate() {
+    test(be(value -> value.toString().length() > 5), "123456");
+    test(be(value -> value.toString().length() > 5), 123456);
+    test(be(value -> true), null);
+    test(be(value -> true), "");
+    test(be(value -> true), 1);
 
-    test(Spec.notBe(value -> value.toString().length() > 5), "12345");
-    test(Spec.notBe(value -> value.toString().length() > 5), 12345);
-    test(Spec.notBe(value -> false), null);
-    test(Spec.notBe(value -> false), "");
-    test(Spec.notBe(value -> false), 1);
+    testFail(be(value -> value.toString().length() > 5), "12345");
+    testFail(be(value -> value.toString().length() > 5), 12345);
+    testFail(be(value -> false), null);
+    testFail(be(value -> false), "");
+    testFail(be(value -> false), 1);
   }
 
   @Test
-  public void testShouldBeEmpty() {
-    test(Spec.EMPTY, Collections.emptyList());
-    test(Spec.EMPTY, Collections.emptySet());
+  public void testNotBeWithPredicate() {
+    testFail(notBe(value -> value.toString().length() > 5), "123456");
+    testFail(notBe(value -> value.toString().length() > 5), 123456);
+    testFail(notBe(value -> true), null);
+    testFail(notBe(value -> true), "");
+    testFail(notBe(value -> true), 1);
 
-    testFail(Spec.EMPTY, Arrays.asList(1, 2, 3));
-    testFail(Spec.EMPTY, new HashSet(Arrays.asList(1, 2, 3)));
+    test(notBe(value -> value.toString().length() > 5), "12345");
+    test(notBe(value -> value.toString().length() > 5), 12345);
+    test(notBe(value -> false), null);
+    test(notBe(value -> false), "");
+    test(notBe(value -> false), 1);
   }
 
   @Test
-  public void testShouldBeTrue() {
-    test(Spec.TRUE, true);
-    testFail(Spec.TRUE, false);
+  public void testNull() {
+    test(NULL, null);
+    testFail(NULL, "");
+
+    test(NOT_NULL, "");
+    testFail(NOT_NULL, null);
   }
 
   @Test
-  public void testShouldBeFalse() {
-    test(Spec.FALSE, false);
-    testFail(Spec.FALSE, true);
+  public void testBeEmpty() {
+    test(EMPTY, Collections.emptyList());
+    test(EMPTY, Collections.emptySet());
+
+    testFail(EMPTY, Arrays.asList(1, 2, 3));
+    testFail(EMPTY, new HashSet(Arrays.asList(1, 2, 3)));
   }
 
   @Test
-  public void testShouldBeNull() {
-    test(Spec.NULL, null);
-    testFail(Spec.NULL, "string");
+  public void testBeTrue() {
+    test(TRUE, true);
+    testFail(TRUE, false);
   }
 
   @Test
-  public void testShouldRaise() {
-    test(Spec.raise(IllegalArgumentException.class), new IllegalArgumentException());
-    test(Spec.raise(RuntimeException.class), new IllegalArgumentException());
-
-    testFail(Spec.raise(IllegalArgumentException.class), null);
-    testFail(Spec.raise(IllegalArgumentException.class), new RuntimeException());
+  public void testBeFalse() {
+    test(FALSE, false);
+    testFail(FALSE, true);
   }
 
   @Test
-  public void testShouldSucceed() {
-    test(Spec.succeed(), null);
-
-    testFail(Spec.succeed(), new RuntimeException());
-    testFail(Spec.succeed(), new IllegalArgumentException());
-    testFail(Spec.succeed(), new IllegalArgumentException());
+  public void testBeNull() {
+    test(NULL, null);
+    testFail(NULL, "string");
   }
 
   @Test
-  public void testShouldMatch() {
-    test(Spec.match(is(nullValue())), null);
-    testFail(Spec.match(is(nullValue())), "");
+  public void testRaise() {
+    test(raise(IllegalArgumentException.class), new IllegalArgumentException());
+    test(raise(RuntimeException.class), new IllegalArgumentException());
+
+    testFail(raise(IllegalArgumentException.class), null);
+    testFail(raise(IllegalArgumentException.class), new RuntimeException());
+  }
+
+  @Test
+  public void testSucceed() {
+    test(succeed(), null);
+
+    testFail(succeed(), new RuntimeException());
+    testFail(succeed(), new IllegalArgumentException());
+    testFail(succeed(), new IllegalArgumentException());
+  }
+
+  @Test
+  public void testMatch() {
+    test(match(is(nullValue())), null);
+    testFail(match(is(nullValue())), "");
+  }
+
+  @Test
+  public void testGreatherThan() {
+    test(greatherThan(10), 11);
+    testFail(greatherThan(10), 10);
+    testFail(greatherThan(10), 9);
+  }
+
+  @Test
+  public void testGreatherThanOrEqual() {
+    test(greatherThanOrEqual(10), 11);
+    test(greatherThanOrEqual(10), 10);
+    testFail(greatherThanOrEqual(10), 9);
+  }
+
+  @Test
+  public void testLessThan() {
+    test(lessThan(10), 9);
+    testFail(lessThan(10), 10);
+    testFail(lessThan(10), 11);
+  }
+
+  @Test
+  public void testLessThanOrEqual() {
+    test(lessThanOrEqual(10), 9);
+    test(lessThanOrEqual(10), 10);
+    testFail(lessThanOrEqual(10), 11);
   }
 
 }

@@ -36,9 +36,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static org.kodo.ComparablePredicates.greatherThan;
-
-import static org.kodo.Scenario.*;
+import static org.kodo.Scenario.should;
 import static org.kodo.Spec.*;
 
 /**
@@ -74,18 +72,24 @@ public class ScenarioTests {
   public void testObjectScenario() {
     TestScenario.given("kodo is a test framework")
         .the(length(), Spec.be(24))
-        .it(Spec.equal("kodo is a test framework"))
+        .it(should(equal("kodo is a test framework")))
         .when(concat("some string that should not affect the original"))
         .the(length(), Spec.be(24))
         .the("other string", should(notBe(NULL)))
         .then("other string", should(notBe(NULL)))
-        .thenIt(Spec.equal("kodo is a test framework"))
+        .thenIt(should(equal("kodo is a test framework")))
         .and(should(notBe(NULL)))
         .and(should(have(characters(24))))
         .and(should(notHave(characters(25))))
         .and(should(beAString()))
         .then(charAt(0), Spec.succeed())
         .and(charAt(25), Spec.raise(StringIndexOutOfBoundsException.class));
+  }
+
+  @Test
+  public void testNullScenario() {
+    TestScenario.given(null)
+        .it(should(be(NULL)));
   }
 
   @Test
