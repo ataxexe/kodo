@@ -45,34 +45,34 @@ public interface Spec {
   /**
    * Indicates that the value should be <code>true</code>
    */
-  public static Predicate<Boolean> TRUE = value -> value;
+  Predicate<Boolean> TRUE = value -> value;
 
   /**
    * Indicates that the value should be <code>false</code>
    */
-  public static Predicate<Boolean> FALSE = value -> !value;
+  Predicate<Boolean> FALSE = value -> !value;
 
   /**
    * Indicates that the value should be <code>null</code>
    */
-  public static Predicate NULL = obj -> obj == null;
+  Predicate NULL = obj -> obj == null;
 
   /**
    * Indicates that the value should not be <code>null</code>
    */
-  public static Predicate NOT_NULL = obj -> obj != null;
+  Predicate NOT_NULL = obj -> obj != null;
 
   /**
    * Indicates that the value should be a collection and
    * {@link java.util.Collection#isEmpty() empty}
    */
-  public static Predicate<Collection> EMPTY = collection -> collection.isEmpty();
+  Predicate<Collection> EMPTY = collection -> collection.isEmpty();
 
   /**
    * Predicate that returns <code>true</code> if the value is the same as
    * the given one
    */
-  public static Predicate<Comparable> equal(Comparable value) {
+  static Predicate<Comparable> equal(Comparable value) {
     return comparable -> comparable.compareTo(value) == 0;
   }
 
@@ -80,7 +80,7 @@ public interface Spec {
    * Predicate that returns <code>true</code> if the value is greather than
    * the given one
    */
-  public static Predicate<Comparable> greatherThan(Comparable value) {
+  static Predicate<Comparable> greatherThan(Comparable value) {
     return comparable -> comparable.compareTo(value) > 0;
   }
 
@@ -88,7 +88,7 @@ public interface Spec {
    * Predicate that returns <code>true</code> if the value is greather or equal
    * than the given one
    */
-  public static Predicate<Comparable> greatherThanOrEqual(Comparable value) {
+  static Predicate<Comparable> greatherThanOrEqual(Comparable value) {
     return comparable -> comparable.compareTo(value) >= 0;
   }
 
@@ -96,7 +96,7 @@ public interface Spec {
    * Predicate that returns <code>true</code> if the value is less than
    * the given one
    */
-  public static Predicate<Comparable> lessThan(Comparable value) {
+  static Predicate<Comparable> lessThan(Comparable value) {
     return comparable -> comparable.compareTo(value) < 0;
   }
 
@@ -104,7 +104,7 @@ public interface Spec {
    * Predicate that returns <code>true</code> if the value is less or equal
    * than the given one
    */
-  public static Predicate<Comparable> lessThanOrEqual(Comparable value) {
+  static Predicate<Comparable> lessThanOrEqual(Comparable value) {
     return comparable -> comparable.compareTo(value) <= 0;
   }
 
@@ -112,7 +112,7 @@ public interface Spec {
    * Indicates that the value should
    * {@link java.lang.Object#equals(Object) equal} the given value.
    */
-  public static Consumer be(Object value) {
+  static Consumer be(Object value) {
     return obj -> assertEquals(value, obj);
   }
 
@@ -120,7 +120,7 @@ public interface Spec {
    * Indicates that the value should not
    * {@link java.lang.Object#equals(Object) equal} the given value.
    */
-  public static Consumer notBe(Object value) {
+  static Consumer notBe(Object value) {
     return obj -> assertNotEquals(value, obj);
   }
 
@@ -128,7 +128,7 @@ public interface Spec {
    * Indicates that the value should not
    * {@link java.lang.Object#equals(Object) equal} the given value.
    */
-  public static Consumer notEqual(Object value) {
+  static Consumer notEqual(Object value) {
     return notBe(value);
   }
 
@@ -136,7 +136,7 @@ public interface Spec {
    * Indicates that the value should {@link Predicate#test(Object) match} the
    * given predicate.
    */
-  public static <T> Consumer<T> be(Predicate<T> predicate) {
+  static <T> Consumer<T> be(Predicate<T> predicate) {
     return obj -> assertTrue(predicate.test(obj));
   }
 
@@ -144,7 +144,7 @@ public interface Spec {
    * Indicates that the value should not {@link Predicate#test(Object) match}
    * the given predicate.
    */
-  public static <T> Consumer<T> notBe(Predicate<T> predicate) {
+  static <T> Consumer<T> notBe(Predicate<T> predicate) {
     return obj -> assertFalse(predicate.test(obj));
   }
 
@@ -155,7 +155,7 @@ public interface Spec {
    * @param predicate the predicate to test the target.
    * @return a consumer that uses the given predicate to test the target.
    */
-  public static <T> Consumer<T> have(Predicate<T> predicate) {
+  static <T> Consumer<T> have(Predicate<T> predicate) {
     return obj -> assertTrue(predicate.test(obj));
   }
 
@@ -166,21 +166,21 @@ public interface Spec {
    * @param predicate the predicate to test the target.
    * @return a consumer that uses the given predicate to test the target.
    */
-  public static <T> Consumer<T> notHave(Predicate<T> predicate) {
+  static <T> Consumer<T> notHave(Predicate<T> predicate) {
     return obj -> assertTrue(predicate.negate().test(obj));
   }
 
   /**
    * Indicates that the value should match the given matcher.
    */
-  public static <T> Consumer<T> match(Matcher<T> matcher) {
+  static <T> Consumer<T> match(Matcher<T> matcher) {
     return obj -> assertThat(obj, matcher);
   }
 
   /**
    * Indicates that the operation should throw the given exception.
    */
-  public static Consumer raise(Class<? extends Throwable> exception) {
+  static Consumer raise(Class<? extends Throwable> exception) {
     return (error) -> {
       if (error != null) {
         assertTrue(exception.isAssignableFrom(error.getClass()));
@@ -193,7 +193,7 @@ public interface Spec {
   /**
    * Indicates that the operation should not throw any exceptions.
    */
-  public static Consumer succeed() {
+  static Consumer succeed() {
     return (error) -> {
       if (error != null) {
         throw new AssertionError("Exception " +
