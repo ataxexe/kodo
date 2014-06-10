@@ -50,12 +50,13 @@ public class SpecTests {
   }
 
   private void testFail(Consumer consumer, Object value) {
+    boolean error = false;
     try {
       test(consumer, value);
-      throw new AssertionError("No exception thrown");
-    } catch (AssertionError error) {
-      // ok
+    } catch (AssertionError e) {
+      error = true;
     }
+    assertTrue(error);
   }
 
   private void test(Predicate predicate, Object value) {
