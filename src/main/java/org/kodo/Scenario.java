@@ -30,8 +30,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static org.junit.Assert.assertTrue;
-
 /**
  * Interface that defines a common set of methods to define test scenarios for
  * a target object.
@@ -59,11 +57,25 @@ public interface Scenario<T> {
    * @return a reference to this object.
    * @see Spec#raise(Class)
    */
-  Scenario<T> then(Consumer<? super T> operation, Consumer<?> test);
+  default Scenario<T> then(Consumer<? super T> operation, Predicate<?> test) {
+    return then(operation, test, "");
+  }
+
+  /**
+   * Defines an operation that may throw an exception.
+   *
+   * @param operation the operation to do with the target
+   * @param test      the test to do with the raised exception (if no exception
+   *                  is thrown, a <code>null</code> value will be given to this
+   *                  consumer
+   * @param message   the message to throw if the test fail
+   * @return a reference to this object.
+   */
+  Scenario<T> then(Consumer<? super T> operation, Predicate<?> test, String message);
 
   /**
    * Defines operations to execute as
-   * {@link #then(java.util.function.Consumer, java.util.function.Consumer)}.
+   * {@link #then(java.util.function.Consumer, java.util.function.Predicate)}.
    *
    * @param consumer the operation to execute with the target object.
    * @param test     the test to do with the raised exception (if no exception
@@ -71,8 +83,23 @@ public interface Scenario<T> {
    *                 consumer
    * @return a reference to this object
    */
-  default Scenario<T> and(Consumer<? super T> consumer, Consumer test) {
+  default Scenario<T> and(Consumer<? super T> consumer, Predicate test) {
     return then(consumer, test);
+  }
+
+  /**
+   * Defines operations to execute as
+   * {@link #then(java.util.function.Consumer, java.util.function.Predicate)}.
+   *
+   * @param consumer the operation to execute with the target object.
+   * @param test     the test to do with the raised exception (if no exception
+   *                 is thrown, a <code>null</code> value will be given to this
+   *                 consumer
+   * @param message  the message to throw if the test fail
+   * @return a reference to this object
+   */
+  default Scenario<T> and(Consumer<? super T> consumer, Predicate test, String message) {
+    return then(consumer, test, message);
   }
 
   /**
@@ -84,7 +111,20 @@ public interface Scenario<T> {
    * @return a reference to this object
    * @see Spec
    */
-  Scenario<T> the(Function<? super T, ?> function, Consumer<?> test);
+  default Scenario<T> the(Function<? super T, ?> function, Predicate<?> test) {
+    return the(function, test, "");
+  }
+
+  /**
+   * Defines a test for some target operation that returns a value.
+   *
+   * @param function the operation to do with the target
+   * @param test     the test to do with the value returned by the given
+   *                 function
+   * @param message  the message to throw if the test fail
+   * @return a reference to this object
+   */
+  Scenario<T> the(Function<? super T, ?> function, Predicate<?> test, String message);
 
   /**
    * Defines a test for each element of the target. This requires an
@@ -93,49 +133,75 @@ public interface Scenario<T> {
    * @param test the test to do with the values in the targegt
    * @return a reference to this object.
    */
-  Scenario<T> each(Consumer test);
-
-  /**
-   * Defines a test for each element of the target. This requires
-   * an {@link java.lang.Iterable} target.
-   *
-   * @param type the type of the elements
-   * @param test the test to do with the values in the target
-   * @return a reference to this object.
-   */
-  default <E> Scenario<T> each(Class<E> type, Consumer<? super E> test) {
-    return each(test);
+  default Scenario<T> each(Predicate test) {
+    return each(test, "");
   }
 
   /**
-   * Defines a set of tests to do with the target.
+   * Defines a test for each element of the target. This requires an
+   * {@link java.lang.Iterable} target.
    *
-   * @param tests the tests to do with the target
+   * @param test    the test to do with the values in the targegt
+   * @param message the message to throw if the test fail
    * @return a reference to this object.
    */
-  default Scenario<T> thenIt(Consumer<? super T> tests) {
-    return when(tests);
-  }
+  Scenario<T> each(Predicate test, String message);
 
   /**
-   * Defines operations to execute as {@link #when(java.util.function.Consumer)}
-   * or {@link #thenIt(java.util.function.Consumer)}.
+   * Defines a test to do with the target.
    *
-   * @param consumer the operation to execute with the target object.
+   * @param test the test to do with the target
    * @return a reference to this object
    */
-  default Scenario<T> and(Consumer<? super T> consumer) {
-    return when(consumer);
+  default Scenario<T> thenIt(Predicate<? super T> test) {
+    return thenIt(test, "");
+  }
+
+  default Scenario<T> and(Predicate<? super T> test) {
+    return thenIt(test);
   }
 
   /**
    * Defines a test to do with the target.
    *
-   * @param tests
-   * @return
+   * @param test    the test to do with the target
+   * @param message the message to throw if the test fail
+   * @return a reference to this object
    */
-  default Scenario<T> it(Consumer<? super T> tests) {
-    return when(tests);
+  Scenario<T> thenIt(Predicate<? super T> test, String message);
+
+  default Scenario<T> and(Predicate<? super T> test, String message) {
+    return thenIt(test, message);
+  }
+
+  /**
+   * Defines a test to do with the target.
+   *
+   * @param test the test to do with the target
+   * @return a reference to this object
+   */
+  default Scenario<T> it(Predicate<? super T> test) {
+    return it(test, "");
+  }
+
+  /**
+   * Defines a test to do with the target.
+   *
+   * @param test    the test to do with the target
+   * @param message the message to throw if the test fail
+   * @return a reference to this object
+   */
+  Scenario<T> it(Predicate<? super T> test, String message);
+
+  /**
+   * Defines a test to do with a value.
+   *
+   * @param value the value to test
+   * @param test  the test to do with the value
+   * @return a reference to this object
+   */
+  default Scenario<T> the(Object value, Predicate test) {
+    return the(value, test, "");
   }
 
   /**
@@ -145,10 +211,7 @@ public interface Scenario<T> {
    * @param test  the test to do with the value
    * @return a reference to this object
    */
-  default Scenario<T> the(Object value, Consumer test) {
-    test.accept(value);
-    return this;
-  }
+  Scenario<T> the(Object value, Predicate test, String message);
 
   /**
    * Defines a test to do with a value.
@@ -157,32 +220,41 @@ public interface Scenario<T> {
    * @param test  the test to do with the value
    * @return a reference to this object
    */
-  default Scenario<T> then(Object value, Consumer test) {
-    test.accept(value);
-    return this;
+  default Scenario<T> then(Object value, Predicate test) {
+    return then(value, test, "");
   }
 
   /**
-   * Transform a predicate into a consumer for testing.
+   * Defines a test to do with a value.
    *
-   * @param predicate the predicate to test the target.
-   * @param <T>       the type of the target
-   * @return a consumer that tests the target
+   * @param value   the value to test
+   * @param test    the test to do with the value
+   * @param message the message to throw if the test fail
+   * @return a reference to this object
    */
-  public static <T> Consumer<T> should(Predicate<T> predicate) {
-    return obj -> assertTrue(predicate.test(obj));
+  Scenario<T> then(Object value, Predicate test, String message);
+
+  public static <T> Predicate<T> should(Predicate<T> predicate) {
+    return predicate;
   }
 
   /**
-   * Helper method. It returns the given consumer. Use this to write a more
-   * readable code.
-   *
-   * @param consumer the consumer to use
-   * @param <T>      the type of the target
-   * @return the given consumer.
+   * Helper method to improve code readability. It returns the given string plus
+   * the setence <code>" is violated"</code>.
+   * <p>
+   * Use it with the methods that takes a message.
    */
-  public static <T> Consumer<T> should(Consumer<T> consumer) {
-    return consumer;
+  static String because(String reason) {
+    return String.format("%s is violated", reason);
+  }
+
+  /**
+   * Helper method to improve code readability. It returns the given string.
+   * <p>
+   * Use it with the methods that takes a message.
+   */
+  static String otherwise(String description) {
+    return description;
   }
 
 }

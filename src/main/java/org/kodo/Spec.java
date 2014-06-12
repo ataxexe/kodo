@@ -29,10 +29,8 @@ package org.kodo;
 import org.hamcrest.Matcher;
 
 import java.util.Collection;
-import java.util.function.Consumer;
+import java.util.Objects;
 import java.util.function.Predicate;
-
-import static org.junit.Assert.*;
 
 /**
  * Helper class that contains usefull methods to create the assertions for the
@@ -112,23 +110,23 @@ public interface Spec {
    * Indicates that the value should
    * {@link java.lang.Object#equals(Object) equal} the given value.
    */
-  static Consumer be(Object value) {
-    return obj -> assertEquals(value, obj);
+  static Predicate be(Object value) {
+    return obj -> Objects.equals(obj, value);
   }
 
   /**
    * Indicates that the value should not
    * {@link java.lang.Object#equals(Object) equal} the given value.
    */
-  static Consumer notBe(Object value) {
-    return obj -> assertNotEquals(value, obj);
+  static Predicate notBe(Object value) {
+    return obj -> !Objects.equals(obj, value);
   }
 
   /**
    * Indicates that the value should not
    * {@link java.lang.Object#equals(Object) equal} the given value.
    */
-  static Consumer notEqual(Object value) {
+  static Predicate notEqual(Object value) {
     return notBe(value);
   }
 
@@ -136,16 +134,16 @@ public interface Spec {
    * Indicates that the value should {@link Predicate#test(Object) match} the
    * given predicate.
    */
-  static <T> Consumer<T> be(Predicate<T> predicate) {
-    return obj -> assertTrue(predicate.test(obj));
+  static Predicate be(Predicate predicate) {
+    return predicate;
   }
 
   /**
    * Indicates that the value should not {@link Predicate#test(Object) match}
    * the given predicate.
    */
-  static <T> Consumer<T> notBe(Predicate<T> predicate) {
-    return obj -> assertFalse(predicate.test(obj));
+  static Predicate notBe(Predicate predicate) {
+    return predicate.negate();
   }
 
   /**
@@ -155,8 +153,8 @@ public interface Spec {
    * @param predicate the predicate to test the target.
    * @return a consumer that uses the given predicate to test the target.
    */
-  static <T> Consumer<T> have(Predicate<T> predicate) {
-    return obj -> assertTrue(predicate.test(obj));
+  static Predicate have(Predicate predicate) {
+    return predicate;
   }
 
   /**
@@ -166,40 +164,30 @@ public interface Spec {
    * @param predicate the predicate to test the target.
    * @return a consumer that uses the given predicate to test the target.
    */
-  static <T> Consumer<T> notHave(Predicate<T> predicate) {
-    return obj -> assertTrue(predicate.negate().test(obj));
+  static Predicate notHave(Predicate predicate) {
+    return predicate.negate();
   }
 
   /**
    * Indicates that the value should match the given matcher.
    */
-  static <T> Consumer<T> match(Matcher<T> matcher) {
-    return obj -> assertThat(obj, matcher);
+  static Predicate match(Matcher matcher) {
+    return obj -> matcher.matches(obj);
   }
 
   /**
    * Indicates that the operation should throw the given exception.
    */
-  static Consumer raise(Class<? extends Throwable> exception) {
-    return (error) -> {
-      if (error != null) {
-        assertTrue(exception.isAssignableFrom(error.getClass()));
-      } else {
-        throw new AssertionError("No Exception was thrown.");
-      }
-    };
+  static Predicate raise(Class<? extends Throwable> exception) {
+    return error ->
+        error != null && exception.isAssignableFrom(error.getClass());
   }
 
   /**
    * Indicates that the operation should not throw any exceptions.
    */
-  static Consumer succeed() {
-    return (error) -> {
-      if (error != null) {
-        throw new AssertionError("Exception " +
-            error.getClass().getCanonicalName() + " was thrown.");
-      }
-    };
+  static Predicate succeed() {
+    return error -> error == null;
   }
 
 }

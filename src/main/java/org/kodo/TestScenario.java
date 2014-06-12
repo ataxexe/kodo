@@ -28,6 +28,7 @@ package org.kodo;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * A class to create scenarios for testing.
@@ -44,31 +45,42 @@ public class TestScenario<T> implements Scenario<T> {
 
   @Override
   public Scenario<T> when(Consumer<? super T> operation) {
-    operation.accept(target);
-    return this;
+    return null;
   }
 
   @Override
-  public Scenario<T> then(Consumer operation, Consumer test) {
-    try {
-      operation.accept(target);
-      test.accept(null);
-    } catch (Throwable t) {
-      test.accept(t);
-    }
-    return this;
+  public Scenario<T> then(Consumer<? super T> operation, Predicate<?> test, String message) {
+    return null;
   }
 
   @Override
-  public Scenario<T> the(Function function, Consumer test) {
-    Object result = function.apply(target);
-    test.accept(result);
-    return this;
+  public Scenario<T> the(Function<? super T, ?> function, Predicate<?> test, String message) {
+    return null;
   }
 
-  public Scenario<T> each(Consumer test) {
-    ((Iterable) target).forEach(test);
-    return this;
+  @Override
+  public Scenario<T> each(Predicate test, String message) {
+    return null;
+  }
+
+  @Override
+  public Scenario<T> thenIt(Predicate<? super T> test, String message) {
+    return null;
+  }
+
+  @Override
+  public Scenario<T> it(Predicate<? super T> test, String message) {
+    return null;
+  }
+
+  @Override
+  public Scenario<T> the(Object value, Predicate test, String message) {
+    return null;
+  }
+
+  @Override
+  public Scenario<T> then(Object value, Predicate test, String message) {
+    return null;
   }
 
   /**
