@@ -203,68 +203,16 @@ public class ScenarioTests {
 
   @Test
   public void testMessages() {
-    try {
-      scenario.and(operation, failTest, message);
-      throw new Error();
-    } catch (AssertionError error) {
-      assertEquals(message, error.getMessage());
-    }
-
-    try {
-      scenario.and(failTest, message);
-      throw new Error();
-    } catch (AssertionError error) {
-      assertEquals(message, error.getMessage());
-    }
-
-    try {
-      TestScenario.given(Arrays.asList(1, 2, 3)).each(failTest, message);
-      throw new Error();
-    } catch (AssertionError error) {
-      assertEquals(message, error.getMessage());
-    }
-
-    try {
-      scenario.it(failTest, message);
-      throw new Error();
-    } catch (AssertionError error) {
-      assertEquals(message, error.getMessage());
-    }
-
-    try {
-      scenario.the(function, failTest, message);
-      throw new Error();
-    } catch (AssertionError error) {
-      assertEquals(message, error.getMessage());
-    }
-
-    try {
-      scenario.the(value, failTest, message);
-      throw new Error();
-    } catch (AssertionError error) {
-      assertEquals(message, error.getMessage());
-    }
-
-    try {
-      scenario.then(operation, failTest, message);
-      throw new Error();
-    } catch (AssertionError error) {
-      assertEquals(message, error.getMessage());
-    }
-
-    try {
-      scenario.then(value, failTest, message);
-      throw new Error();
-    } catch (AssertionError error) {
-      assertEquals(message, error.getMessage());
-    }
-
-    try {
-      scenario.thenIt(failTest, message);
-      throw new Error();
-    } catch (AssertionError error) {
-      assertEquals(message, error.getMessage());
-    }
+    assertFail(() -> scenario.and(operation, failTest, message));
+    assertFail(() -> scenario.and(failTest, message));
+    assertFail(() -> TestScenario
+        .given(Arrays.asList(1, 2, 3)).each(failTest, message));
+    assertFail(() -> scenario.it(failTest, message));
+    assertFail(() -> scenario.the(function, failTest, message));
+    assertFail(() -> scenario.the(value, failTest, message));
+    assertFail(() -> scenario.then(operation, failTest, message));
+    assertFail(() -> scenario.then(value, failTest, message));
+    assertFail(() -> scenario.thenIt(failTest, message));
   }
 
   @Test
@@ -272,6 +220,15 @@ public class ScenarioTests {
     assertSame(test, should(test));
     assertEquals("some reason", because("some reason"));
     assertEquals("description", otherwise("description"));
+  }
+
+  private void assertFail(Runnable command) {
+    try {
+      command.run();
+      throw new Error();
+    } catch (AssertionError error) {
+      assertEquals(message, error.getMessage());
+    }
   }
 
 }
