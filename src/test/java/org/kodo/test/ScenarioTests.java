@@ -26,79 +26,175 @@
 
 package org.kodo.test;
 
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.junit.Before;
 import org.junit.Test;
-import org.kodo.Spec;
+import org.junit.runner.RunWith;
+import org.kodo.Scenario;
 import org.kodo.TestScenario;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static org.kodo.Scenario.should;
-import static org.kodo.Spec.*;
+import static org.junit.Assert.assertSame;
+import static org.mockito.Matchers.intThat;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Marcelo Guimarães
  */
+@RunWith(MockitoJUnitRunner.class)
 public class ScenarioTests {
 
-  private Consumer<String> concat(String value) {
-    return s -> s.concat(value);
-  }
+  private Object target = new Object();
+  private Scenario<Object> scenario = TestScenario.given(target);
+  private String message = "a message";
+  private Object value = new Object();
+  @Mock
+  private Consumer operation;
+  @Mock
+  private Consumer failOperation;
+  private RuntimeException exception = new RuntimeException();
+  @Mock
+  private Predicate test;
+  @Mock
+  private Predicate failTest;
+  @Mock
+  private Function function;
 
-  private Function<String, Integer> length() {
-    return s -> s.length();
-  }
-
-  private Consumer<String> charAt(int position) {
-    return s -> s.charAt(position);
-  }
-
-  private Function<Collection, Integer> size() {
-    return s -> s.size();
-  }
-
-  private Predicate<String> characters(int chars) {
-    return string -> string.length() == chars;
-  }
-
-  private Predicate<Object> beAString() {
-    return obj -> obj.getClass().equals(String.class);
-  }
-
-  @Test
-  public void testObjectScenario() {
-    TestScenario.given("kodo is a test framework")
-        .the(length(), Spec.be(24))
-        .it(should(equal("kodo is a test framework")))
-        .when(concat("some string that should not affect the original"))
-        .the(length(), Spec.be(24))
-        .the("other string", should(notBe(NULL)))
-        .then("other string", should(notBe(NULL)))
-        .thenIt(should(equal("kodo is a test framework")))
-        .and(should(notBe(NULL)))
-        .and(should(have(characters(24))))
-        .and(should(notHave(characters(25))))
-        .and(should(beAString()))
-        .then(charAt(0), Spec.succeed())
-        .and(charAt(25), Spec.raise(StringIndexOutOfBoundsException.class));
+  @Before
+  public void initialize() {
+    when(test.test(anyObject())).thenReturn(true);
+    when(failTest.test(anyObject())).thenReturn(false);
+    when(function.apply(target)).thenReturn(value);
+    doThrow(exception).when(failOperation).accept(anyObject());
   }
 
   @Test
-  public void testNullScenario() {
-    TestScenario.given(null)
-        .it(should(be(NULL)));
+  public void testReturns() {
+    assertSame(scenario, scenario.and(operation, test));
+    assertSame(scenario, scenario.and(operation, test, message));
+
+    assertSame(scenario, scenario.and(test));
+    assertSame(scenario, scenario.and(test, message));
+
+    assertSame(scenario, scenario.each(test));
+    assertSame(scenario, scenario.each(test, message));
+
+    assertSame(scenario, scenario.it(test));
+    assertSame(scenario, scenario.it(test, message));
+
+    assertSame(scenario, scenario.the(function, test));
+    assertSame(scenario, scenario.the(function, test, message));
+
+    assertSame(scenario, scenario.the(value, test));
+    assertSame(scenario, scenario.the(value, test, message));
+
+    assertSame(scenario, scenario.then(operation, test));
+    assertSame(scenario, scenario.then(operation, test, message));
+
+    assertSame(scenario, scenario.then(value, test));
+    assertSame(scenario, scenario.then(value, test, message));
+
+    assertSame(scenario, scenario.thenIt(test));
+    assertSame(scenario, scenario.thenIt(test, message));
+
+    assertSame(scenario, scenario.when(operation));
   }
 
   @Test
-  public void testCollectionScenario() {
-    TestScenario.given(Arrays.asList("kobo is a test framework".split("\\s")))
-        .the(size(), Spec.be(5))
-        .the(size(), Spec.be(greatherThan(4)))
-        .each(String.class, should(notBe(NULL)))
-        .each(should(notBe(NULL)));
+  public void testWhen() {
+    scenario.when(operation);
+    verify(operation).accept(target);
+  }
+
+  @Test
+  public void testAndWithConsumerAndPredicate() {
+    scenario.and(operation, test);
+
+    verify(operation).accept(target);
+    verify(test).test(null);
+  }
+
+  @Test
+  public void testAndWithConsumerAndPredicateForException() {
+    scenario.and(failOperation, test);
+
+    verify(operation).accept(target);
+    verify(test).test(exception);
+  }
+
+  @Test
+  public void testAndWithPredicate() {
+    scenario.and(test);
+
+    verify(test).test(target);
+  }
+
+  @Test
+  public void testEach() {
+    List list = Arrays.asList(1, 2, 3);
+    TestScenario.given(list).each(test);
+    Matcher<Integer> isBetween1and3 = new BaseMatcher<Integer>() {
+      @Override
+      public boolean matches(Object o) {
+        Integer number = (Integer) o;
+        return number >= 1 && number <= 3;
+      }
+
+      @Override
+      public void describeTo(Description description) {
+        description.appendText("<number between 1 and 3>");
+      }
+    };
+    verify(test, times(3)).test(intThat(isBetween1and3));
+  }
+
+  @Test
+  public void testIt() {
+    scenario.it(test);
+    verify(test).test(target);
+  }
+
+  @Test
+  public void testTheWithFunction() {
+    scenario.the(function, test);
+    verify(function).apply(target);
+    verify(test).test(value);
+  }
+
+  @Test
+  public void testTheWithValue() {
+    scenario.the(value, test);
+    verify(test).test(value);
+  }
+
+  @Test
+  public void testThenWithConsumer() {
+    scenario.then(operation, test);
+    verify(operation).accept(null);
+
+    scenario.then(failOperation, test);
+    verify(test).test(exception);
+  }
+
+  @Test
+  public void testThenWithValue() {
+    scenario.then(value, test);
+    verify(operation).accept(value);
+  }
+
+  @Test
+  public void testThenIt() {
+    scenario.thenIt(test);
+    verify(test).test(target);
   }
 
 }
