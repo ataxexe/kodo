@@ -43,44 +43,63 @@ public class TestScenario<T> implements Scenario<T> {
     this.target = target;
   }
 
+  private void test(Predicate predicate, Object target, String message) {
+    if (!predicate.test(target)) {
+      throw new AssertionError(message);
+    }
+  }
+
   @Override
   public Scenario<T> when(Consumer<? super T> operation) {
-    return null;
+    operation.accept(target);
+    return this;
   }
 
   @Override
-  public Scenario<T> then(Consumer<? super T> operation, Predicate<?> test, String message) {
-    return null;
+  public Scenario<T> then(Consumer operation, Predicate test, String message) {
+    try {
+      operation.accept(target);
+      test(test, null, message);
+    } catch (Throwable t) {
+      test(test, t, message);
+    }
+    return this;
   }
 
   @Override
-  public Scenario<T> the(Function<? super T, ?> function, Predicate<?> test, String message) {
-    return null;
+  public Scenario<T> the(Function function, Predicate test, String message) {
+    test(test, function.apply(target), message);
+    return this;
   }
 
   @Override
   public Scenario<T> each(Predicate test, String message) {
-    return null;
+    ((Iterable) target).forEach(obj -> test(test, obj, message));
+    return this;
   }
 
   @Override
   public Scenario<T> thenIt(Predicate<? super T> test, String message) {
-    return null;
+    test(test, target, message);
+    return this;
   }
 
   @Override
   public Scenario<T> it(Predicate<? super T> test, String message) {
-    return null;
+    test(test, target, message);
+    return this;
   }
 
   @Override
   public Scenario<T> the(Object value, Predicate test, String message) {
-    return null;
+    test(test, value, message);
+    return this;
   }
 
   @Override
   public Scenario<T> then(Object value, Predicate test, String message) {
-    return null;
+    test(test, value, message);
+    return this;
   }
 
   /**
