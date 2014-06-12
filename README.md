@@ -26,7 +26,7 @@ With the `Scenario` interface returned, you can use a set of methods to describe
 ~~~java
 TestScenario.given(someObject)
   .when(obj -> obj.foo())
-  .thenIt(should(be(obj -> obj.isValid()));
+  .thenIt(should(be(obj -> obj.isValid())));
 ~~~
 
 This can be refactored to a more elegant code:
@@ -34,10 +34,18 @@ This can be refactored to a more elegant code:
 ~~~java
 TestScenario.given(someObject)
   .when(itExecutes()) // an extracted method
-  .thenIt(should(be(valid()); // an extracted method
+  .thenIt(should(be(valid()))); // an extracted method
 ~~~
 
-Here is some real example:
+And messages may be supplied:
+
+~~~java
+TestScenario.given(someObject)
+  .when(itExecutes())
+  .thenIt(should(be(valid())), otherwise("the validation fails"));
+~~~
+
+Here is more examples:
 
 ~~~java
 TestScenario.given(element("name").in(annotation()))
@@ -45,7 +53,9 @@ TestScenario.given(element("name").in(annotation()))
   .the(Element::name, should(be("name"))
   .it(should(notBe(NULL))
   .and(should(notBe(writable())))
-  .then(attempToChangeValue(), should(raise(HandlingException.class)));
+  .then(attempToChangeValue(),
+      should(raise(HandlingException.class)),
+      because("annotation values cannot be modified"));
 
 // using a collection
 TestScenario.given(elements().in(annotation()))
@@ -55,7 +65,7 @@ TestScenario.given(elements().in(annotation()))
   .each(should(have(aValue())));    // /
 ~~~
 
-You can always use the helper class `Should`. It contains a set of useful methods to help you write your tests.
+You can always use the helper class `Spec`. It contains a set of useful methods to help you writing your tests.
 
 # How To Contribute
 
