@@ -38,7 +38,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -56,6 +55,7 @@ public class ScenarioTests {
 
   private Object target = new Object();
   private Scenario<Object> scenario = TestScenario.given(target);
+  private Scenario<Object> listScenario = TestScenario.given(Arrays.asList(1, 2, 3));
   private String message = "a message";
   private Object value = new Object();
   @Mock
@@ -69,6 +69,19 @@ public class ScenarioTests {
   private Predicate failTest;
   @Mock
   private Function function;
+
+  private Matcher<Integer> isBetween1and3 = new BaseMatcher<Integer>() {
+    @Override
+    public boolean matches(Object o) {
+      Integer number = (Integer) o;
+      return number >= 1 && number <= 3;
+    }
+
+    @Override
+    public void describeTo(Description description) {
+      description.appendText("<number between 1 and 3>");
+    }
+  };
 
   @Before
   public void initialize() {
@@ -86,8 +99,8 @@ public class ScenarioTests {
     assertSame(scenario, scenario.and(test));
     assertSame(scenario, scenario.and(test, message));
 
-    assertSame(scenario, scenario.each(test));
-    assertSame(scenario, scenario.each(test, message));
+    assertSame(listScenario, listScenario.each(test));
+    assertSame(listScenario, listScenario.each(test, message));
 
     assertSame(scenario, scenario.it(test));
     assertSame(scenario, scenario.it(test, message));
@@ -128,7 +141,7 @@ public class ScenarioTests {
   public void testAndWithConsumerAndPredicateForException() {
     scenario.and(failOperation, test);
 
-    verify(operation).accept(target);
+    verify(failOperation).accept(target);
     verify(test).test(exception);
   }
 
@@ -141,20 +154,7 @@ public class ScenarioTests {
 
   @Test
   public void testEach() {
-    List list = Arrays.asList(1, 2, 3);
-    TestScenario.given(list).each(test);
-    Matcher<Integer> isBetween1and3 = new BaseMatcher<Integer>() {
-      @Override
-      public boolean matches(Object o) {
-        Integer number = (Integer) o;
-        return number >= 1 && number <= 3;
-      }
-
-      @Override
-      public void describeTo(Description description) {
-        description.appendText("<number between 1 and 3>");
-      }
-    };
+    listScenario.each(test);
     verify(test, times(3)).test(intThat(isBetween1and3));
   }
 
@@ -180,7 +180,7 @@ public class ScenarioTests {
   @Test
   public void testThenWithConsumer() {
     scenario.then(operation, test);
-    verify(operation).accept(null);
+    verify(operation).accept(target);
 
     scenario.then(failOperation, test);
     verify(test).test(exception);
@@ -189,7 +189,7 @@ public class ScenarioTests {
   @Test
   public void testThenWithValue() {
     scenario.then(value, test);
-    verify(operation).accept(value);
+    verify(test).test(value);
   }
 
   @Test
