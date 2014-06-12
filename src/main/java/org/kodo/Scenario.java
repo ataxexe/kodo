@@ -234,18 +234,24 @@ public interface Scenario<T> {
    */
   Scenario<T> then(Object value, Predicate test, String message);
 
+  /**
+   * Returns the given predicate. This method should be used to make the
+   * code more readable.
+   *
+   * @param predicate the predicate
+   * @return the given predicate.
+   */
   public static <T> Predicate<T> should(Predicate<T> predicate) {
     return predicate;
   }
 
   /**
-   * Helper method to improve code readability. It returns the given string plus
-   * the setence <code>" is violated"</code>.
+   * Helper method to improve code readability. It returns the given string.
    * <p>
    * Use it with the methods that takes a message.
    */
   static String because(String reason) {
-    return String.format("%s is violated", reason);
+    return reason;
   }
 
   /**

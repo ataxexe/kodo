@@ -270,7 +270,7 @@ public class ScenarioTests {
   @Test
   public void testHelpers() {
     assertSame(test, should(test));
-    assertEquals("some reason is violated", because("some reason"));
+    assertEquals("some reason", because("some reason"));
     assertEquals("description", otherwise("description"));
   }
 
