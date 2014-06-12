@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.2
+## v0.2 (12-06-2014)
 
 - DSL refactoring
 - `Should` renamed to `Spec` and a new method `should` was added to it to
