@@ -119,6 +119,36 @@ public class SpecTests {
   }
 
   @Test
+  public void testHaveWithPredicate() {
+    test(have(value -> value.toString().length() > 5), "123456");
+    test(have(value -> value.toString().length() > 5), 123456);
+    test(have(value -> true), null);
+    test(have(value -> true), "");
+    test(have(value -> true), 1);
+
+    testFail(have(value -> value.toString().length() > 5), "12345");
+    testFail(have(value -> value.toString().length() > 5), 12345);
+    testFail(have(value -> false), null);
+    testFail(have(value -> false), "");
+    testFail(have(value -> false), 1);
+  }
+
+  @Test
+  public void testNotHaveWithPredicate() {
+    testFail(notHave(value -> value.toString().length() > 5), "123456");
+    testFail(notHave(value -> value.toString().length() > 5), 123456);
+    testFail(notHave(value -> true), null);
+    testFail(notHave(value -> true), "");
+    testFail(notHave(value -> true), 1);
+
+    test(notHave(value -> value.toString().length() > 5), "12345");
+    test(notHave(value -> value.toString().length() > 5), 12345);
+    test(notHave(value -> false), null);
+    test(notHave(value -> false), "");
+    test(notHave(value -> false), 1);
+  }
+
+  @Test
   public void testNull() {
     test(NULL, null);
     testFail(NULL, "");
