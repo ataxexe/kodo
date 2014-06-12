@@ -31,7 +31,6 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -44,20 +43,6 @@ import static org.kodo.Spec.*;
  * @author Marcelo Guimarães
  */
 public class SpecTests {
-
-  private void test(Consumer consumer, Object value) {
-    consumer.accept(value);
-  }
-
-  private void testFail(Consumer consumer, Object value) {
-    boolean error = false;
-    try {
-      test(consumer, value);
-    } catch (AssertionError e) {
-      error = true;
-    }
-    assertTrue(error);
-  }
 
   private void test(Predicate predicate, Object value) {
     assertTrue(predicate.test(value));
