@@ -43,6 +43,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Matchers.intThat;
 import static org.mockito.Mockito.*;
@@ -195,6 +196,72 @@ public class ScenarioTests {
   public void testThenIt() {
     scenario.thenIt(test);
     verify(test).test(target);
+  }
+
+  @Test
+  public void testMessages() {
+    try {
+      scenario.and(operation, failTest, message);
+      throw new Error();
+    } catch (AssertionError error) {
+      assertEquals(message, error.getMessage());
+    }
+
+    try {
+      scenario.and(failTest, message);
+      throw new Error();
+    } catch (AssertionError error) {
+      assertEquals(message, error.getMessage());
+    }
+
+    try {
+      TestScenario.given(Arrays.asList(1, 2, 3)).each(failTest, message);
+      throw new Error();
+    } catch (AssertionError error) {
+      assertEquals(message, error.getMessage());
+    }
+
+    try {
+      scenario.it(failTest, message);
+      throw new Error();
+    } catch (AssertionError error) {
+      assertEquals(message, error.getMessage());
+    }
+
+    try {
+      scenario.the(function, failTest, message);
+      throw new Error();
+    } catch (AssertionError error) {
+      assertEquals(message, error.getMessage());
+    }
+
+    try {
+      scenario.the(value, failTest, message);
+      throw new Error();
+    } catch (AssertionError error) {
+      assertEquals(message, error.getMessage());
+    }
+
+    try {
+      scenario.then(operation, failTest, message);
+      throw new Error();
+    } catch (AssertionError error) {
+      assertEquals(message, error.getMessage());
+    }
+
+    try {
+      scenario.then(value, failTest, message);
+      throw new Error();
+    } catch (AssertionError error) {
+      assertEquals(message, error.getMessage());
+    }
+
+    try {
+      scenario.thenIt(failTest, message);
+      throw new Error();
+    } catch (AssertionError error) {
+      assertEquals(message, error.getMessage());
+    }
   }
 
 }
