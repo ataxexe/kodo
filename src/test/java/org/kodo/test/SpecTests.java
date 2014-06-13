@@ -43,6 +43,11 @@ import static org.kodo.Spec.*;
  */
 public class SpecTests {
 
+  private Predicate stringWithMoreThan5Chars =
+      value -> value.toString().length() > 5;
+  private Predicate alwaysTrue = value -> true;
+  private Predicate alwaysFalse = value -> false;
+
   private void test(Predicate predicate, Object value) {
     assertTrue(predicate.test(value));
   }
@@ -89,62 +94,62 @@ public class SpecTests {
 
   @Test
   public void testBeWithPredicate() {
-    test(be(value -> value.toString().length() > 5), "123456");
-    test(be(value -> value.toString().length() > 5), 123456);
-    test(be(value -> true), null);
-    test(be(value -> true), "");
-    test(be(value -> true), 1);
+    test(be(stringWithMoreThan5Chars), "123456");
+    test(be(stringWithMoreThan5Chars), 123456);
+    test(be(alwaysTrue), null);
+    test(be(alwaysTrue), "");
+    test(be(alwaysTrue), 1);
 
-    testFail(be(value -> value.toString().length() > 5), "12345");
-    testFail(be(value -> value.toString().length() > 5), 12345);
-    testFail(be(value -> false), null);
-    testFail(be(value -> false), "");
-    testFail(be(value -> false), 1);
+    testFail(be(stringWithMoreThan5Chars), "12345");
+    testFail(be(stringWithMoreThan5Chars), 12345);
+    testFail(be(alwaysFalse), null);
+    testFail(be(alwaysFalse), "");
+    testFail(be(alwaysFalse), 1);
   }
 
   @Test
   public void testNotBeWithPredicate() {
-    testFail(notBe(value -> value.toString().length() > 5), "123456");
-    testFail(notBe(value -> value.toString().length() > 5), 123456);
-    testFail(notBe(value -> true), null);
-    testFail(notBe(value -> true), "");
-    testFail(notBe(value -> true), 1);
+    testFail(notBe(stringWithMoreThan5Chars), "123456");
+    testFail(notBe(stringWithMoreThan5Chars), 123456);
+    testFail(notBe(alwaysTrue), null);
+    testFail(notBe(alwaysTrue), "");
+    testFail(notBe(alwaysTrue), 1);
 
     test(notBe(value -> value.toString().length() > 5), "12345");
     test(notBe(value -> value.toString().length() > 5), 12345);
-    test(notBe(value -> false), null);
-    test(notBe(value -> false), "");
-    test(notBe(value -> false), 1);
+    test(notBe(alwaysFalse), null);
+    test(notBe(alwaysFalse), "");
+    test(notBe(alwaysFalse), 1);
   }
 
   @Test
   public void testHaveWithPredicate() {
     test(have(value -> value.toString().length() > 5), "123456");
     test(have(value -> value.toString().length() > 5), 123456);
-    test(have(value -> true), null);
-    test(have(value -> true), "");
-    test(have(value -> true), 1);
+    test(have(alwaysTrue), null);
+    test(have(alwaysTrue), "");
+    test(have(alwaysTrue), 1);
 
     testFail(have(value -> value.toString().length() > 5), "12345");
     testFail(have(value -> value.toString().length() > 5), 12345);
-    testFail(have(value -> false), null);
-    testFail(have(value -> false), "");
-    testFail(have(value -> false), 1);
+    testFail(have(alwaysFalse), null);
+    testFail(have(alwaysFalse), "");
+    testFail(have(alwaysFalse), 1);
   }
 
   @Test
   public void testNotHaveWithPredicate() {
     testFail(notHave(value -> value.toString().length() > 5), "123456");
     testFail(notHave(value -> value.toString().length() > 5), 123456);
-    testFail(notHave(value -> true), null);
-    testFail(notHave(value -> true), "");
-    testFail(notHave(value -> true), 1);
+    testFail(notHave(alwaysTrue), null);
+    testFail(notHave(alwaysTrue), "");
+    testFail(notHave(alwaysTrue), 1);
 
     test(notHave(value -> value.toString().length() > 5), "12345");
     test(notHave(value -> value.toString().length() > 5), 12345);
-    test(notHave(value -> false), null);
-    test(notHave(value -> false), "");
-    test(notHave(value -> false), 1);
+    test(notHave(alwaysFalse), null);
+    test(notHave(alwaysFalse), "");
+    test(notHave(alwaysFalse), 1);
   }
 
   @Test
