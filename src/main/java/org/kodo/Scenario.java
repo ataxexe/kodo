@@ -26,13 +26,13 @@
 
 package org.kodo;
 
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import org.kodo.function.Consumer;
+import org.kodo.function.Function;
+import org.kodo.function.Predicate;
 
 /**
- * Interface that defines a common set of methods to define test scenarios for
- * a target object.
+ * Interface that defines a common set of methods to define test scenarios for a
+ * target object.
  *
  * @author Marcelo Guimarães
  * @see org.kodo.TestScenario#given(Object)
@@ -57,9 +57,7 @@ public interface Scenario<T> {
    * @return a reference to this object.
    * @see Spec#raise(Class)
    */
-  default Scenario<T> then(Consumer<? super T> operation, Predicate<?> test) {
-    return then(operation, test, "");
-  }
+  Scenario<T> then(Consumer<? super T> operation, Predicate<?> test);
 
   /**
    * Defines an operation that may throw an exception.
@@ -74,8 +72,8 @@ public interface Scenario<T> {
   Scenario<T> then(Consumer<? super T> operation, Predicate<?> test, String message);
 
   /**
-   * Defines operations to execute as
-   * {@link #then(java.util.function.Consumer, java.util.function.Predicate)}.
+   * Defines operations to execute as {@link #then(org.kodo.function.Consumer,
+   * org.kodo.function.Predicate)}.
    *
    * @param consumer the operation to execute with the target object.
    * @param test     the test to do with the raised exception (if no exception
@@ -83,13 +81,11 @@ public interface Scenario<T> {
    *                 consumer
    * @return a reference to this object
    */
-  default Scenario<T> and(Consumer<? super T> consumer, Predicate test) {
-    return then(consumer, test);
-  }
+  Scenario<T> and(Consumer<? super T> consumer, Predicate test);
 
   /**
-   * Defines operations to execute as
-   * {@link #then(java.util.function.Consumer, java.util.function.Predicate)}.
+   * Defines operations to execute as {@link #then(org.kodo.function.Consumer,
+   * org.kodo.function.Predicate)}.
    *
    * @param consumer the operation to execute with the target object.
    * @param test     the test to do with the raised exception (if no exception
@@ -98,9 +94,7 @@ public interface Scenario<T> {
    * @param message  the message to throw if the test fail
    * @return a reference to this object
    */
-  default Scenario<T> and(Consumer<? super T> consumer, Predicate test, String message) {
-    return then(consumer, test, message);
-  }
+  Scenario<T> and(Consumer<? super T> consumer, Predicate test, String message);
 
   /**
    * Defines a test for some target operation that returns a value.
@@ -111,9 +105,7 @@ public interface Scenario<T> {
    * @return a reference to this object
    * @see Spec
    */
-  default Scenario<T> the(Function<? super T, ?> function, Predicate<?> test) {
-    return the(function, test, "");
-  }
+  Scenario<T> the(Function<? super T, ?> function, Predicate<?> test);
 
   /**
    * Defines a test for some target operation that returns a value.
@@ -127,19 +119,17 @@ public interface Scenario<T> {
   Scenario<T> the(Function<? super T, ?> function, Predicate<?> test, String message);
 
   /**
-   * Defines a test for each element of the target. This requires an
-   * {@link java.lang.Iterable} target.
+   * Defines a test for each element of the target. This requires an {@link
+   * java.lang.Iterable} target.
    *
    * @param test the test to do with the values in the targegt
    * @return a reference to this object.
    */
-  default Scenario<T> each(Predicate test) {
-    return each(test, "");
-  }
+  Scenario<T> each(Predicate test);
 
   /**
-   * Defines a test for each element of the target. This requires an
-   * {@link java.lang.Iterable} target.
+   * Defines a test for each element of the target. This requires an {@link
+   * java.lang.Iterable} target.
    *
    * @param test    the test to do with the values in the targegt
    * @param message the message to throw if the test fail
@@ -153,20 +143,16 @@ public interface Scenario<T> {
    * @param test the test to do with the target
    * @return a reference to this object
    */
-  default Scenario<T> thenIt(Predicate<? super T> test) {
-    return thenIt(test, "");
-  }
+  Scenario<T> thenIt(Predicate<? super T> test);
 
   /**
-   * Adds more tests to do with the target as the
-   * {@link #thenIt(java.util.function.Predicate)} method.
+   * Adds more tests to do with the target as the {@link
+   * #thenIt(org.kodo.function.Predicate)} method.
    *
    * @param test the test to do with the target
    * @return a reference to this object
    */
-  default Scenario<T> and(Predicate<? super T> test) {
-    return thenIt(test);
-  }
+  Scenario<T> and(Predicate<? super T> test);
 
   /**
    * Defines a test to do with the target.
@@ -178,16 +164,14 @@ public interface Scenario<T> {
   Scenario<T> thenIt(Predicate<? super T> test, String message);
 
   /**
-   * Adds more tests to do with the target as the
-   * {@link #thenIt(java.util.function.Predicate, String)} method.
+   * Adds more tests to do with the target as the {@link
+   * #thenIt(org.kodo.function.Predicate, String)} method.
    *
    * @param test    the test to do with the target
    * @param message the message to throw if the test fail
    * @return a reference to this object
    */
-  default Scenario<T> and(Predicate<? super T> test, String message) {
-    return thenIt(test, message);
-  }
+  Scenario<T> and(Predicate<? super T> test, String message);
 
   /**
    * Defines a test to do with the target.
@@ -195,9 +179,7 @@ public interface Scenario<T> {
    * @param test the test to do with the target
    * @return a reference to this object
    */
-  default Scenario<T> it(Predicate<? super T> test) {
-    return it(test, "");
-  }
+  Scenario<T> it(Predicate<? super T> test);
 
   /**
    * Defines a test to do with the target.
@@ -215,9 +197,7 @@ public interface Scenario<T> {
    * @param test  the test to do with the value
    * @return a reference to this object
    */
-  default Scenario<T> the(Object value, Predicate test) {
-    return the(value, test, "");
-  }
+  Scenario<T> the(Object value, Predicate test);
 
   /**
    * Defines a test to do with a value.
@@ -235,9 +215,7 @@ public interface Scenario<T> {
    * @param test  the test to do with the value
    * @return a reference to this object
    */
-  default Scenario<T> then(Object value, Predicate test) {
-    return then(value, test, "");
-  }
+  Scenario<T> then(Object value, Predicate test);
 
   /**
    * Defines a test to do with a value.

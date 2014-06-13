@@ -28,7 +28,8 @@ package org.kodo.test;
 
 import org.junit.Test;
 
-import java.util.function.Predicate;
+import org.kodo.function.BasePredicate;
+import org.kodo.function.Predicate;
 
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
@@ -40,10 +41,21 @@ import static org.kodo.Spec.*;
  */
 public class SpecTests {
 
-  private Predicate stringWithMoreThan5Chars =
-      value -> value.toString().length() > 5;
-  private Predicate alwaysTrue = value -> true;
-  private Predicate alwaysFalse = value -> false;
+  private Predicate stringWithMoreThan5Chars = new BasePredicate() {
+    public boolean test(Object value) {
+      return value.toString().length() > 5;
+    }
+  };
+  private Predicate alwaysTrue = new BasePredicate() {
+    public boolean test(Object target) {
+      return true;
+    }
+  };
+  private Predicate alwaysFalse = new BasePredicate() {
+    public boolean test(Object target) {
+      return false;
+    }
+  };
 
   public static void test(Predicate predicate, Object value) {
     assertTrue(predicate.test(value));
@@ -112,8 +124,8 @@ public class SpecTests {
     testFail(notBe(alwaysTrue), "");
     testFail(notBe(alwaysTrue), 1);
 
-    test(notBe(value -> value.toString().length() > 5), "12345");
-    test(notBe(value -> value.toString().length() > 5), 12345);
+    test(notBe(stringWithMoreThan5Chars), "12345");
+    test(notBe(stringWithMoreThan5Chars), 12345);
     test(notBe(alwaysFalse), null);
     test(notBe(alwaysFalse), "");
     test(notBe(alwaysFalse), 1);
@@ -121,14 +133,14 @@ public class SpecTests {
 
   @Test
   public void testHaveWithPredicate() {
-    test(have(value -> value.toString().length() > 5), "123456");
-    test(have(value -> value.toString().length() > 5), 123456);
+    test(have(stringWithMoreThan5Chars), "123456");
+    test(have(stringWithMoreThan5Chars), 123456);
     test(have(alwaysTrue), null);
     test(have(alwaysTrue), "");
     test(have(alwaysTrue), 1);
 
-    testFail(have(value -> value.toString().length() > 5), "12345");
-    testFail(have(value -> value.toString().length() > 5), 12345);
+    testFail(have(stringWithMoreThan5Chars), "12345");
+    testFail(have(stringWithMoreThan5Chars), 12345);
     testFail(have(alwaysFalse), null);
     testFail(have(alwaysFalse), "");
     testFail(have(alwaysFalse), 1);
@@ -136,14 +148,14 @@ public class SpecTests {
 
   @Test
   public void testNotHaveWithPredicate() {
-    testFail(notHave(value -> value.toString().length() > 5), "123456");
-    testFail(notHave(value -> value.toString().length() > 5), 123456);
+    testFail(notHave(stringWithMoreThan5Chars), "123456");
+    testFail(notHave(stringWithMoreThan5Chars), 123456);
     testFail(notHave(alwaysTrue), null);
     testFail(notHave(alwaysTrue), "");
     testFail(notHave(alwaysTrue), 1);
 
-    test(notHave(value -> value.toString().length() > 5), "12345");
-    test(notHave(value -> value.toString().length() > 5), 12345);
+    test(notHave(stringWithMoreThan5Chars), "12345");
+    test(notHave(stringWithMoreThan5Chars), 12345);
     test(notHave(alwaysFalse), null);
     test(notHave(alwaysFalse), "");
     test(notHave(alwaysFalse), 1);
@@ -230,8 +242,7 @@ public class SpecTests {
 
   @Test
   public void testHelpers() {
-    Predicate predicate = (o) -> true;
-    assertSame(predicate, should(predicate));
+    assertSame(alwaysTrue, should(alwaysTrue));
     assertEquals("some reason", because("some reason"));
     assertEquals("description", otherwise("description"));
   }

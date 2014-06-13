@@ -34,13 +34,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kodo.Scenario;
 import org.kodo.TestScenario;
+import org.kodo.function.Consumer;
+import org.kodo.function.Function;
+import org.kodo.function.Predicate;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Arrays;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
@@ -54,8 +54,8 @@ import static org.mockito.Mockito.*;
 public class ScenarioTests {
 
   private Object target = new Object();
-  private Scenario<Object> scenario = TestScenario.given(target);
-  private Scenario<Object> listScenario = TestScenario.given(Arrays.asList(1, 2, 3));
+  private Scenario scenario = TestScenario.given(target);
+  private Scenario listScenario = TestScenario.given(Arrays.asList(1, 2, 3));
   private String message = "a message";
   private Object value = new Object();
   @Mock
@@ -71,13 +71,11 @@ public class ScenarioTests {
   private Function function;
 
   private Matcher<Integer> isBetween1and3 = new BaseMatcher<Integer>() {
-    @Override
     public boolean matches(Object o) {
       Integer number = (Integer) o;
       return number >= 1 && number <= 3;
     }
 
-    @Override
     public void describeTo(Description description) {
       description.appendText("<number between 1 and 3>");
     }
@@ -200,15 +198,51 @@ public class ScenarioTests {
 
   @Test
   public void testMessages() {
-    assertMessage(() -> scenario.and(operation, failTest, message));
-    assertMessage(() -> scenario.and(failTest, message));
-    assertMessage(() -> listScenario.each(failTest, message));
-    assertMessage(() -> scenario.it(failTest, message));
-    assertMessage(() -> scenario.the(function, failTest, message));
-    assertMessage(() -> scenario.the(value, failTest, message));
-    assertMessage(() -> scenario.then(operation, failTest, message));
-    assertMessage(() -> scenario.then(value, failTest, message));
-    assertMessage(() -> scenario.thenIt(failTest, message));
+    assertMessage(new Runnable() {
+      public void run() {
+        scenario.and(operation, failTest, message);
+      }
+    });
+    assertMessage(new Runnable() {
+      public void run() {
+        scenario.and(failTest, message);
+      }
+    });
+    assertMessage(new Runnable() {
+      public void run() {
+        listScenario.each(failTest, message);
+      }
+    });
+    assertMessage(new Runnable() {
+      public void run() {
+        scenario.it(failTest, message);
+      }
+    });
+    assertMessage(new Runnable() {
+      public void run() {
+        scenario.the(function, failTest, message);
+      }
+    });
+    assertMessage(new Runnable() {
+      public void run() {
+        scenario.the(value, failTest, message);
+      }
+    });
+    assertMessage(new Runnable() {
+      public void run() {
+        scenario.then(operation, failTest, message);
+      }
+    });
+    assertMessage(new Runnable() {
+      public void run() {
+        scenario.then(value, failTest, message);
+      }
+    });
+    assertMessage(new Runnable() {
+      public void run() {
+        scenario.thenIt(failTest, message);
+      }
+    });
   }
 
   private void assertMessage(Runnable command) {

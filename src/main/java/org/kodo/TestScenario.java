@@ -26,9 +26,9 @@
 
 package org.kodo;
 
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import org.kodo.function.Consumer;
+import org.kodo.function.Function;
+import org.kodo.function.Predicate;
 
 /**
  * A class to create scenarios for testing.
@@ -49,13 +49,11 @@ public class TestScenario<T> implements Scenario<T> {
     }
   }
 
-  @Override
   public Scenario<T> when(Consumer<? super T> operation) {
     operation.accept(target);
     return this;
   }
 
-  @Override
   public Scenario<T> then(Consumer operation, Predicate test, String message) {
     try {
       operation.accept(target);
@@ -66,40 +64,81 @@ public class TestScenario<T> implements Scenario<T> {
     return this;
   }
 
-  @Override
+  public Scenario<T> then(Consumer<? super T> operation, Predicate<?> test) {
+    return then(operation, test, "");
+  }
+
+  public Scenario<T> and(Consumer<? super T> consumer, Predicate test) {
+    return then(consumer, test);
+  }
+
   public Scenario<T> the(Function function, Predicate test, String message) {
     test(test, function.apply(target), message);
     return this;
   }
 
-  @Override
+  public Scenario<T> and(Consumer<? super T> consumer, Predicate test, String message) {
+    return then(consumer, test, message);
+  }
+
+  public Scenario<T> the(Function<? super T, ?> function, Predicate<?> test) {
+    return the(function, test, "");
+  }
+
   public Scenario<T> each(Predicate test, String message) {
-    ((Iterable) target).forEach(obj -> test(test, obj, message));
+    Iterable iterable = (Iterable) target;
+    for (Object obj : iterable) {
+      test(test, obj, message);
+    }
     return this;
   }
 
-  @Override
+  public Scenario<T> each(Predicate test) {
+    return each(test, "");
+  }
+
   public Scenario<T> thenIt(Predicate<? super T> test, String message) {
     test(test, target, message);
     return this;
   }
 
-  @Override
+  public Scenario<T> thenIt(Predicate<? super T> test) {
+    return thenIt(test, "");
+  }
+
+  public Scenario<T> and(Predicate<? super T> test) {
+    return thenIt(test);
+  }
+
+  public Scenario<T> and(Predicate<? super T> test, String message) {
+    return thenIt(test, message);
+  }
+
   public Scenario<T> it(Predicate<? super T> test, String message) {
     test(test, target, message);
     return this;
   }
 
-  @Override
+  public Scenario<T> it(Predicate<? super T> test) {
+    return it(test, "");
+  }
+
   public Scenario<T> the(Object value, Predicate test, String message) {
     test(test, value, message);
     return this;
   }
 
-  @Override
   public Scenario<T> then(Object value, Predicate test, String message) {
     test(test, value, message);
     return this;
+  }
+
+  public Scenario<T> the(Object value, Predicate test) {
+    return the(value, test, "");
+  }
+
+  public Scenario<T> then(Object value, Predicate test) {
+    return then(value, test, "");
   }
 
   /**
@@ -110,7 +149,7 @@ public class TestScenario<T> implements Scenario<T> {
    * @return a new {@link Scenario}.
    */
   public static <T> Scenario<T> given(T object) {
-    return new TestScenario<>(object);
+    return new TestScenario<T>(object);
   }
 
 }

@@ -26,15 +26,17 @@
 
 package org.kodo;
 
+import org.kodo.function.BasePredicate;
+import org.kodo.function.Predicate;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Predicate;
 
 /**
  * A predicate to test if an object is empty. Current this class supports the
  * given types:
- * <p>
+ * <p/>
  * <ul> <li>Collection - checks the {@link Collection#isEmpty()} method</li>
  * <li>Map - checks the {@link Map#isEmpty()} method</li> <li>CharSequence -
  * checks the {@link CharSequence#length()} method</li> <li>String - checks the
@@ -48,24 +50,76 @@ import java.util.function.Predicate;
  *
  * @author Marcelo Guimarães
  */
-public class EmptyPredicate implements Predicate {
+public class EmptyPredicate extends BasePredicate implements Predicate {
 
-  private Map<Class, Predicate> predicates = new HashMap<>();
+  private Map<Class, Predicate> predicates = new HashMap<Class, Predicate>();
 
   public EmptyPredicate() {
-    register(Collection.class, Collection::isEmpty);
-    register(Map.class, Map::isEmpty);
-    register(String.class, String::isEmpty);
-    register(CharSequence.class, seq -> seq.length() == 0);
-    register(Object[].class, array -> array.length == 0);
-    register(boolean[].class, array -> array.length == 0);
-    register(byte[].class, array -> array.length == 0);
-    register(char[].class, array -> array.length == 0);
-    register(short[].class, array -> array.length == 0);
-    register(int[].class, array -> array.length == 0);
-    register(long[].class, array -> array.length == 0);
-    register(float[].class, array -> array.length == 0);
-    register(double[].class, array -> array.length == 0);
+    register(Collection.class, new BasePredicate<Collection>() {
+      public boolean test(Collection target) {
+        return target.isEmpty();
+      }
+    });
+    register(Map.class, new BasePredicate<Map>() {
+      public boolean test(Map target) {
+        return target.isEmpty();
+      }
+    });
+    register(String.class, new BasePredicate<String>() {
+      public boolean test(String target) {
+        return target.length() == 0;
+      }
+    });
+    register(CharSequence.class, new BasePredicate<CharSequence>() {
+      public boolean test(CharSequence target) {
+        return target.length() == 0;
+      }
+    });
+    register(Object[].class, new BasePredicate<Object[]>() {
+      public boolean test(Object[] target) {
+        return target.length == 0;
+      }
+    });
+    register(boolean[].class, new BasePredicate<boolean[]>() {
+      public boolean test(boolean[] target) {
+        return target.length == 0;
+      }
+    });
+    register(byte[].class, new BasePredicate<byte[]>() {
+      public boolean test(byte[] target) {
+        return target.length == 0;
+      }
+    });
+    register(char[].class, new BasePredicate<char[]>() {
+      public boolean test(char[] target) {
+        return target.length == 0;
+      }
+    });
+    register(short[].class, new BasePredicate<short[]>() {
+      public boolean test(short[] target) {
+        return target.length == 0;
+      }
+    });
+    register(int[].class, new BasePredicate<int[]>() {
+      public boolean test(int[] target) {
+        return target.length == 0;
+      }
+    });
+    register(long[].class, new BasePredicate<long[]>() {
+      public boolean test(long[] target) {
+        return target.length == 0;
+      }
+    });
+    register(float[].class, new BasePredicate<float[]>() {
+      public boolean test(float[] target) {
+        return target.length == 0;
+      }
+    });
+    register(double[].class, new BasePredicate<double[]>() {
+      public boolean test(double[] target) {
+        return target.length == 0;
+      }
+    });
   }
 
   /**
@@ -90,7 +144,6 @@ public class EmptyPredicate implements Predicate {
    * @throws java.lang.NullPointerException     if the {@code value} is {@code
    *                                            null}
    */
-  @Override
   public boolean test(Object value) {
     return findPredicate(value).test(value);
   }
