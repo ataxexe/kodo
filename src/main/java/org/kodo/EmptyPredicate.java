@@ -35,15 +35,20 @@ import java.util.function.Predicate;
  * A predicate to test if an object is empty. Current this class supports the
  * given types:
  * <p>
- * <ul> <li>Collection - checks the {@link Collection#isEmpty()} method</li>
- * <li>Map - checks the {@link Map#isEmpty()} method</li> <li>CharSequence -
- * checks the {@link CharSequence#length()} method</li> <li>String - checks the
- * {@link String#isEmpty()} method</li> <li>Object[] - checks the length
- * variable</li> <li>boolean[] - checks the length variable</li> <li>byte[] -
- * checks the length variable</li> <li>char[] - checks the length variable</li>
- * <li>double[] - checks the length variable</li> <li>float[] - checks the
- * length variable</li> <li>int[] - checks the length variable</li> <li>long[] -
- * checks the length variable</li> <li>short[] - checks the length variable</li>
+ * <ul>
+ * <li>Collection - checks the {@link Collection#isEmpty()} method</li>
+ * <li>Map - checks the {@link Map#isEmpty()} method</li>
+ * <li>CharSequence - checks the {@link CharSequence#length()} method</li>
+ * <li>String - checks the {@link String#isEmpty()} method</li>
+ * <li>Object[] - checks the length variable</li>
+ * <li>boolean[] - checks the length variable</li>
+ * <li>byte[] - checks the length variable</li>
+ * <li>char[] - checks the length variable</li>
+ * <li>double[] - checks the length variable</li>
+ * <li>float[] - checks the length variable</li>
+ * <li>int[] - checks the length variable</li>
+ * <li>long[] - checks the length variable</li>
+ * <li>short[] - checks the length variable</li>
  * </ul>
  *
  * @author Marcelo Guimarães
