@@ -157,6 +157,13 @@ public interface Scenario<T> {
     return thenIt(test, "");
   }
 
+  /**
+   * Adds more tests to do with the target as the
+   * {@link #thenIt(java.util.function.Predicate)} method.
+   *
+   * @param test the test to do with the target
+   * @return a reference to this object
+   */
   default Scenario<T> and(Predicate<? super T> test) {
     return thenIt(test);
   }
@@ -170,6 +177,14 @@ public interface Scenario<T> {
    */
   Scenario<T> thenIt(Predicate<? super T> test, String message);
 
+  /**
+   * Adds more tests to do with the target as the
+   * {@link #thenIt(java.util.function.Predicate, String)} method.
+   *
+   * @param test    the test to do with the target
+   * @param message the message to throw if the test fail
+   * @return a reference to this object
+   */
   default Scenario<T> and(Predicate<? super T> test, String message) {
     return thenIt(test, message);
   }
