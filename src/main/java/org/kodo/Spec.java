@@ -257,7 +257,7 @@ public class Spec {
 
   /**
    * Helper method to improve code readability. It returns the given string.
-   * <p/>
+   * <p>
    * Use it with the methods that takes a message.
    */
   public static final String because(String reason) {
@@ -266,7 +266,7 @@ public class Spec {
 
   /**
    * Helper method to improve code readability. It returns the given string.
-   * <p/>
+   * <p>
    * Use it with the methods that takes a message.
    */
   public static final String otherwise(String description) {

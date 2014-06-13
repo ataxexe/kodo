@@ -36,7 +36,6 @@ import java.util.Map;
 /**
  * A predicate to test if an object is empty. Current this class supports the
  * given types:
- * <p/>
  * <ul> <li>Collection - checks the {@link Collection#isEmpty()} method</li>
  * <li>Map - checks the {@link Map#isEmpty()} method</li> <li>CharSequence -
  * checks the {@link CharSequence#length()} method</li> <li>String - checks the
