@@ -203,16 +203,15 @@ public class ScenarioTests {
 
   @Test
   public void testMessages() {
-    assertFail(() -> scenario.and(operation, failTest, message));
-    assertFail(() -> scenario.and(failTest, message));
-    assertFail(() -> TestScenario
-        .given(Arrays.asList(1, 2, 3)).each(failTest, message));
-    assertFail(() -> scenario.it(failTest, message));
-    assertFail(() -> scenario.the(function, failTest, message));
-    assertFail(() -> scenario.the(value, failTest, message));
-    assertFail(() -> scenario.then(operation, failTest, message));
-    assertFail(() -> scenario.then(value, failTest, message));
-    assertFail(() -> scenario.thenIt(failTest, message));
+    assertMessage(() -> scenario.and(operation, failTest, message));
+    assertMessage(() -> scenario.and(failTest, message));
+    assertMessage(() -> listScenario.each(failTest, message));
+    assertMessage(() -> scenario.it(failTest, message));
+    assertMessage(() -> scenario.the(function, failTest, message));
+    assertMessage(() -> scenario.the(value, failTest, message));
+    assertMessage(() -> scenario.then(operation, failTest, message));
+    assertMessage(() -> scenario.then(value, failTest, message));
+    assertMessage(() -> scenario.thenIt(failTest, message));
   }
 
   @Test
@@ -222,7 +221,7 @@ public class ScenarioTests {
     assertEquals("description", otherwise("description"));
   }
 
-  private void assertFail(Runnable command) {
+  private void assertMessage(Runnable command) {
     try {
       command.run();
       throw new Error();
