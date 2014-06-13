@@ -28,139 +28,85 @@ package org.kodo;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
 /**
- * A class that holds a set of predicates for empty definitions.
+ * A predicate to test if an object is empty. Current this class supports the
+ * given types:
+ * <p>
+ * <ul> <li>Collection - checks the {@link Collection#isEmpty()} method</li>
+ * <li>Map - checks the {@link Map#isEmpty()} method</li> <li>CharSequence -
+ * checks the {@link CharSequence#length()} method</li> <li>String - checks the
+ * {@link String#isEmpty()} method</li> <li>Object[] - checks the length
+ * variable</li> <li>boolean[] - checks the length variable</li> <li>byte[] -
+ * checks the length variable</li> <li>char[] - checks the length variable</li>
+ * <li>double[] - checks the length variable</li> <li>float[] - checks the
+ * length variable</li> <li>int[] - checks the length variable</li> <li>long[] -
+ * checks the length variable</li> <li>short[] - checks the length variable</li>
+ * </ul>
  *
  * @author Marcelo Guimarães
  */
 public class EmptyPredicate implements Predicate {
 
-  /**
-   * A predicate that returns <code>true</code>
-   * if the given Collection is empty
-   */
-  private final Predicate<Collection> collectionPredicate = Collection::isEmpty;
-
-  /**
-   * A predicate that returns <code>true</code>
-   * if the given List is empty
-   */
-  private final Predicate<List> listPredicate = List::isEmpty;
-
-  /**
-   * A predicate that returns <code>true</code>
-   * if the given Object array is empty
-   */
-  private final Predicate<Object[]> objectArrayPredicate = array -> array.length == 0;
-
-  /**
-   * A predicate that returns <code>true</code>
-   * if the given Map is empty
-   */
-  private final Predicate<Map> mapPredicate = Map::isEmpty;
-
-  /**
-   * A predicate that returns <code>true</code>
-   * if the given String is empty
-   */
-  private final Predicate<String> stringPredicate = String::isEmpty;
-
-  /**
-   * A predicate that returns <code>true</code>
-   * if the given CharSequence is empty
-   */
-  private final Predicate<CharSequence> charSequencePredicate = seq -> seq.length() == 0;
-
-  /**
-   * A predicate that returns <code>true</code>
-   * if the given boolean array is empty
-   */
-  private final Predicate<boolean[]> booleanArrayPredicate = array -> array.length == 0;
-
-  /**
-   * A predicate that returns <code>true</code>
-   * if the given byte array is empty
-   */
-  private final Predicate<byte[]> byteArrayPredicate = array -> array.length == 0;
-
-  /**
-   * A predicate that returns <code>true</code>
-   * if the given char array is empty
-   */
-  private final Predicate<char[]> charArrayPredicate = array -> array.length == 0;
-
-  /**
-   * A predicate that returns <code>true</code>
-   * if the given short array is empty
-   */
-  private final Predicate<short[]> shortArrayPredicate = array -> array.length == 0;
-
-  /**
-   * A predicate that returns <code>true</code>
-   * if the given int array is empty
-   */
-  private final Predicate<int[]> intArrayPredicate = array -> array.length == 0;
-
-  /**
-   * A predicate that returns <code>true</code>
-   * if the given long array is empty
-   */
-  private final Predicate<long[]> longArrayPredicate = array -> array.length == 0;
-
-  /**
-   * A predicate that returns <code>true</code>
-   * if the given float array is empty
-   */
-  private final Predicate<float[]> floatArrayPredicate = array -> array.length == 0;
-
-  /**
-   * A predicate that returns <code>true</code>
-   * if the given double array is empty
-   */
-  private final Predicate<double[]> doubleArrayPredicate = array -> array.length == 0;
-
   private Map<Class, Predicate> predicates = new HashMap<>();
 
   public EmptyPredicate() {
-    predicates.put(Collection.class, collectionPredicate);
-    predicates.put(List.class, listPredicate);
-    predicates.put(Object[].class, objectArrayPredicate);
-    predicates.put(Map.class, mapPredicate);
-    predicates.put(String.class, stringPredicate);
-    predicates.put(CharSequence.class, charSequencePredicate);
-    predicates.put(boolean[].class, booleanArrayPredicate);
-    predicates.put(byte[].class, byteArrayPredicate);
-    predicates.put(char[].class, charArrayPredicate);
-    predicates.put(short[].class, shortArrayPredicate);
-    predicates.put(int[].class, intArrayPredicate);
-    predicates.put(long[].class, longArrayPredicate);
-    predicates.put(float[].class, floatArrayPredicate);
-    predicates.put(double[].class, doubleArrayPredicate);
+    register(Collection.class, Collection::isEmpty);
+    register(Map.class, Map::isEmpty);
+    register(String.class, String::isEmpty);
+    register(CharSequence.class, seq -> seq.length() == 0);
+    register(Object[].class, array -> array.length == 0);
+    register(boolean[].class, array -> array.length == 0);
+    register(byte[].class, array -> array.length == 0);
+    register(char[].class, array -> array.length == 0);
+    register(short[].class, array -> array.length == 0);
+    register(int[].class, array -> array.length == 0);
+    register(long[].class, array -> array.length == 0);
+    register(float[].class, array -> array.length == 0);
+    register(double[].class, array -> array.length == 0);
   }
 
+  /**
+   * Register a new predicate for checking objects of the given type.
+   *
+   * @param type      the type for using the given predicate
+   * @param predicate the predicate to evaluate the target
+   * @param <T>       the type of the target
+   */
+  public <T> void register(Class<T> type, Predicate<T> predicate) {
+    predicates.put(type, predicate);
+  }
+
+  /**
+   * Tests if the given object is empty by using its type to find a predicate
+   * that can test it.
+   *
+   * @param value the target
+   * @return {@code true} if the object is empty
+   * @throws java.lang.IllegalArgumentException if the {@code value} if of a
+   *                                            type that is not registered
+   * @throws java.lang.NullPointerException     if the {@code value} is {@code
+   *                                            null}
+   */
   @Override
-  public boolean test(Object o) {
-    return findPredicate(o).test(o);
+  public boolean test(Object value) {
+    return findPredicate(value).test(value);
   }
 
   private Predicate findPredicate(Object target) {
-    if (target != null) {
-      Class<?> type = target.getClass();
-      if (predicates.containsKey(type)) {
-        return predicates.get(type);
-      } else {
-        for (Map.Entry<Class, Predicate> entry : predicates.entrySet()) {
-          if (entry.getKey().isAssignableFrom(type)) {
-            return entry.getValue();
-          }
+    Class<?> type = target.getClass();
+    if (predicates.containsKey(type)) {
+      return predicates.get(type);
+    } else {
+      for (Map.Entry<Class, Predicate> entry : predicates.entrySet()) {
+        if (entry.getKey().isAssignableFrom(type)) {
+          return entry.getValue();
         }
       }
     }
-    return (o) -> false;
+    throw new IllegalArgumentException("Could not found a predicate for " + type);
   }
 
 }

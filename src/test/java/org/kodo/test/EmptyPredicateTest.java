@@ -30,7 +30,6 @@ import org.junit.Test;
 import org.kodo.Spec;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 import static org.kodo.test.SpecTests.test;
@@ -150,16 +149,6 @@ public class EmptyPredicateTest {
   }
 
   @Test
-  public void testListPredicate() {
-    List emptyObject = mock(List.class);
-    List notEmptyObject = mock(List.class);
-    when(emptyObject.isEmpty()).thenReturn(true);
-    when(notEmptyObject.isEmpty()).thenReturn(false);
-    testPredicate(emptyObject);
-    testFailPredicate(notEmptyObject);
-  }
-
-  @Test
   public void testMapPredicate() {
     Map emptyObject = mock(Map.class);
     Map notEmptyObject = mock(Map.class);
@@ -169,12 +158,12 @@ public class EmptyPredicateTest {
     testFailPredicate(notEmptyObject);
   }
 
-  @Test
+  @Test(expected = NullPointerException.class)
   public void testNullObject() {
     testFailPredicate(null);
   }
 
-  @Test
+  @Test(expected = IllegalArgumentException.class)
   public void testNotMappedObject() {
     testFailPredicate(new Object());
   }
