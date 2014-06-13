@@ -61,7 +61,7 @@ public interface Spec {
   Predicate NOT_NULL = obj -> obj != null;
 
   /**
-   * Indicates that the value should be a collection and
+   * Indicates a collection that should be
    * {@link java.util.Collection#isEmpty() empty}
    */
   Predicate<Collection> EMPTY = collection -> collection.isEmpty();
