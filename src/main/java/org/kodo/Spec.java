@@ -28,7 +28,6 @@ package org.kodo;
 
 import org.hamcrest.Matcher;
 
-import java.util.Collection;
 import java.util.Objects;
 import java.util.function.Predicate;
 
@@ -61,10 +60,11 @@ public interface Spec {
   Predicate NOT_NULL = obj -> obj != null;
 
   /**
-   * Indicates a collection that should be
-   * {@link java.util.Collection#isEmpty() empty}
+   * Indicates a value that should be empty
+   *
+   * @see org.kodo.EmptyPredicate
    */
-  Predicate<Collection> EMPTY = collection -> collection.isEmpty();
+  Predicate EMPTY = new EmptyPredicate();
 
   /**
    * Predicate that returns <code>true</code> if the value is the same as

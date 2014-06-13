@@ -28,9 +28,6 @@ package org.kodo.test;
 
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.function.Predicate;
 
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -48,11 +45,11 @@ public class SpecTests {
   private Predicate alwaysTrue = value -> true;
   private Predicate alwaysFalse = value -> false;
 
-  private void test(Predicate predicate, Object value) {
+  public static void test(Predicate predicate, Object value) {
     assertTrue(predicate.test(value));
   }
 
-  private void testFail(Predicate predicate, Object value) {
+  public static void testFail(Predicate predicate, Object value) {
     assertFalse(predicate.test(value));
   }
 
@@ -159,15 +156,6 @@ public class SpecTests {
 
     test(NOT_NULL, "");
     testFail(NOT_NULL, null);
-  }
-
-  @Test
-  public void testBeEmpty() {
-    test(EMPTY, Collections.emptyList());
-    test(EMPTY, Collections.emptySet());
-
-    testFail(EMPTY, Arrays.asList(1, 2, 3));
-    testFail(EMPTY, new HashSet(Arrays.asList(1, 2, 3)));
   }
 
   @Test

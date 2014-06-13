@@ -3,6 +3,7 @@
 ## v0.3
 
 - Helpers moved to `Spec` class
+- Empty predicates for common objects
 
 ## v0.2 (12-06-2014)
 
