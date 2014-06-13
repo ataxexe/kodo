@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.3
+
+- Helpers moved to `Spec` class
+
 ## v0.2 (12-06-2014)
 
 - DSL refactoring

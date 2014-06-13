@@ -190,4 +190,33 @@ public interface Spec {
     return error -> error == null;
   }
 
+  /**
+   * Returns the given predicate. This method should be used to make the
+   * code more readable.
+   *
+   * @param predicate the predicate
+   * @return the given predicate.
+   */
+  static <T> Predicate<T> should(Predicate<T> predicate) {
+    return predicate;
+  }
+
+  /**
+   * Helper method to improve code readability. It returns the given string.
+   * <p>
+   * Use it with the methods that takes a message.
+   */
+  static String because(String reason) {
+    return reason;
+  }
+
+  /**
+   * Helper method to improve code readability. It returns the given string.
+   * <p>
+   * Use it with the methods that takes a message.
+   */
+  static String otherwise(String description) {
+    return description;
+  }
+
 }

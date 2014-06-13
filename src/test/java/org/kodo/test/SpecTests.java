@@ -35,8 +35,7 @@ import java.util.function.Predicate;
 
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.kodo.Spec.*;
 
 /**
@@ -234,6 +233,14 @@ public class SpecTests {
     test(lessThanOrEqual(10), 9);
     test(lessThanOrEqual(10), 10);
     testFail(lessThanOrEqual(10), 11);
+  }
+
+  @Test
+  public void testHelpers() {
+    Predicate predicate = (o) -> true;
+    assertSame(predicate, should(predicate));
+    assertEquals("some reason", because("some reason"));
+    assertEquals("description", otherwise("description"));
   }
 
 }

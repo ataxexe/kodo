@@ -44,9 +44,6 @@ import java.util.function.Predicate;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
-import static org.kodo.Scenario.because;
-import static org.kodo.Scenario.otherwise;
-import static org.kodo.Scenario.should;
 import static org.mockito.Matchers.intThat;
 import static org.mockito.Mockito.*;
 
@@ -212,13 +209,6 @@ public class ScenarioTests {
     assertMessage(() -> scenario.then(operation, failTest, message));
     assertMessage(() -> scenario.then(value, failTest, message));
     assertMessage(() -> scenario.thenIt(failTest, message));
-  }
-
-  @Test
-  public void testHelpers() {
-    assertSame(test, should(test));
-    assertEquals("some reason", because("some reason"));
-    assertEquals("description", otherwise("description"));
   }
 
   private void assertMessage(Runnable command) {
