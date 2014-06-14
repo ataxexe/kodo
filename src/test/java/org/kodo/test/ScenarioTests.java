@@ -115,6 +115,9 @@ public class ScenarioTests {
     assertSame(scenario, scenario.then(value, test));
     assertSame(scenario, scenario.then(value, test, message));
 
+    assertSame(scenario, scenario.and(value, test));
+    assertSame(scenario, scenario.and(value, test, message));
+
     assertSame(scenario, scenario.thenIt(test));
     assertSame(scenario, scenario.thenIt(test, message));
 
@@ -191,6 +194,12 @@ public class ScenarioTests {
   }
 
   @Test
+  public void testAndWithValue() {
+    scenario.and(value, test);
+    verify(test).test(value);
+  }
+
+  @Test
   public void testThenIt() {
     scenario.thenIt(test);
     verify(test).test(target);
@@ -236,6 +245,11 @@ public class ScenarioTests {
     assertMessage(new Runnable() {
       public void run() {
         scenario.then(value, failTest, message);
+      }
+    });
+    assertMessage(new Runnable() {
+      public void run() {
+        scenario.and(value, failTest, message);
       }
     });
     assertMessage(new Runnable() {

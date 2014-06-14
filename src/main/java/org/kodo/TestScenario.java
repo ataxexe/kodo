@@ -152,4 +152,12 @@ public class TestScenario<T> implements Scenario<T> {
     return new TestScenario<T>(object);
   }
 
+  public Scenario<T> and(Object value, Predicate test) {
+    return then(value, test, "");
+  }
+
+  public Scenario<T> and(Object value, Predicate test, String message) {
+    return then(value, test, message);
+  }
+
 }

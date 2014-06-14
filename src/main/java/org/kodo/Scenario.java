@@ -227,4 +227,25 @@ public interface Scenario<T> {
    */
   Scenario<T> then(Object value, Predicate test, String message);
 
+  /**
+   * Adds more tests to do with the value as the method
+   * {@link #then(Object, org.kodo.function.Predicate)}.
+   *
+   * @param value the value to test
+   * @param test  the test to do with the value
+   * @return a reference to this object
+   */
+  Scenario<T> and(Object value, Predicate test);
+
+  /**
+   * Adds more tests to do with the value as the method
+   * {@link #then(Object, org.kodo.function.Predicate, String)}.
+   *
+   * @param value   the value to test
+   * @param test    the test to do with the value
+   * @param message the message to throw if the test fail
+   * @return a reference to this object
+   */
+  Scenario<T> and(Object value, Predicate test, String message);
+
 }
