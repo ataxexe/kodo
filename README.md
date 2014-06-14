@@ -8,7 +8,7 @@ Just make sure you have [Gradle][] and run the command `gradle dist`. To simply 
 
 ## How to Use
 
-Just put the really small jar file on your classpath with JUnit binaries. You can also install **kodo** on your local repository and then define it on your pom or gradle build:
+Just put the really small kodo jar file on your classpath. You can also install **kodo** on your local repository and then define it on your pom or gradle build:
 
 - **groupId:** org.kodo
 - **artifactId:** kodo
