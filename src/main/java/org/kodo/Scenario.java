@@ -249,4 +249,20 @@ public interface Scenario<T> {
    */
   Scenario<T> then(Object value, Predicate test, String message);
 
+  /**
+   * Adds more tests to the value as the method
+   * {@link #then(Object, java.util.function.Predicate)}.
+   *
+   * @param value  the value to test
+   * @param test   the test to do with the value
+   * @return a reference to this object
+   */
+  default Scenario<T> and(Object value, Predicate test) {
+    return then(value, test, "");
+  }
+
+  default Scenario<T> and(Object value, Predicate test, String message) {
+    return then(value, test, message);
+  }
+
 }
