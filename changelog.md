@@ -4,6 +4,7 @@
 
 - Helpers moved to `Spec` class
 - Empty predicates for common objects (arrays, maps, collections, strings, ...)
+- Added more methods to Scenario
 
 ## v0.2 (12-06-2014)
 
