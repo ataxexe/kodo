@@ -48,6 +48,14 @@ public interface Scenario<T> {
   Scenario<T> when(Consumer<? super T> operation);
 
   /**
+   * Defines an operation to execute.
+   *
+   * @param operation the operation to execute
+   * @return a reference to this object.
+   */
+  Scenario<T> when(Runnable operation);
+
+  /**
    * Defines an operation that may throw an exception.
    *
    * @param operation the operation to do with the target

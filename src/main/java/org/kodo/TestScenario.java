@@ -54,6 +54,11 @@ public class TestScenario<T> implements Scenario<T> {
     return this;
   }
 
+  public Scenario<T> when(Runnable operation) {
+    operation.run();
+    return this;
+  }
+
   public Scenario<T> then(Consumer operation, Predicate test, String message) {
     try {
       operation.accept(target);
