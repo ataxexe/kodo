@@ -61,6 +61,8 @@ public class ScenarioTests {
   @Mock
   private Consumer operation;
   @Mock
+  private Runnable runnableOperation;
+  @Mock
   private Consumer failOperation;
   private RuntimeException exception = new RuntimeException();
   @Mock
@@ -124,12 +126,19 @@ public class ScenarioTests {
     assertSame(scenario, scenario.thenIt(test, message));
 
     assertSame(scenario, scenario.when(operation));
+    assertSame(scenario, scenario.when(runnableOperation));
   }
 
   @Test
   public void testWhen() {
     scenario.when(operation);
     verify(operation).accept(target);
+  }
+
+  @Test
+  public void testWhenWithRunnable() {
+    scenario.when(runnableOperation);
+    verify(runnableOperation).run();
   }
 
   @Test
