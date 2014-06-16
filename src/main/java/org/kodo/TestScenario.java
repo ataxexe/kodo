@@ -45,8 +45,12 @@ public class TestScenario<T> implements Scenario<T> {
 
   private void test(Predicate predicate, Object target, String message) {
     if (!predicate.test(target)) {
-      throw new AssertionError(message);
+      throw new AssertionError(message.isEmpty() ? defaultMessage(target) : message);
     }
+  }
+
+  private String defaultMessage(Object target) {
+    return String.format("for value: %s", target.toString());
   }
 
   public Scenario<T> when(Consumer<? super T> operation) {
