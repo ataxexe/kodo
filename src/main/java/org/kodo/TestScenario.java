@@ -106,6 +106,77 @@ public class TestScenario<T> implements Scenario<T> {
     return this;
   }
 
+  @Override
+  public Scenario<T> when(Runnable operation) {
+    operation.run();
+    return this;
+  }
+
+  @Override
+  public Scenario<T> then(Consumer<? super T> operation, Predicate<?> test) {
+    return then(operation, test, "");
+  }
+
+  @Override
+  public Scenario<T> and(Consumer<? super T> consumer, Predicate test) {
+    return then(consumer, test);
+  }
+
+  @Override
+  public Scenario<T> and(Consumer<? super T> consumer, Predicate test, String message) {
+    return then(consumer, test, message);
+  }
+
+  @Override
+  public Scenario<T> the(Function<? super T, ?> function, Predicate<?> test) {
+    return the(function, test, "");
+  }
+
+  @Override
+  public Scenario<T> each(Predicate test) {
+    return each(test, "");
+  }
+
+  @Override
+  public Scenario<T> thenIt(Predicate<? super T> test) {
+    return thenIt(test, "");
+  }
+
+  @Override
+  public Scenario<T> and(Predicate<? super T> test) {
+    return thenIt(test);
+  }
+
+  @Override
+  public Scenario<T> and(Predicate<? super T> test, String message) {
+    return thenIt(test, message);
+  }
+
+  @Override
+  public Scenario<T> it(Predicate<? super T> test) {
+    return it(test, "");
+  }
+
+  @Override
+  public Scenario<T> the(Object value, Predicate test) {
+    return the(value, test, "");
+  }
+
+  @Override
+  public Scenario<T> then(Object value, Predicate test) {
+    return then(value, test, "");
+  }
+
+  @Override
+  public Scenario<T> and(Object value, Predicate test) {
+    return then(value, test, "");
+  }
+
+  @Override
+  public Scenario<T> and(Object value, Predicate test, String message) {
+    return then(value, test, message);
+  }
+
   /**
    * Start defining a new {@link Scenario} based on the given target.
    *
