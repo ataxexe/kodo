@@ -230,6 +230,16 @@ public class ScenarioTests {
     assertMessage(() -> scenario.thenIt(failTest, message));
   }
 
+  @Test
+  public void testDefaultMessage() {
+    try {
+      scenario.the("some value", failTest);
+      throw new Error();
+    } catch (AssertionError error) {
+      assertEquals("for value: some value", error.getMessage());
+    }
+  }
+
   private void assertMessage(Runnable command) {
     try {
       command.run();
