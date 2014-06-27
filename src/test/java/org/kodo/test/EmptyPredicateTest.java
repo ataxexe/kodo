@@ -108,8 +108,8 @@ public class EmptyPredicateTest {
 
   @Test
   public void testObjectArrayPredicate() {
-    Object[] emptyArray = new Object[0];
-    Object[] notEmptyArray = new Object[10];
+    String[] emptyArray = new String[0];
+    String[] notEmptyArray = new String[10];
     testPredicate(emptyArray);
     testFailPredicate(notEmptyArray);
   }
