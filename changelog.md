@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.3
+## v0.3 (14-07-2014)
 
 - Helpers moved to `Spec` class
 - Empty predicates for common objects (arrays, maps, collections, strings, ...)
