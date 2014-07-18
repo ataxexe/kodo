@@ -28,8 +28,8 @@ apply plugin: 'java'
 apply plugin: 'maven'
 
 configurations {
-  project.group = "org.kodo"
-  project.version = "0.3"
+  project.group = "tools.devnull"
+  project.version = "0.4"
 
   project.description = "Kodo is a test framework that helps you creating test " +
       "scenarios with the help of a fluent interface."
@@ -69,11 +69,10 @@ artifacts {
 task pom << {
   pom {
     project {
-      groupId 'tools.devnull'
-      artifactId 'kodo'
+      groupId "${project.group}.${project.name}"
       packaging 'jar'
 
-      name 'kodo'
+      name project.name
       description project.description
 
       url 'https://github.com/ataxexe/kodo'
@@ -90,10 +89,9 @@ task pom << {
         developer {
           id 'Ataxexe'
           name 'Marcelo Guimarães'
-          email 'ataxexe@gmail.com'
-          organization 'Unbelievable Exception'
-          organizationUrl 'http://entra.la'
-          url 'https://github.com/ataxexe'
+          email 'ataxexe@devnull.tools'
+          organizationUrl 'http://devnull.tools'
+          url 'http://entra.la'
         }
       }
 
