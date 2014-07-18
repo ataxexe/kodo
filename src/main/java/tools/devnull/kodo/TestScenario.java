@@ -24,7 +24,7 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package org.kodo;
+package tools.devnull.kodo;
 
 import java.util.function.Consumer;
 import java.util.function.Function;

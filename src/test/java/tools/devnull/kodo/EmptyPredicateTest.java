@@ -24,16 +24,13 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package org.kodo.test;
+package tools.devnull.kodo;
 
 import org.junit.Test;
-import org.kodo.Spec;
 
 import java.util.Collection;
 import java.util.Map;
 
-import static org.kodo.test.SpecTests.test;
-import static org.kodo.test.SpecTests.testFail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -43,11 +40,11 @@ import static org.mockito.Mockito.when;
 public class EmptyPredicateTest {
 
   private void testPredicate(Object target) {
-    test(Spec.EMPTY, target);
+    SpecTests.test(Spec.EMPTY, target);
   }
 
   private void testFailPredicate(Object target) {
-    testFail(Spec.EMPTY, target);
+    SpecTests.testFail(Spec.EMPTY, target);
   }
 
   @Test

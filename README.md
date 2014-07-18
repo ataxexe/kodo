@@ -10,7 +10,7 @@ Just make sure you have [Gradle][] and run the command `gradle dist`. To simply 
 
 Just put the really small kodo jar file on your classpath. You can also install **kodo** on your local repository and then define it on your pom or gradle build:
 
-- **groupId:** org.kodo
+- **groupId:** tools.devnull
 - **artifactId:** kodo
 
 # Creating Test Scenarios

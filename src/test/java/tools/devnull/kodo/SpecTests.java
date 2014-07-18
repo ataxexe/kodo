@@ -24,7 +24,7 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package org.kodo.test;
+package tools.devnull.kodo;
 
 import org.junit.Test;
 
@@ -33,7 +33,7 @@ import java.util.function.Predicate;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
-import static org.kodo.Spec.*;
+import static tools.devnull.kodo.Spec.*;
 
 /**
  * @author Marcelo Guimarães

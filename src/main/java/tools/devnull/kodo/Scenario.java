@@ -24,7 +24,7 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package org.kodo;
+package tools.devnull.kodo;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -35,7 +35,7 @@ import java.util.function.Predicate;
  * a target object.
  *
  * @author Marcelo Guimarães
- * @see org.kodo.TestScenario#given(Object)
+ * @see TestScenario#given(Object)
  */
 public interface Scenario<T> {
 

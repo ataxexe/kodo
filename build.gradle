@@ -69,7 +69,7 @@ artifacts {
 task pom << {
   pom {
     project {
-      groupId 'org.kodo'
+      groupId 'tools.devnull'
       artifactId 'kodo'
       packaging 'jar'
 
@@ -78,10 +78,6 @@ task pom << {
 
       url 'https://github.com/ataxexe/kodo'
 
-      scm {
-        url 'git@github.com:ataxexe/kodo.git'
-      }
-
       licenses {
         license {
           name 'The MIT License'
@@ -89,6 +85,23 @@ task pom << {
           distribution 'repo'
         }
       }
+
+      developers {
+        developer {
+          id 'Ataxexe'
+          name 'Marcelo Guimarães'
+          email 'ataxexe@gmail.com'
+          organization 'Unbelievable Exception'
+          organizationUrl 'http://entra.la'
+          url 'https://github.com/ataxexe'
+        }
+      }
+
+      scm {
+        connection 'scm:git:git@github.com:ataxexe/kodo.git'
+        url 'https://github.com/ataxexe/kodo'
+      }
+
     }
   }.writeTo("$buildDir/pom.xml")
 }
@@ -97,7 +110,6 @@ task dist(type: Zip,
     dependsOn: [clean, jar, sourcesJar, javadocJar, test, pom]) {
   from "$buildDir/libs"
   from "$buildDir/pom.xml"
-  from "$buildDir/kodo.pdf"
   from "changelog.md"
   from "README.md"
 }

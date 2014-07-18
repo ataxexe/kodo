@@ -24,7 +24,7 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package org.kodo;
+package tools.devnull.kodo;
 
 import org.hamcrest.Matcher;
 
@@ -62,7 +62,7 @@ public interface Spec {
   /**
    * Indicates a value that should be empty
    *
-   * @see org.kodo.EmptyPredicate
+   * @see EmptyPredicate
    */
   Predicate EMPTY = new EmptyPredicate();
 
