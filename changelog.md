@@ -1,5 +1,10 @@
 # Changelog
 
+## v.0.4
+
+- Package name changed to `tools.devnull.kodo`
+- groupId changed to `tools.devnull`
+
 ## v0.3 (14-07-2014)
 
 - Helpers moved to `Spec` class
