@@ -28,8 +28,8 @@ apply plugin: 'java'
 apply plugin: 'maven'
 
 configurations {
-  project.group = "org.kodo"
-  project.version = "0.3-jdk5"
+  project.group = "tools.devnull"
+  project.version = "0.4-jdk5"
 
   project.description = "Kodo is a test framework that helps you creating test " +
       "scenarios with the help of a fluent interface."
@@ -69,18 +69,13 @@ artifacts {
 task pom << {
   pom {
     project {
-      groupId 'org.kodo'
-      artifactId 'kodo'
+      groupId "${project.group}.${project.name}"
       packaging 'jar'
 
-      name 'kodo'
+      name project.name
       description project.description
 
       url 'https://github.com/ataxexe/kodo'
-
-      scm {
-        url 'git@github.com:ataxexe/kodo.git'
-      }
 
       licenses {
         license {
@@ -89,6 +84,22 @@ task pom << {
           distribution 'repo'
         }
       }
+
+      developers {
+        developer {
+          id 'Ataxexe'
+          name 'Marcelo Guimarães'
+          email 'ataxexe@devnull.tools'
+          organizationUrl 'http://devnull.tools'
+          url 'http://entra.la'
+        }
+      }
+
+      scm {
+        connection 'scm:git:git@github.com:ataxexe/kodo.git'
+        url 'https://github.com/ataxexe/kodo'
+      }
+
     }
   }.writeTo("$buildDir/pom.xml")
 }
@@ -97,7 +108,6 @@ task dist(type: Zip,
     dependsOn: [clean, jar, sourcesJar, javadocJar, test, pom]) {
   from "$buildDir/libs"
   from "$buildDir/pom.xml"
-  from "$buildDir/kodo.pdf"
   from "changelog.md"
   from "README.md"
 }
