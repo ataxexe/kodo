@@ -3,3 +3,4 @@ kodo.iws
 .idea/workspace.xml
 build
 out
+gradle.properties
