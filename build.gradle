@@ -26,6 +26,7 @@
 
 apply plugin: 'java'
 apply plugin: 'maven'
+apply plugin: 'signing'
 
 configurations {
   project.group = "tools.devnull"
@@ -62,6 +63,7 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 }
 
 artifacts {
+  archives jar
   archives sourcesJar
   archives javadocJar
 }
@@ -112,3 +114,6 @@ task dist(type: Zip,
   from "README.md"
 }
 
+signing {
+  sign configurations.archives
+}
