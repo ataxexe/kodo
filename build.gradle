@@ -30,7 +30,9 @@ apply plugin: 'signing'
 
 configurations {
   project.group = "tools.devnull"
-  project.version = "0.4"
+  project.version = "0.4.1"
+
+  pomFile = "$buildDir/${project.name}-${project.version}.pom"
 
   project.description = "Kodo is a test framework that helps you creating test " +
       "scenarios with the help of a fluent interface."
@@ -71,7 +73,7 @@ artifacts {
 task pom << {
   pom {
     project {
-      groupId "${project.group}.${project.name}"
+      groupId project.group
       packaging 'jar'
 
       name project.name
@@ -103,13 +105,13 @@ task pom << {
       }
 
     }
-  }.writeTo("$buildDir/pom.xml")
+  }.writeTo(pomFile)
 }
 
 task dist(type: Zip,
     dependsOn: [clean, jar, sourcesJar, javadocJar, test, pom]) {
   from "$buildDir/libs"
-  from "$buildDir/pom.xml"
+  from pomFile
   from "changelog.md"
   from "README.md"
 }
