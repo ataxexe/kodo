@@ -32,7 +32,7 @@ configurations {
   project.group = "tools.devnull"
   project.version = "0.4.1"
 
-  pomFile = "$buildDir/${project.name}-${project.version}.pom"
+  project.ext["pomFile"] = "$buildDir/${project.name}-${project.version}.pom"
 
   project.description = "Kodo is a test framework that helps you creating test " +
       "scenarios with the help of a fluent interface."
@@ -105,13 +105,13 @@ task pom << {
       }
 
     }
-  }.writeTo(pomFile)
+  }.writeTo(project.pomFile)
 }
 
 task dist(type: Zip,
     dependsOn: [clean, jar, sourcesJar, javadocJar, test, pom]) {
   from "$buildDir/libs"
-  from pomFile
+  from project.pomFile
   from "changelog.md"
   from "README.md"
 }
