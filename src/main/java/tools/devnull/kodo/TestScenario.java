@@ -34,6 +34,7 @@ import java.util.function.Predicate;
  * A class to create scenarios for testing.
  *
  * @author Marcelo Guimarães
+ * @see #given(Object)
  */
 public class TestScenario<T> implements Scenario<T> {
 
