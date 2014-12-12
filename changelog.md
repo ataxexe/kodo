@@ -1,6 +1,6 @@
 # Changelog
 
-## v.0.4 (18-07-2014)
+## v0.4 (18-07-2014)
 
 - Package name changed to `tools.devnull.kodo`
 - groupId changed to `tools.devnull`
