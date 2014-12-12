@@ -111,7 +111,7 @@ public class EmptyPredicate implements Predicate {
         }
       }
     }
-    throw new IllegalArgumentException("Could not found a predicate for " + type);
+    throw new IllegalArgumentException("Could not find a predicate for " + type);
   }
 
 }
