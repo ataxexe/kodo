@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0 (31-12-2014)
+
+None significant.
+
 ## v0.4 (18-07-2014)
 
 - Package name changed to `tools.devnull.kodo`
