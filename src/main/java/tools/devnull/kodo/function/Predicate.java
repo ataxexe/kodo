@@ -24,19 +24,19 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package org.kodo.function;
+package tools.devnull.kodo.function;
 
 /**
  * @author Marcelo Guimarães
  */
-public abstract class BaseConsumer<T> implements Consumer<T> {
+public interface Predicate<T> {
 
-  public Consumer<T> andThen(final Consumer<? super T> after) {
-    return new BaseConsumer<T>() {
-      public void accept(T t) {
-        accept(t);
-        after.accept(t);
-      }
-    };
-  }
+  boolean test(T target);
+
+  Predicate<T> and(Predicate<T> other);
+
+  Predicate<T> or(Predicate<T> other);
+
+  Predicate<T> negate();
+
 }

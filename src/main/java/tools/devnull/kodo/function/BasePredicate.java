@@ -24,19 +24,34 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package org.kodo.function;
+package tools.devnull.kodo.function;
 
 /**
  * @author Marcelo Guimarães
  */
-public interface Predicate<T> {
+public abstract class BasePredicate<T> implements Predicate<T> {
 
-  boolean test(T target);
+  public Predicate<T> and(final Predicate<T> other) {
+    return new BasePredicate<T>() {
+      public boolean test(T target) {
+        return BasePredicate.this.test(target) && other.test(target);
+      }
+    };
+  }
 
-  Predicate<T> and(Predicate<T> other);
+  public Predicate<T> or(final Predicate<T> other) {
+    return new BasePredicate<T>() {
+      public boolean test(T target) {
+        return BasePredicate.this.test(target) || other.test(target);
+      }
+    };
+  }
 
-  Predicate<T> or(Predicate<T> other);
-
-  Predicate<T> negate();
-
+  public Predicate<T> negate() {
+    return new BasePredicate<T>() {
+      public boolean test(T target) {
+        return !BasePredicate.this.test(target);
+      }
+    };
+  }
 }

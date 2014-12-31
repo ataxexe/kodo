@@ -24,11 +24,11 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package org.kodo;
+package tools.devnull.kodo;
 
 import org.hamcrest.Matcher;
-import org.kodo.function.BasePredicate;
-import org.kodo.function.Predicate;
+import tools.devnull.kodo.function.BasePredicate;
+import tools.devnull.kodo.function.Predicate;
 
 /**
  * Helper class that contains usefull methods to create the assertions for the
@@ -81,7 +81,7 @@ public class Spec {
   /**
    * Indicates a value that should be empty
    *
-   * @see org.kodo.EmptyPredicate
+   * @see EmptyPredicate
    */
   public static final Predicate EMPTY = new EmptyPredicate();
 

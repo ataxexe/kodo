@@ -24,7 +24,7 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package org.kodo.function;
+package tools.devnull.kodo.function;
 
 /**
  * @author Marcelo Guimarães

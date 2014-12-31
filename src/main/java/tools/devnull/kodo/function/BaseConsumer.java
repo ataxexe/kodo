@@ -24,17 +24,18 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package org.kodo.function;
+package tools.devnull.kodo.function;
 
 /**
  * @author Marcelo Guimarães
  */
-public abstract class BaseFunction<T, R> implements Function<T, R> {
+public abstract class BaseConsumer<T> implements Consumer<T> {
 
-  public <V> Function<T, V> andThen(final Function<? super R, ? extends V> after) {
-    return new BaseFunction<T, V>() {
-      public V apply(T t) {
-        return after.apply(BaseFunction.this.apply(t));
+  public Consumer<T> andThen(final Consumer<? super T> after) {
+    return new BaseConsumer<T>() {
+      public void accept(T t) {
+        accept(t);
+        after.accept(t);
       }
     };
   }

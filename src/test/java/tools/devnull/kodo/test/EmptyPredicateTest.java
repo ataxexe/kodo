@@ -24,16 +24,16 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package org.kodo.test;
+package tools.devnull.kodo.test;
 
 import org.junit.Test;
-import org.kodo.Spec;
+import tools.devnull.kodo.Spec;
 
 import java.util.Collection;
 import java.util.Map;
 
-import static org.kodo.test.SpecTests.test;
-import static org.kodo.test.SpecTests.testFail;
+import static tools.devnull.kodo.test.SpecTests.test;
+import static tools.devnull.kodo.test.SpecTests.testFail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

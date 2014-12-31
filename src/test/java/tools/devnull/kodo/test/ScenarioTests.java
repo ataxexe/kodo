@@ -24,7 +24,7 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package org.kodo.test;
+package tools.devnull.kodo.test;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
@@ -32,11 +32,11 @@ import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kodo.Scenario;
-import org.kodo.TestScenario;
-import org.kodo.function.Consumer;
-import org.kodo.function.Function;
-import org.kodo.function.Predicate;
+import tools.devnull.kodo.Scenario;
+import tools.devnull.kodo.TestScenario;
+import tools.devnull.kodo.function.Consumer;
+import tools.devnull.kodo.function.Function;
+import tools.devnull.kodo.function.Predicate;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 

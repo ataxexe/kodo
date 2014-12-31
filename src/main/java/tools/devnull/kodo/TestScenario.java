@@ -24,11 +24,11 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package org.kodo;
+package tools.devnull.kodo;
 
-import org.kodo.function.Consumer;
-import org.kodo.function.Function;
-import org.kodo.function.Predicate;
+import tools.devnull.kodo.function.Consumer;
+import tools.devnull.kodo.function.Function;
+import tools.devnull.kodo.function.Predicate;
 
 /**
  * A class to create scenarios for testing.

@@ -24,18 +24,18 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package org.kodo;
+package tools.devnull.kodo;
 
-import org.kodo.function.Consumer;
-import org.kodo.function.Function;
-import org.kodo.function.Predicate;
+import tools.devnull.kodo.function.Consumer;
+import tools.devnull.kodo.function.Function;
+import tools.devnull.kodo.function.Predicate;
 
 /**
  * Interface that defines a common set of methods to define test scenarios for a
  * target object.
  *
  * @author Marcelo Guimarães
- * @see org.kodo.TestScenario#given(Object)
+ * @see TestScenario#given(Object)
  */
 public interface Scenario<T> {
 
@@ -80,8 +80,8 @@ public interface Scenario<T> {
   Scenario<T> then(Consumer<? super T> operation, Predicate<?> test, String message);
 
   /**
-   * Defines operations to execute as {@link #then(org.kodo.function.Consumer,
-   * org.kodo.function.Predicate)}.
+   * Defines operations to execute as {@link #then(tools.devnull.kodo.function.Consumer,
+   * tools.devnull.kodo.function.Predicate)}.
    *
    * @param consumer the operation to execute with the target object.
    * @param test     the test to do with the raised exception (if no exception
@@ -92,8 +92,8 @@ public interface Scenario<T> {
   Scenario<T> and(Consumer<? super T> consumer, Predicate test);
 
   /**
-   * Defines operations to execute as {@link #then(org.kodo.function.Consumer,
-   * org.kodo.function.Predicate)}.
+   * Defines operations to execute as {@link #then(tools.devnull.kodo.function.Consumer,
+   * tools.devnull.kodo.function.Predicate)}.
    *
    * @param consumer the operation to execute with the target object.
    * @param test     the test to do with the raised exception (if no exception
@@ -155,7 +155,7 @@ public interface Scenario<T> {
 
   /**
    * Adds more tests to do with the target as the {@link
-   * #thenIt(org.kodo.function.Predicate)} method.
+   * #thenIt(tools.devnull.kodo.function.Predicate)} method.
    *
    * @param test the test to do with the target
    * @return a reference to this object
@@ -173,7 +173,7 @@ public interface Scenario<T> {
 
   /**
    * Adds more tests to do with the target as the {@link
-   * #thenIt(org.kodo.function.Predicate, String)} method.
+   * #thenIt(tools.devnull.kodo.function.Predicate, String)} method.
    *
    * @param test    the test to do with the target
    * @param message the message to throw if the test fail
@@ -237,7 +237,7 @@ public interface Scenario<T> {
 
   /**
    * Adds more tests to do with the value as the method
-   * {@link #then(Object, org.kodo.function.Predicate)}.
+   * {@link #then(Object, tools.devnull.kodo.function.Predicate)}.
    *
    * @param value the value to test
    * @param test  the test to do with the value
@@ -247,7 +247,7 @@ public interface Scenario<T> {
 
   /**
    * Adds more tests to do with the value as the method
-   * {@link #then(Object, org.kodo.function.Predicate, String)}.
+   * {@link #then(Object, tools.devnull.kodo.function.Predicate, String)}.
    *
    * @param value   the value to test
    * @param test    the test to do with the value

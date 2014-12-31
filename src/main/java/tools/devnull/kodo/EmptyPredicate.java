@@ -24,10 +24,10 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package org.kodo;
+package tools.devnull.kodo;
 
-import org.kodo.function.BasePredicate;
-import org.kodo.function.Predicate;
+import tools.devnull.kodo.function.BasePredicate;
+import tools.devnull.kodo.function.Predicate;
 
 import java.util.Collection;
 import java.util.HashMap;
