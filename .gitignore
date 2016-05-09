@@ -1,6 +1,6 @@
 .gradle
 kodo.iws
-.idea/workspace.xml
+.idea
 build
 out
 gradle.properties
