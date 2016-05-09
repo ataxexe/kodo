@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.1 (2016-05-08)
+
+- Fix a NPE when the target is null
+
 ## v1.0 (31-12-2014)
 
 None significant.

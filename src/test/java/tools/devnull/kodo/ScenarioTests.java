@@ -238,6 +238,16 @@ public class ScenarioTests {
     }
   }
 
+  @Test
+  public void testDefaultMessageWithNullTarget() {
+    try {
+      scenario.the((String) null, failTest);
+      throw new Error();
+    } catch (AssertionError error) {
+      assertEquals("for value: null", error.getMessage());
+    }
+  }
+
   private void assertMessage(Runnable command) {
     try {
       command.run();

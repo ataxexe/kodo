@@ -51,7 +51,7 @@ public class TestScenario<T> implements Scenario<T> {
   }
 
   private String defaultMessage(Object target) {
-    return String.format("for value: %s", target.toString());
+    return String.format("for value: %s", target);
   }
 
   @Override
