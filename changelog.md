@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.1.0 (2016-08-17)
+
+- Fix generic types so compiler will not freak out
+- Add a `Spec#test` method
+
 ## v1.0.1 (2016-05-08)
 
 - Fix a NPE when the target is null

@@ -215,6 +215,13 @@ public class ScenarioTests {
   }
 
   @Test
+  public void test() {
+    scenario.test(function, test);
+    verify(function).apply(target);
+    verify(test).test(value);
+  }
+
+  @Test
   public void testMessages() {
     assertMessage(() -> scenario.and(operation, failTest, message));
     assertMessage(() -> scenario.and(failTest, message));

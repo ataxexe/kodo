@@ -61,11 +61,11 @@ public interface Scenario<T> {
    * @param operation the operation to do with the target
    * @param test      the test to do with the raised exception (if no exception
    *                  is thrown, a <code>null</code> value will be given to this
-   *                  consumer
+   *                  test
    * @return a reference to this object.
    * @see Spec#raise(Class)
    */
-  Scenario<T> then(Consumer<? super T> operation, Predicate<?> test);
+  Scenario<T> then(Consumer<? super T> operation, Predicate<? extends Throwable> test);
 
   /**
    * Defines an operation that may throw an exception.
@@ -73,11 +73,11 @@ public interface Scenario<T> {
    * @param operation the operation to do with the target
    * @param test      the test to do with the raised exception (if no exception
    *                  is thrown, a <code>null</code> value will be given to this
-   *                  consumer
+   *                  test
    * @param message   the message to throw if the test fail
    * @return a reference to this object.
    */
-  Scenario<T> then(Consumer<? super T> operation, Predicate<?> test, String message);
+  Scenario<T> then(Consumer<? super T> operation, Predicate<? extends Throwable> test, String message);
 
   /**
    * Defines operations to execute as
@@ -89,7 +89,7 @@ public interface Scenario<T> {
    *                 consumer
    * @return a reference to this object
    */
-  Scenario<T> and(Consumer<? super T> consumer, Predicate test);
+  Scenario<T> and(Consumer<? super T> consumer, Predicate<? extends Throwable> test);
 
   /**
    * Defines operations to execute as
@@ -113,7 +113,7 @@ public interface Scenario<T> {
    * @return a reference to this object
    * @see Spec
    */
-  Scenario<T> the(Function<? super T, ?> function, Predicate<?> test);
+  <E> Scenario<T> the(Function<? super T, E> function, Predicate<E> test);
 
   /**
    * Defines a test for some target operation that returns a value.
@@ -124,13 +124,34 @@ public interface Scenario<T> {
    * @param message  the message to throw if the test fail
    * @return a reference to this object
    */
-  Scenario<T> the(Function<? super T, ?> function, Predicate<?> test, String message);
+  <E> Scenario<T> the(Function<? super T, E> function, Predicate<E> test, String message);
+
+  /**
+   * Defines a test for some target operation that returns a value.
+   *
+   * @param function the operation to do with the target
+   * @param test     the test to do with the value returned by the given
+   *                 function
+   * @return a reference to this object
+   */
+  Scenario<T> test(Function<T, ?> function, Predicate test);
+
+  /**
+   * Defines a test for some target operation that returns a value.
+   *
+   * @param function the operation to do with the target
+   * @param test     the test to do with the value returned by the given
+   *                 function
+   * @param message  the message to throw if the test fail
+   * @return a reference to this object
+   */
+  Scenario<T> test(Function<T, ?> function, Predicate test, String message);
 
   /**
    * Defines a test for each element of the target. This requires an
    * {@link java.lang.Iterable} target.
    *
-   * @param test the test to do with the values in the targegt
+   * @param test the test to do with the values in the target
    * @return a reference to this object.
    */
   Scenario<T> each(Predicate test);

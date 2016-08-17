@@ -70,8 +70,8 @@ public interface Spec {
    * Predicate that returns <code>true</code> if the value is the same as
    * the given one
    */
-  static Predicate<Comparable> equal(Comparable value) {
-    return comparable -> comparable.compareTo(value) == 0;
+  static <T> Predicate<T> equal(T value) {
+    return be(value);
   }
 
   /**
@@ -110,7 +110,7 @@ public interface Spec {
    * Indicates that the value should
    * {@link java.lang.Object#equals(Object) equal} the given value.
    */
-  static Predicate be(Object value) {
+  static <T> Predicate<T> be(T value) {
     return obj -> Objects.equals(obj, value);
   }
 
@@ -118,7 +118,7 @@ public interface Spec {
    * Indicates that the value should not
    * {@link java.lang.Object#equals(Object) equal} the given value.
    */
-  static Predicate notBe(Object value) {
+  static <T> Predicate<T> notBe(T value) {
     return obj -> !Objects.equals(obj, value);
   }
 
@@ -126,7 +126,7 @@ public interface Spec {
    * Indicates that the value should not
    * {@link java.lang.Object#equals(Object) equal} the given value.
    */
-  static Predicate notEqual(Object value) {
+  static <T> Predicate<T> notEqual(T value) {
     return notBe(value);
   }
 
@@ -134,7 +134,7 @@ public interface Spec {
    * Indicates that the value should {@link Predicate#test(Object) match} the
    * given predicate.
    */
-  static Predicate be(Predicate predicate) {
+  static <T> Predicate<T> be(Predicate<T> predicate) {
     return predicate;
   }
 
@@ -142,7 +142,7 @@ public interface Spec {
    * Indicates that the value should not {@link Predicate#test(Object) match}
    * the given predicate.
    */
-  static Predicate notBe(Predicate predicate) {
+  static <T> Predicate<T> notBe(Predicate<T> predicate) {
     return predicate.negate();
   }
 
@@ -153,7 +153,7 @@ public interface Spec {
    * @param predicate the predicate to test the target.
    * @return a consumer that uses the given predicate to test the target.
    */
-  static Predicate have(Predicate predicate) {
+  static <T> Predicate<T> have(Predicate<T> predicate) {
     return predicate;
   }
 
@@ -164,21 +164,21 @@ public interface Spec {
    * @param predicate the predicate to test the target.
    * @return a consumer that uses the given predicate to test the target.
    */
-  static Predicate notHave(Predicate predicate) {
+  static <T> Predicate<T> notHave(Predicate<T> predicate) {
     return predicate.negate();
   }
 
   /**
    * Indicates that the value should match the given matcher.
    */
-  static Predicate match(Matcher matcher) {
+  static <T> Predicate<T> match(Matcher matcher) {
     return obj -> matcher.matches(obj);
   }
 
   /**
    * Indicates that the operation should throw the given exception.
    */
-  static Predicate raise(Class<? extends Throwable> exception) {
+  static Predicate<? extends Throwable> raise(Class<? extends Throwable> exception) {
     return error ->
         error != null && exception.isAssignableFrom(error.getClass());
   }
@@ -186,7 +186,7 @@ public interface Spec {
   /**
    * Indicates that the operation should not throw any exceptions.
    */
-  static Predicate succeed() {
+  static Predicate<? extends Throwable> succeed() {
     return error -> error == null;
   }
 

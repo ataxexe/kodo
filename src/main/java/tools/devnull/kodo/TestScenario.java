@@ -55,6 +55,17 @@ public class TestScenario<T> implements Scenario<T> {
   }
 
   @Override
+  public Scenario<T> test(Function function, Predicate test) {
+    return test(function, test, "");
+  }
+
+  @Override
+  public Scenario<T> test(Function function, Predicate test, String message) {
+    test(test, function.apply(target), message);
+    return this;
+  }
+
+  @Override
   public Scenario<T> when(Consumer<? super T> operation) {
     operation.accept(target);
     return this;
@@ -114,12 +125,12 @@ public class TestScenario<T> implements Scenario<T> {
   }
 
   @Override
-  public Scenario<T> then(Consumer<? super T> operation, Predicate<?> test) {
+  public Scenario<T> then(Consumer<? super T> operation, Predicate<? extends Throwable> test) {
     return then(operation, test, "");
   }
 
   @Override
-  public Scenario<T> and(Consumer<? super T> consumer, Predicate test) {
+  public Scenario<T> and(Consumer<? super T> consumer, Predicate<? extends Throwable> test) {
     return then(consumer, test);
   }
 
@@ -129,7 +140,7 @@ public class TestScenario<T> implements Scenario<T> {
   }
 
   @Override
-  public Scenario<T> the(Function<? super T, ?> function, Predicate<?> test) {
+  public Scenario<T> the(Function function, Predicate test) {
     return the(function, test, "");
   }
 
