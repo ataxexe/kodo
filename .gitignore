@@ -2,5 +2,6 @@
 kodo.iws
 .idea
 build
+classes
 out
 gradle.properties
