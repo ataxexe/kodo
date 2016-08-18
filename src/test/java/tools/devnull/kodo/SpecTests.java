@@ -38,6 +38,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static tools.devnull.kodo.Spec.should;
+import static tools.devnull.kodo.Spec.to;
 
 /**
  * The test suite for {@link Spec}
@@ -65,6 +66,12 @@ public class SpecTests {
 
     test(should().be(1), 1);
     testFail(should().be(1), 2);
+
+    test(to().be("test"), "test");
+    testFail(to().be("test"), "");
+
+    test(to().be(1), 1);
+    testFail(to().be(1), 2);
   }
 
   @Test
