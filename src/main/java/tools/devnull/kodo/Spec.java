@@ -29,6 +29,7 @@ package tools.devnull.kodo;
 import org.hamcrest.Matcher;
 
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
@@ -39,8 +40,14 @@ import java.util.function.Predicate;
  */
 public class Spec {
 
-  private Spec() {
+  private final Function<Predicate, Predicate> modifier;
 
+  Spec(Function<Predicate, Predicate> modifier) {
+    this.modifier = modifier;
+  }
+
+  private <T> Predicate<T> create(Predicate<T> predicate) {
+    return modifier.apply(predicate);
   }
 
   /**
@@ -48,15 +55,7 @@ public class Spec {
    * {@link java.lang.Object#equals(Object) equal} the given value.
    */
   public <T> Predicate<T> be(T value) {
-    return obj -> Objects.equals(obj, value);
-  }
-
-  /**
-   * Indicates that the value should not
-   * {@link java.lang.Object#equals(Object) equal} the given value.
-   */
-  public <T> Predicate<T> notBe(T value) {
-    return obj -> !Objects.equals(obj, value);
+    return create(obj -> Objects.equals(obj, value));
   }
 
   /**
@@ -67,26 +66,11 @@ public class Spec {
   }
 
   /**
-   * @see #notBe(Object)
-   */
-  public <T> Predicate<T> notEqual(T value) {
-    return notBe(value);
-  }
-
-  /**
    * Indicates that the value should {@link Predicate#test(Object) match} the
    * given predicate.
    */
   public <T> Predicate<T> be(Predicate<T> predicate) {
-    return predicate;
-  }
-
-  /**
-   * Indicates that the value should not {@link Predicate#test(Object) match}
-   * the given predicate.
-   */
-  public <T> Predicate<T> notBe(Predicate<T> predicate) {
-    return predicate.negate();
+    return create(predicate);
   }
 
   /**
@@ -97,40 +81,37 @@ public class Spec {
    * @return a consumer that uses the given predicate to test the target.
    */
   public <T> Predicate<T> have(Predicate<T> predicate) {
-    return predicate;
-  }
-
-  /**
-   * Indicates that the target should not have something that is tested with
-   * the given predicate.
-   *
-   * @param predicate the predicate to test the target.
-   * @return a consumer that uses the given predicate to test the target.
-   */
-  public <T> Predicate<T> notHave(Predicate<T> predicate) {
-    return predicate.negate();
+    return create(predicate);
   }
 
   /**
    * Indicates that the value should match the given matcher.
    */
   public <T> Predicate<T> match(Matcher matcher) {
-    return obj -> matcher.matches(obj);
+    return create(obj -> matcher.matches(obj));
   }
 
   /**
    * Indicates that the operation should throw the given exception.
    */
   public Predicate<? extends Throwable> raise(Class<? extends Throwable> exception) {
-    return error ->
-        error != null && exception.isAssignableFrom(error.getClass());
+    return create(error -> error != null && exception.isAssignableFrom(error.getClass()));
   }
 
   /**
    * Indicates that the operation should not throw any exceptions.
    */
   public Predicate<? extends Throwable> succeed() {
-    return error -> error == null;
+    return create(error -> error == null);
+  }
+
+  /**
+   * Creates a new Spec that will negates the given predicates.
+   *
+   * @return a new Spec that negates every given predicate
+   */
+  public Spec not() {
+    return new Spec(Predicate::negate);
   }
 
   /**
@@ -139,7 +120,16 @@ public class Spec {
    * @return the created Spec object
    */
   public static Spec should() {
-    return new Spec();
+    return new Spec(Function.identity());
+  }
+
+  /**
+   * Creates a new Spec
+   *
+   * @return the created Spec object
+   */
+  public static Spec to() {
+    return new Spec(Function.identity());
   }
 
 }

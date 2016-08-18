@@ -76,4 +76,22 @@ public interface Predicates {
     return comparable -> comparable.compareTo(value) <= 0;
   }
 
+  /**
+   * Predicate for evaluating iterable objects. Each object will be tested against the
+   * given predicate and the result will be {@code true} only if all objects pass in
+   * the evaluation.
+   *
+   * @param predicate the predicate to evaluate the objects
+   * @return a predicate that uses the given one to test iterable objects
+   */
+  static <T> Predicate<Iterable<T>> eachOne(Predicate<? super T> predicate) {
+    return iterable -> {
+      boolean result = true;
+      for (T t : iterable) {
+        result = predicate.test(t);
+      }
+      return result;
+    };
+  }
+
 }

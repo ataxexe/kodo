@@ -34,6 +34,9 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static tools.devnull.kodo.Spec.should;
 
 /**
@@ -45,6 +48,7 @@ public class SpecTests {
       value -> value.toString().length() > 5;
   private Predicate alwaysTrue = value -> true;
   private Predicate alwaysFalse = value -> false;
+  private Object value = new Object();
 
   public static void test(Predicate predicate, Object value) {
     assertTrue(predicate.test(value));
@@ -64,15 +68,6 @@ public class SpecTests {
   }
 
   @Test
-  public void testNotBeWithObject() {
-    testFail(should().notBe("test"), "test");
-    test(should().notBe("test"), "");
-
-    testFail(should().notBe(1), 1);
-    test(should().notBe(1), 2);
-  }
-
-  @Test
   public void testEqual() {
     test(should().equal("test"), "test");
     testFail(should().equal("test"), "");
@@ -82,72 +77,33 @@ public class SpecTests {
   }
 
   @Test
-  public void testNotEqual() {
-    testFail(should().notEqual("test"), "test");
-    test(should().notEqual("test"), "");
-
-    testFail(should().notEqual(1), 1);
-    test(should().notEqual(1), 2);
-  }
-
-  @Test
   public void testBeWithPredicate() {
     test(should().be(noMoreThan5Chars), "123456");
     test(should().be(noMoreThan5Chars), 123456);
-    test(should().be(alwaysTrue), null);
+    test(should().be(alwaysTrue), value);
     test(should().be(alwaysTrue), "");
     test(should().be(alwaysTrue), 1);
 
     testFail(should().be(noMoreThan5Chars), "12345");
     testFail(should().be(noMoreThan5Chars), 12345);
-    testFail(should().be(alwaysFalse), null);
+    testFail(should().be(alwaysFalse), value);
     testFail(should().be(alwaysFalse), "");
     testFail(should().be(alwaysFalse), 1);
-  }
-
-  @Test
-  public void testNotBeWithPredicate() {
-    testFail(should().notBe(noMoreThan5Chars), "123456");
-    testFail(should().notBe(noMoreThan5Chars), 123456);
-    testFail(should().notBe(alwaysTrue), null);
-    testFail(should().notBe(alwaysTrue), "");
-    testFail(should().notBe(alwaysTrue), 1);
-
-    test(should().notBe(noMoreThan5Chars), "12345");
-    test(should().notBe(noMoreThan5Chars), 12345);
-    test(should().notBe(alwaysFalse), null);
-    test(should().notBe(alwaysFalse), "");
-    test(should().notBe(alwaysFalse), 1);
   }
 
   @Test
   public void testHaveWithPredicate() {
     test(should().have(noMoreThan5Chars), "123456");
     test(should().have(noMoreThan5Chars), 123456);
-    test(should().have(alwaysTrue), null);
+    test(should().have(alwaysTrue), value);
     test(should().have(alwaysTrue), "");
     test(should().have(alwaysTrue), 1);
 
     testFail(should().have(noMoreThan5Chars), "12345");
     testFail(should().have(noMoreThan5Chars), 12345);
-    testFail(should().have(alwaysFalse), null);
+    testFail(should().have(alwaysFalse), value);
     testFail(should().have(alwaysFalse), "");
     testFail(should().have(alwaysFalse), 1);
-  }
-
-  @Test
-  public void testNotHaveWithPredicate() {
-    testFail(should().notHave(noMoreThan5Chars), "123456");
-    testFail(should().notHave(noMoreThan5Chars), 123456);
-    testFail(should().notHave(alwaysTrue), null);
-    testFail(should().notHave(alwaysTrue), "");
-    testFail(should().notHave(alwaysTrue), 1);
-
-    test(should().notHave(noMoreThan5Chars), "12345");
-    test(should().notHave(noMoreThan5Chars), 12345);
-    test(should().notHave(alwaysFalse), null);
-    test(should().notHave(alwaysFalse), "");
-    test(should().notHave(alwaysFalse), 1);
   }
 
   @Test
@@ -172,6 +128,19 @@ public class SpecTests {
   public void testMatch() {
     test(should().match(is(nullValue())), null);
     testFail(should().match(is(nullValue())), "");
+  }
+
+  @Test
+  public void testNegate() {
+    Predicate predicate = mock(Predicate.class);
+    Predicate negate = mock(Predicate.class);
+
+    when(negate.test(value)).thenReturn(true);
+    when(predicate.negate()).thenReturn(negate);
+
+    test(should().not().be(predicate), value);
+    verify(predicate).negate();
+    verify(negate).test(value);
   }
 
 }

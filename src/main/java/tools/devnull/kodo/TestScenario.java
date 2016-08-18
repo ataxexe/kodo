@@ -55,17 +55,6 @@ public class TestScenario<T> implements Scenario<T> {
   }
 
   @Override
-  public Scenario<T> test(Function function, Predicate test) {
-    return test(function, test, "");
-  }
-
-  @Override
-  public Scenario<T> test(Function function, Predicate test, String message) {
-    test(test, function.apply(target), message);
-    return this;
-  }
-
-  @Override
   public Scenario<T> when(Consumer<? super T> operation) {
     operation.accept(target);
     return this;
@@ -83,39 +72,14 @@ public class TestScenario<T> implements Scenario<T> {
   }
 
   @Override
-  public Scenario<T> the(Function function, Predicate test, String message) {
-    test(test, function.apply(target), message);
-    return this;
-  }
-
-  @Override
-  public Scenario<T> each(Predicate test, String message) {
-    ((Iterable) target).forEach(obj -> test(test, obj, message));
-    return this;
-  }
-
-  @Override
-  public Scenario<T> thenIt(Predicate<? super T> test, String message) {
-    test(test, target, message);
-    return this;
-  }
-
-  @Override
   public Scenario<T> it(Predicate<? super T> test, String message) {
     test(test, target, message);
     return this;
   }
 
   @Override
-  public Scenario<T> the(Object value, Predicate test, String message) {
-    test(test, value, message);
-    return this;
-  }
-
-  @Override
-  public Scenario<T> then(Object value, Predicate test, String message) {
-    test(test, value, message);
-    return this;
+  public Scenario<T> it(Predicate<? super T> test) {
+    return it(test, "");
   }
 
   @Override
@@ -130,63 +94,27 @@ public class TestScenario<T> implements Scenario<T> {
   }
 
   @Override
-  public Scenario<T> and(Consumer<? super T> consumer, Predicate<? extends Throwable> test) {
-    return then(consumer, test);
+  public <E> Scenario<T> then(Function<? super T, E> function, Predicate<? super E> test) {
+    test(test, function.apply(target), "");
+    return this;
   }
 
   @Override
-  public Scenario<T> and(Consumer<? super T> consumer, Predicate test, String message) {
-    return then(consumer, test, message);
+  public <E> Scenario<T> then(Function<? super T, E> function, Predicate<? super E> test, String message) {
+    test(test, function.apply(target), message);
+    return this;
   }
 
   @Override
-  public Scenario<T> the(Function function, Predicate test) {
-    return the(function, test, "");
+  public <E> Scenario<T> expect(E value, Predicate<E> test) {
+    test(test, value, "");
+    return this;
   }
 
   @Override
-  public Scenario<T> each(Predicate test) {
-    return each(test, "");
-  }
-
-  @Override
-  public Scenario<T> thenIt(Predicate<? super T> test) {
-    return thenIt(test, "");
-  }
-
-  @Override
-  public Scenario<T> and(Predicate<? super T> test) {
-    return thenIt(test);
-  }
-
-  @Override
-  public Scenario<T> and(Predicate<? super T> test, String message) {
-    return thenIt(test, message);
-  }
-
-  @Override
-  public Scenario<T> it(Predicate<? super T> test) {
-    return it(test, "");
-  }
-
-  @Override
-  public Scenario<T> the(Object value, Predicate test) {
-    return the(value, test, "");
-  }
-
-  @Override
-  public Scenario<T> then(Object value, Predicate test) {
-    return then(value, test, "");
-  }
-
-  @Override
-  public Scenario<T> and(Object value, Predicate test) {
-    return then(value, test, "");
-  }
-
-  @Override
-  public Scenario<T> and(Object value, Predicate test, String message) {
-    return then(value, test, message);
+  public <E> Scenario<T> expect(E value, Predicate<E> test, String message) {
+    test(test, value, message);
+    return this;
   }
 
   /**

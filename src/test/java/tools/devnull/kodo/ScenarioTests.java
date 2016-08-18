@@ -42,8 +42,10 @@ import java.util.function.Predicate;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
-import static org.mockito.Matchers.intThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.anyObject;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Marcelo Guimarães
@@ -93,35 +95,17 @@ public class ScenarioTests {
 
   @Test
   public void testReturns() {
-    assertSame(scenario, scenario.and(operation, test));
-    assertSame(scenario, scenario.and(operation, test, message));
-
-    assertSame(scenario, scenario.and(test));
-    assertSame(scenario, scenario.and(test, message));
-
-    assertSame(listScenario, listScenario.each(test));
-    assertSame(listScenario, listScenario.each(test, message));
-
     assertSame(scenario, scenario.it(test));
     assertSame(scenario, scenario.it(test, message));
 
-    assertSame(scenario, scenario.the(function, test));
-    assertSame(scenario, scenario.the(function, test, message));
-
-    assertSame(scenario, scenario.the(value, test));
-    assertSame(scenario, scenario.the(value, test, message));
+    assertSame(scenario, scenario.then(function, test));
+    assertSame(scenario, scenario.then(function, test, message));
 
     assertSame(scenario, scenario.then(operation, test));
     assertSame(scenario, scenario.then(operation, test, message));
 
-    assertSame(scenario, scenario.then(value, test));
-    assertSame(scenario, scenario.then(value, test, message));
-
-    assertSame(scenario, scenario.and(value, test));
-    assertSame(scenario, scenario.and(value, test, message));
-
-    assertSame(scenario, scenario.thenIt(test));
-    assertSame(scenario, scenario.thenIt(test, message));
+    assertSame(scenario, scenario.expect(value, test));
+    assertSame(scenario, scenario.expect(value, test, message));
 
     assertSame(scenario, scenario.when(operation));
     assertSame(scenario, scenario.when(runnableOperation));
@@ -140,50 +124,21 @@ public class ScenarioTests {
   }
 
   @Test
-  public void testAndWithConsumerAndPredicate() {
-    scenario.and(operation, test);
-
-    verify(operation).accept(target);
-    verify(test).test(null);
-  }
-
-  @Test
-  public void testAndWithConsumerAndPredicateForException() {
-    scenario.and(failOperation, test);
-
-    verify(failOperation).accept(target);
-    verify(test).test(exception);
-  }
-
-  @Test
-  public void testAndWithPredicate() {
-    scenario.and(test);
-
-    verify(test).test(target);
-  }
-
-  @Test
-  public void testEach() {
-    listScenario.each(test);
-    verify(test, times(3)).test(intThat(isBetween1and3));
-  }
-
-  @Test
   public void testIt() {
     scenario.it(test);
     verify(test).test(target);
   }
 
   @Test
-  public void testTheWithFunction() {
-    scenario.the(function, test);
+  public void testThenWithFunction() {
+    scenario.then(function, test);
     verify(function).apply(target);
     verify(test).test(value);
   }
 
   @Test
-  public void testTheWithValue() {
-    scenario.the(value, test);
+  public void testExpect() {
+    scenario.expect(value, test);
     verify(test).test(value);
   }
 
@@ -197,48 +152,17 @@ public class ScenarioTests {
   }
 
   @Test
-  public void testThenWithValue() {
-    scenario.then(value, test);
-    verify(test).test(value);
-  }
-
-  @Test
-  public void testAndWithValue() {
-    scenario.and(value, test);
-    verify(test).test(value);
-  }
-
-  @Test
-  public void testThenIt() {
-    scenario.thenIt(test);
-    verify(test).test(target);
-  }
-
-  @Test
-  public void test() {
-    scenario.test(function, test);
-    verify(function).apply(target);
-    verify(test).test(value);
-  }
-
-  @Test
   public void testMessages() {
-    assertMessage(() -> scenario.and(operation, failTest, message));
-    assertMessage(() -> scenario.and(failTest, message));
-    assertMessage(() -> listScenario.each(failTest, message));
     assertMessage(() -> scenario.it(failTest, message));
-    assertMessage(() -> scenario.the(function, failTest, message));
-    assertMessage(() -> scenario.the(value, failTest, message));
+    assertMessage(() -> scenario.then(function, failTest, message));
     assertMessage(() -> scenario.then(operation, failTest, message));
-    assertMessage(() -> scenario.then(value, failTest, message));
-    assertMessage(() -> scenario.and(value, failTest, message));
-    assertMessage(() -> scenario.thenIt(failTest, message));
+    assertMessage(() -> scenario.expect(value, failTest, message));
   }
 
   @Test
   public void testDefaultMessage() {
     try {
-      scenario.the("some value", failTest);
+      scenario.expect("some value", failTest);
       throw new Error();
     } catch (AssertionError error) {
       assertEquals("for value: some value", error.getMessage());
@@ -248,7 +172,7 @@ public class ScenarioTests {
   @Test
   public void testDefaultMessageWithNullTarget() {
     try {
-      scenario.the((String) null, failTest);
+      scenario.expect(null, failTest);
       throw new Error();
     } catch (AssertionError error) {
       assertEquals("for value: null", error.getMessage());
