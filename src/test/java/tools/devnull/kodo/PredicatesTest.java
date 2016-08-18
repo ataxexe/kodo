@@ -2,27 +2,25 @@ package tools.devnull.kodo;
 
 import org.junit.Test;
 
-import java.util.function.Predicate;
+import java.util.Arrays;
+import java.util.List;
 
-import static org.junit.Assert.assertTrue;
 import static tools.devnull.kodo.Predicates.FALSE;
 import static tools.devnull.kodo.Predicates.NOT_NULL;
 import static tools.devnull.kodo.Predicates.NULL;
 import static tools.devnull.kodo.Predicates.TRUE;
+import static tools.devnull.kodo.Predicates.eachOne;
 import static tools.devnull.kodo.Predicates.greatherThan;
 import static tools.devnull.kodo.Predicates.greatherThanOrEqual;
 import static tools.devnull.kodo.Predicates.lessThan;
 import static tools.devnull.kodo.Predicates.lessThanOrEqual;
-import static tools.devnull.kodo.SpecTests.testFail;
+import static tools.devnull.kodo.TestHelper.test;
+import static tools.devnull.kodo.TestHelper.testFail;
 
 /**
  * The test suite for the {@link Predicates}
  */
 public class PredicatesTest {
-
-  public static void test(Predicate predicate, Object value) {
-    assertTrue(predicate.test(value));
-  }
 
   @Test
   public void testNull() {
@@ -77,6 +75,13 @@ public class PredicatesTest {
     test(lessThanOrEqual(10), 9);
     test(lessThanOrEqual(10), 10);
     testFail(lessThanOrEqual(10), 11);
+  }
+
+  @Test
+  public void testEachOne() {
+    List<Integer> list = Arrays.asList(1, 2, 3, 4);
+    test(eachOne(lessThan(5)), list);
+    testFail(eachOne(lessThan(4)), list);
   }
 
 }

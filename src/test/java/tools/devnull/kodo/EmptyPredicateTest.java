@@ -33,6 +33,8 @@ import java.util.Map;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static tools.devnull.kodo.TestHelper.test;
+import static tools.devnull.kodo.TestHelper.testFail;
 
 /**
  * @author Marcelo Guimarães
@@ -40,11 +42,13 @@ import static org.mockito.Mockito.when;
 public class EmptyPredicateTest {
 
   private void testPredicate(Object target) {
-    SpecTests.test(Predicates.EMPTY, target);
+    test(Predicates.EMPTY, target);
+    test(Predicates.empty(), target);
   }
 
   private void testFailPredicate(Object target) {
-    SpecTests.testFail(Predicates.EMPTY, target);
+    testFail(Predicates.EMPTY, target);
+    testFail(Predicates.empty(), target);
   }
 
   @Test

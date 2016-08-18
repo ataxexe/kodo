@@ -32,13 +32,13 @@ import java.util.function.Predicate;
 
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static tools.devnull.kodo.Spec.should;
 import static tools.devnull.kodo.Spec.to;
+import static tools.devnull.kodo.TestHelper.test;
+import static tools.devnull.kodo.TestHelper.testFail;
 
 /**
  * The test suite for {@link Spec}
@@ -50,14 +50,6 @@ public class SpecTests {
   private Predicate alwaysTrue = value -> true;
   private Predicate alwaysFalse = value -> false;
   private Object value = new Object();
-
-  public static void test(Predicate predicate, Object value) {
-    assertTrue(predicate.test(value));
-  }
-
-  public static void testFail(Predicate predicate, Object value) {
-    assertFalse(predicate.test(value));
-  }
 
   @Test
   public void testBeWithObject() {
