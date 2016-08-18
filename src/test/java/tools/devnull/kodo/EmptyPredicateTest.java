@@ -40,11 +40,11 @@ import static org.mockito.Mockito.when;
 public class EmptyPredicateTest {
 
   private void testPredicate(Object target) {
-    SpecTests.test(Spec.EMPTY, target);
+    SpecTests.test(Predicates.EMPTY, target);
   }
 
   private void testFailPredicate(Object target) {
-    SpecTests.testFail(Spec.EMPTY, target);
+    SpecTests.testFail(Predicates.EMPTY, target);
   }
 
   @Test

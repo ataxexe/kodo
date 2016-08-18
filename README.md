@@ -13,6 +13,8 @@ Just put the really small kodo jar file on your classpath. You can also install 
 - **groupId:** tools.devnull
 - **artifactId:** kodo
 
+Kodo is also in Maven Central. Just use the above `groupId` and `artifactId` to declare the dependency.
+
 # Creating Test Scenarios
 
 To create a new test scenario, use the `TestScenario` helper class. It defines an entry point to the fluent interface:
@@ -26,7 +28,7 @@ With the `Scenario` interface returned, you can use a set of methods to describe
 ~~~java
 TestScenario.given(someObject)
   .when(obj -> obj.foo())
-  .thenIt(should(be(obj -> obj.isValid())));
+  .thenIt(should().be(obj -> obj.isValid()));
 ~~~
 
 This can be refactored to a more elegant code:
@@ -34,7 +36,7 @@ This can be refactored to a more elegant code:
 ~~~java
 TestScenario.given(someObject)
   .when(itExecutes()) // an extracted method
-  .thenIt(should(be(valid()))); // an extracted method
+  .thenIt(should().be(valid())); // an extracted method
 ~~~
 
 And messages may be supplied:
@@ -42,19 +44,19 @@ And messages may be supplied:
 ~~~java
 TestScenario.given(someObject)
   .when(itExecutes())
-  .thenIt(should(be(valid())), otherwise("the validation fails"));
+  .thenIt(should().be(valid()), otherwise("the validation fails"));
 ~~~
 
 Here is more examples:
 
 ~~~java
 TestScenario.given(element("name").in(annotation()))
-  .the(Element::value, should(be("some name"))
-  .the(Element::name, should(be("name"))
-  .it(should(notBe(NULL))
-  .and(should(notBe(writable())))
+  .the(Element::value, should().be("some name")
+  .the(Element::name, should().be("name")
+  .it(should().notBe(NULL)
+  .and(should().notBe(writable()))
   .then(attempToChangeValue(),
-      should(raise(HandlingException.class)),
+      should().raise(HandlingException.class),
       because("annotation values cannot be modified"));
 
 // using a collection

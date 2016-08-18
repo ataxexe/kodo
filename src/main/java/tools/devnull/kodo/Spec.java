@@ -37,80 +37,17 @@ import java.util.function.Predicate;
  *
  * @author Marcelo Guimarães
  */
-public interface Spec {
+public class Spec {
 
-  /**
-   * Indicates that the value should be <code>true</code>
-   */
-  Predicate<Boolean> TRUE = value -> value;
+  private Spec() {
 
-  /**
-   * Indicates that the value should be <code>false</code>
-   */
-  Predicate<Boolean> FALSE = value -> !value;
-
-  /**
-   * Indicates that the value should be <code>null</code>
-   */
-  Predicate NULL = obj -> obj == null;
-
-  /**
-   * Indicates that the value should not be <code>null</code>
-   */
-  Predicate NOT_NULL = obj -> obj != null;
-
-  /**
-   * Indicates a value that should be empty
-   *
-   * @see EmptyPredicate
-   */
-  Predicate EMPTY = new EmptyPredicate();
-
-  /**
-   * Predicate that returns <code>true</code> if the value is the same as
-   * the given one
-   */
-  static <T> Predicate<T> equal(T value) {
-    return be(value);
-  }
-
-  /**
-   * Predicate that returns <code>true</code> if the value is greather than
-   * the given one
-   */
-  static Predicate<Comparable> greatherThan(Comparable value) {
-    return comparable -> comparable.compareTo(value) > 0;
-  }
-
-  /**
-   * Predicate that returns <code>true</code> if the value is greather or equal
-   * than the given one
-   */
-  static Predicate<Comparable> greatherThanOrEqual(Comparable value) {
-    return comparable -> comparable.compareTo(value) >= 0;
-  }
-
-  /**
-   * Predicate that returns <code>true</code> if the value is less than
-   * the given one
-   */
-  static Predicate<Comparable> lessThan(Comparable value) {
-    return comparable -> comparable.compareTo(value) < 0;
-  }
-
-  /**
-   * Predicate that returns <code>true</code> if the value is less or equal
-   * than the given one
-   */
-  static Predicate<Comparable> lessThanOrEqual(Comparable value) {
-    return comparable -> comparable.compareTo(value) <= 0;
   }
 
   /**
    * Indicates that the value should
    * {@link java.lang.Object#equals(Object) equal} the given value.
    */
-  static <T> Predicate<T> be(T value) {
+  public <T> Predicate<T> be(T value) {
     return obj -> Objects.equals(obj, value);
   }
 
@@ -118,15 +55,21 @@ public interface Spec {
    * Indicates that the value should not
    * {@link java.lang.Object#equals(Object) equal} the given value.
    */
-  static <T> Predicate<T> notBe(T value) {
+  public <T> Predicate<T> notBe(T value) {
     return obj -> !Objects.equals(obj, value);
   }
 
   /**
-   * Indicates that the value should not
-   * {@link java.lang.Object#equals(Object) equal} the given value.
+   * @see #be(Object)
    */
-  static <T> Predicate<T> notEqual(T value) {
+  public <T> Predicate<T> equal(T value) {
+    return be(value);
+  }
+
+  /**
+   * @see #notBe(Object)
+   */
+  public <T> Predicate<T> notEqual(T value) {
     return notBe(value);
   }
 
@@ -134,7 +77,7 @@ public interface Spec {
    * Indicates that the value should {@link Predicate#test(Object) match} the
    * given predicate.
    */
-  static <T> Predicate<T> be(Predicate<T> predicate) {
+  public <T> Predicate<T> be(Predicate<T> predicate) {
     return predicate;
   }
 
@@ -142,7 +85,7 @@ public interface Spec {
    * Indicates that the value should not {@link Predicate#test(Object) match}
    * the given predicate.
    */
-  static <T> Predicate<T> notBe(Predicate<T> predicate) {
+  public <T> Predicate<T> notBe(Predicate<T> predicate) {
     return predicate.negate();
   }
 
@@ -153,7 +96,7 @@ public interface Spec {
    * @param predicate the predicate to test the target.
    * @return a consumer that uses the given predicate to test the target.
    */
-  static <T> Predicate<T> have(Predicate<T> predicate) {
+  public <T> Predicate<T> have(Predicate<T> predicate) {
     return predicate;
   }
 
@@ -164,21 +107,21 @@ public interface Spec {
    * @param predicate the predicate to test the target.
    * @return a consumer that uses the given predicate to test the target.
    */
-  static <T> Predicate<T> notHave(Predicate<T> predicate) {
+  public <T> Predicate<T> notHave(Predicate<T> predicate) {
     return predicate.negate();
   }
 
   /**
    * Indicates that the value should match the given matcher.
    */
-  static <T> Predicate<T> match(Matcher matcher) {
+  public <T> Predicate<T> match(Matcher matcher) {
     return obj -> matcher.matches(obj);
   }
 
   /**
    * Indicates that the operation should throw the given exception.
    */
-  static Predicate<? extends Throwable> raise(Class<? extends Throwable> exception) {
+  public Predicate<? extends Throwable> raise(Class<? extends Throwable> exception) {
     return error ->
         error != null && exception.isAssignableFrom(error.getClass());
   }
@@ -186,37 +129,17 @@ public interface Spec {
   /**
    * Indicates that the operation should not throw any exceptions.
    */
-  static Predicate<? extends Throwable> succeed() {
+  public Predicate<? extends Throwable> succeed() {
     return error -> error == null;
   }
 
   /**
-   * Returns the given predicate. This method should be used to make the
-   * code more readable.
+   * Creates a new Spec
    *
-   * @param predicate the predicate
-   * @return the given predicate.
+   * @return the created Spec object
    */
-  static <T> Predicate<T> should(Predicate<T> predicate) {
-    return predicate;
-  }
-
-  /**
-   * Helper method to improve code readability. It returns the given string.
-   * <p>
-   * Use it with the methods that takes a message.
-   */
-  static String because(String reason) {
-    return reason;
-  }
-
-  /**
-   * Helper method to improve code readability. It returns the given string.
-   * <p>
-   * Use it with the methods that takes a message.
-   */
-  static String otherwise(String description) {
-    return description;
+  public static Spec should() {
+    return new Spec();
   }
 
 }

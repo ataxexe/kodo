@@ -32,11 +32,12 @@ import java.util.function.Predicate;
 
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
-import static tools.devnull.kodo.Spec.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static tools.devnull.kodo.Spec.should;
 
 /**
- * @author Marcelo Guimarães
+ * The test suite for {@link Spec}
  */
 public class SpecTests {
 
@@ -55,184 +56,122 @@ public class SpecTests {
 
   @Test
   public void testBeWithObject() {
-    test(be("test"), "test");
-    testFail(be("test"), "");
+    test(should().be("test"), "test");
+    testFail(should().be("test"), "");
 
-    test(be(1), 1);
-    testFail(be(1), 2);
+    test(should().be(1), 1);
+    testFail(should().be(1), 2);
   }
 
   @Test
   public void testNotBeWithObject() {
-    testFail(notBe("test"), "test");
-    test(notBe("test"), "");
+    testFail(should().notBe("test"), "test");
+    test(should().notBe("test"), "");
 
-    testFail(notBe(1), 1);
-    test(notBe(1), 2);
+    testFail(should().notBe(1), 1);
+    test(should().notBe(1), 2);
   }
 
   @Test
   public void testEqual() {
-    test(equal("test"), "test");
-    testFail(equal("test"), "");
+    test(should().equal("test"), "test");
+    testFail(should().equal("test"), "");
 
-    test(equal(1), 1);
-    testFail(equal(1), 2);
+    test(should().equal(1), 1);
+    testFail(should().equal(1), 2);
   }
 
   @Test
   public void testNotEqual() {
-    testFail(notEqual("test"), "test");
-    test(notEqual("test"), "");
+    testFail(should().notEqual("test"), "test");
+    test(should().notEqual("test"), "");
 
-    testFail(notEqual(1), 1);
-    test(notEqual(1), 2);
+    testFail(should().notEqual(1), 1);
+    test(should().notEqual(1), 2);
   }
 
   @Test
   public void testBeWithPredicate() {
-    test(be(noMoreThan5Chars), "123456");
-    test(be(noMoreThan5Chars), 123456);
-    test(be(alwaysTrue), null);
-    test(be(alwaysTrue), "");
-    test(be(alwaysTrue), 1);
+    test(should().be(noMoreThan5Chars), "123456");
+    test(should().be(noMoreThan5Chars), 123456);
+    test(should().be(alwaysTrue), null);
+    test(should().be(alwaysTrue), "");
+    test(should().be(alwaysTrue), 1);
 
-    testFail(be(noMoreThan5Chars), "12345");
-    testFail(be(noMoreThan5Chars), 12345);
-    testFail(be(alwaysFalse), null);
-    testFail(be(alwaysFalse), "");
-    testFail(be(alwaysFalse), 1);
+    testFail(should().be(noMoreThan5Chars), "12345");
+    testFail(should().be(noMoreThan5Chars), 12345);
+    testFail(should().be(alwaysFalse), null);
+    testFail(should().be(alwaysFalse), "");
+    testFail(should().be(alwaysFalse), 1);
   }
 
   @Test
   public void testNotBeWithPredicate() {
-    testFail(notBe(noMoreThan5Chars), "123456");
-    testFail(notBe(noMoreThan5Chars), 123456);
-    testFail(notBe(alwaysTrue), null);
-    testFail(notBe(alwaysTrue), "");
-    testFail(notBe(alwaysTrue), 1);
+    testFail(should().notBe(noMoreThan5Chars), "123456");
+    testFail(should().notBe(noMoreThan5Chars), 123456);
+    testFail(should().notBe(alwaysTrue), null);
+    testFail(should().notBe(alwaysTrue), "");
+    testFail(should().notBe(alwaysTrue), 1);
 
-    test(notBe(noMoreThan5Chars), "12345");
-    test(notBe(noMoreThan5Chars), 12345);
-    test(notBe(alwaysFalse), null);
-    test(notBe(alwaysFalse), "");
-    test(notBe(alwaysFalse), 1);
+    test(should().notBe(noMoreThan5Chars), "12345");
+    test(should().notBe(noMoreThan5Chars), 12345);
+    test(should().notBe(alwaysFalse), null);
+    test(should().notBe(alwaysFalse), "");
+    test(should().notBe(alwaysFalse), 1);
   }
 
   @Test
   public void testHaveWithPredicate() {
-    test(have(noMoreThan5Chars), "123456");
-    test(have(noMoreThan5Chars), 123456);
-    test(have(alwaysTrue), null);
-    test(have(alwaysTrue), "");
-    test(have(alwaysTrue), 1);
+    test(should().have(noMoreThan5Chars), "123456");
+    test(should().have(noMoreThan5Chars), 123456);
+    test(should().have(alwaysTrue), null);
+    test(should().have(alwaysTrue), "");
+    test(should().have(alwaysTrue), 1);
 
-    testFail(have(noMoreThan5Chars), "12345");
-    testFail(have(noMoreThan5Chars), 12345);
-    testFail(have(alwaysFalse), null);
-    testFail(have(alwaysFalse), "");
-    testFail(have(alwaysFalse), 1);
+    testFail(should().have(noMoreThan5Chars), "12345");
+    testFail(should().have(noMoreThan5Chars), 12345);
+    testFail(should().have(alwaysFalse), null);
+    testFail(should().have(alwaysFalse), "");
+    testFail(should().have(alwaysFalse), 1);
   }
 
   @Test
   public void testNotHaveWithPredicate() {
-    testFail(notHave(noMoreThan5Chars), "123456");
-    testFail(notHave(noMoreThan5Chars), 123456);
-    testFail(notHave(alwaysTrue), null);
-    testFail(notHave(alwaysTrue), "");
-    testFail(notHave(alwaysTrue), 1);
+    testFail(should().notHave(noMoreThan5Chars), "123456");
+    testFail(should().notHave(noMoreThan5Chars), 123456);
+    testFail(should().notHave(alwaysTrue), null);
+    testFail(should().notHave(alwaysTrue), "");
+    testFail(should().notHave(alwaysTrue), 1);
 
-    test(notHave(noMoreThan5Chars), "12345");
-    test(notHave(noMoreThan5Chars), 12345);
-    test(notHave(alwaysFalse), null);
-    test(notHave(alwaysFalse), "");
-    test(notHave(alwaysFalse), 1);
-  }
-
-  @Test
-  public void testNull() {
-    test(NULL, null);
-    testFail(NULL, "");
-
-    test(NOT_NULL, "");
-    testFail(NOT_NULL, null);
-  }
-
-  @Test
-  public void testBeTrue() {
-    test(TRUE, true);
-    testFail(TRUE, false);
-  }
-
-  @Test
-  public void testBeFalse() {
-    test(FALSE, false);
-    testFail(FALSE, true);
-  }
-
-  @Test
-  public void testBeNull() {
-    test(NULL, null);
-    testFail(NULL, "string");
+    test(should().notHave(noMoreThan5Chars), "12345");
+    test(should().notHave(noMoreThan5Chars), 12345);
+    test(should().notHave(alwaysFalse), null);
+    test(should().notHave(alwaysFalse), "");
+    test(should().notHave(alwaysFalse), 1);
   }
 
   @Test
   public void testRaise() {
-    test(raise(IllegalArgumentException.class), new IllegalArgumentException());
-    test(raise(RuntimeException.class), new IllegalArgumentException());
+    test(should().raise(IllegalArgumentException.class), new IllegalArgumentException());
+    test(should().raise(RuntimeException.class), new IllegalArgumentException());
 
-    testFail(raise(IllegalArgumentException.class), null);
-    testFail(raise(IllegalArgumentException.class), new RuntimeException());
+    testFail(should().raise(IllegalArgumentException.class), null);
+    testFail(should().raise(IllegalArgumentException.class), new RuntimeException());
   }
 
   @Test
   public void testSucceed() {
-    test(succeed(), null);
+    test(should().succeed(), null);
 
-    testFail(succeed(), new RuntimeException());
-    testFail(succeed(), new IllegalArgumentException());
-    testFail(succeed(), new IllegalArgumentException());
+    testFail(should().succeed(), new RuntimeException());
+    testFail(should().succeed(), new IllegalArgumentException());
+    testFail(should().succeed(), new IllegalArgumentException());
   }
 
   @Test
   public void testMatch() {
-    test(match(is(nullValue())), null);
-    testFail(match(is(nullValue())), "");
-  }
-
-  @Test
-  public void testGreatherThan() {
-    test(greatherThan(10), 11);
-    testFail(greatherThan(10), 10);
-    testFail(greatherThan(10), 9);
-  }
-
-  @Test
-  public void testGreatherThanOrEqual() {
-    test(greatherThanOrEqual(10), 11);
-    test(greatherThanOrEqual(10), 10);
-    testFail(greatherThanOrEqual(10), 9);
-  }
-
-  @Test
-  public void testLessThan() {
-    test(lessThan(10), 9);
-    testFail(lessThan(10), 10);
-    testFail(lessThan(10), 11);
-  }
-
-  @Test
-  public void testLessThanOrEqual() {
-    test(lessThanOrEqual(10), 9);
-    test(lessThanOrEqual(10), 10);
-    testFail(lessThanOrEqual(10), 11);
-  }
-
-  @Test
-  public void testHelpers() {
-    assertSame(alwaysTrue, should(alwaysTrue));
-    assertEquals("some reason", because("some reason"));
-    assertEquals("description", otherwise("description"));
+    test(should().match(is(nullValue())), null);
+    testFail(should().match(is(nullValue())), "");
   }
 
 }

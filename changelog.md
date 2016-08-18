@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.0.0
+
+- DSL changes
+
 ## v1.1.0 (2016-08-17)
 
 - Fix generic types so compiler will not freak out
