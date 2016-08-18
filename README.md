@@ -44,30 +44,34 @@ And messages may be supplied:
 ~~~java
 TestScenario.given(someObject)
   .when(itExecutes())
-  .thenIt(should().be(valid()), otherwise("the validation fails"));
+  .thenIt(should().be(valid()), otherwise("the validation failed"));
+  
+TestScenario.given(someObject)
+  .when(itExecutes())
+  .thenIt(should().be(valid()), because("the process should not invalidate the object"));
 ~~~
 
 Here is more examples:
 
 ~~~java
-TestScenario.given(element("name").in(annotation()))
-  .the(Element::value, should().be("some name")
-  .the(Element::name, should().be("name")
-  .it(should().notBe(NULL)
-  .and(should().notBe(writable()))
-  .then(attempToChangeValue(),
-      should().raise(HandlingException.class),
-      because("annotation values cannot be modified"));
+TestScenario.given(new Orange())
+  .then(Orange::color, should().be("orange")
+  .it(should().be(fresh()))
+  .when(squeeze())
+  .it(should().not().be(fresh())));
 
 // using a collection
-TestScenario.given(elements().in(annotation()))
-  .thenIt(should(NOT_BE_EMPTY))
-  .each(should(notBe(writable())))  // \
-  .each(should(be(readable())))     //  > iterates through all elements
-  .each(should(have(aValue())));    // /
+TestScenario.given(lotsOfOranges)
+  .then(eachOne(should().be(fresh())));
+  
+// defining exceptions
+TestScenario.given(someObject)
+  .then(doingForbiddenStuff(), should().raise(IllegalStateException.class))
+  .then(doingAllowedStuff(), should().succeed());
 ~~~
 
-You can always use the helper class `Spec`. It contains a set of useful methods to help you writing your tests.
+You can always use the helper classes `Spec` and `Predicates`. They contain a set of useful methods to help you 
+write your awesome tests!
 
 # How To Contribute
 
