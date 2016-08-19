@@ -26,16 +26,12 @@
 
 package tools.devnull.kodo;
 
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.Arrays;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -44,6 +40,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.anyObject;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -55,7 +52,6 @@ public class ScenarioTests {
 
   private Object target = new Object();
   private Scenario<Object> scenario = TestScenario.given(target);
-  private Scenario<Object> listScenario = TestScenario.given(Arrays.asList(1, 2, 3));
   private String message = "a message";
   private Object value = new Object();
   @Mock
@@ -71,19 +67,6 @@ public class ScenarioTests {
   private Predicate failTest;
   @Mock
   private Function function;
-
-  private Matcher<Integer> isBetween1and3 = new BaseMatcher<Integer>() {
-    @Override
-    public boolean matches(Object o) {
-      Integer number = (Integer) o;
-      return number >= 1 && number <= 3;
-    }
-
-    @Override
-    public void describeTo(Description description) {
-      description.appendText("<number between 1 and 3>");
-    }
-  };
 
   @Before
   public void initialize() {
@@ -177,6 +160,16 @@ public class ScenarioTests {
     } catch (AssertionError error) {
       assertEquals("for value: null", error.getMessage());
     }
+  }
+
+  @Test
+  public void testScenarioWithNoTarget() {
+    Scenario scenario = new TestScenario();
+    Predicate predicate = mock(Predicate.class);
+    when(predicate.test(null)).thenReturn(true);
+
+    scenario.it(predicate);
+    verify(predicate).test(null);
   }
 
   private void assertMessage(Runnable command) {

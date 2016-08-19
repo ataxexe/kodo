@@ -40,6 +40,10 @@ public class TestScenario<T> implements Scenario<T> {
 
   private final T target;
 
+  public TestScenario() {
+    this(null);
+  }
+
   public TestScenario(T target) {
     this.target = target;
   }
