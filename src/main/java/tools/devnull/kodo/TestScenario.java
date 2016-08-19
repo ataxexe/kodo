@@ -38,7 +38,7 @@ import java.util.function.Predicate;
  */
 public class TestScenario<T> implements Scenario<T> {
 
-  private final T target;
+  protected final T target;
 
   public TestScenario() {
     this(null);

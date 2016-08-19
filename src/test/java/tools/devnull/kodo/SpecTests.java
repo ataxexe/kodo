@@ -30,6 +30,7 @@ import org.junit.Test;
 
 import java.util.function.Predicate;
 
+import static junit.framework.TestCase.assertSame;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.mock;
@@ -140,6 +141,12 @@ public class SpecTests {
     test(should().not().be(predicate), value);
     verify(predicate).negate();
     verify(negate).test(value);
+  }
+
+  @Test
+  public void testHelpers() {
+    assertSame(alwaysTrue, should(alwaysTrue));
+    assertSame(alwaysFalse, to(alwaysFalse));
   }
 
 }

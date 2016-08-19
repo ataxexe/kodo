@@ -132,4 +132,28 @@ public class Spec {
     return new Spec(Function.identity());
   }
 
+  /**
+   * Returns the given predicate.
+   * <p>
+   * Use this method to write readable code.
+   *
+   * @param predicate the predicate to use
+   * @return the given predicate
+   */
+  public static <T> Predicate<T> should(Predicate<T> predicate) {
+    return predicate;
+  }
+
+  /**
+   * Returns the given predicate.
+   * <p>
+   * Use this method to write readable code.
+   *
+   * @param predicate the predicate to use
+   * @return the given predicate
+   */
+  public static <T> Predicate<T> to(Predicate<T> predicate) {
+    return predicate;
+  }
+
 }
