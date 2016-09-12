@@ -34,6 +34,7 @@ import static junit.framework.TestCase.assertSame;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static tools.devnull.kodo.Spec.should;
@@ -139,8 +140,10 @@ public class SpecTests {
     when(predicate.negate()).thenReturn(negate);
 
     test(should().not().be(predicate), value);
-    verify(predicate).negate();
-    verify(negate).test(value);
+    test(should().not(predicate), value);
+
+    verify(predicate, times(2)).negate();
+    verify(negate, times(2)).test(value);
   }
 
   @Test

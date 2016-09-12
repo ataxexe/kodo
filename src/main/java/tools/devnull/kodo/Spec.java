@@ -115,6 +115,16 @@ public class Spec {
   }
 
   /**
+   * Returns the negate function of the given predicate.
+   *
+   * @param predicate the predicate to negate
+   * @return the given predicate negated
+   */
+  public <T> Predicate<T> not(Predicate<T> predicate) {
+    return predicate.negate();
+  }
+
+  /**
    * Creates a new Spec
    *
    * @return the created Spec object

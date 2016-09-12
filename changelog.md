@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.1.0
+
+- Added `#not(Predicate)` method to the `Spec` class
+
 ## v2.0.0
 
 - DSL changes
