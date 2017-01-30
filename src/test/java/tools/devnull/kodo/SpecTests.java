@@ -33,14 +33,14 @@ import java.util.function.Predicate;
 import static junit.framework.TestCase.assertSame;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static tools.devnull.kodo.Spec.should;
 import static tools.devnull.kodo.Spec.to;
-import static tools.devnull.kodo.TestHelper.test;
-import static tools.devnull.kodo.TestHelper.testFail;
 
 /**
  * The test suite for {@link Spec}
@@ -55,80 +55,89 @@ public class SpecTests {
 
   @Test
   public void testBeWithObject() {
-    test(should().be("test"), "test");
-    testFail(should().be("test"), "");
+    assertTrue(should().be("test").test("test"));
+    assertFalse(should().be("test").test(""));
 
-    test(should().be(1), 1);
-    testFail(should().be(1), 2);
+    assertTrue(should().be(1).test(1));
+    assertFalse(should().be(1).test(2));
 
-    test(to().be("test"), "test");
-    testFail(to().be("test"), "");
+    assertTrue(to().be("test").test("test"));
+    assertFalse(to().be("test").test(""));
 
-    test(to().be(1), 1);
-    testFail(to().be(1), 2);
+    assertTrue(to().be(1).test(1));
+    assertFalse(to().be(1).test(2));
   }
 
   @Test
   public void testEqual() {
-    test(should().equal("test"), "test");
-    testFail(should().equal("test"), "");
+    assertTrue(should().equal("test").test("test"));
+    assertFalse(should().equal("test").test(""));
 
-    test(should().equal(1), 1);
-    testFail(should().equal(1), 2);
+    assertTrue(should().equal(1).test(1));
+    assertFalse(should().equal(1).test(2));
   }
 
   @Test
   public void testBeWithPredicate() {
-    test(should().be(noMoreThan5Chars), "123456");
-    test(should().be(noMoreThan5Chars), 123456);
-    test(should().be(alwaysTrue), value);
-    test(should().be(alwaysTrue), "");
-    test(should().be(alwaysTrue), 1);
+    assertTrue(should().be(noMoreThan5Chars).test("123456"));
+    assertTrue(should().be(noMoreThan5Chars).test(123456));
+    assertTrue(should().be(alwaysTrue).test(value));
+    assertTrue(should().be(alwaysTrue).test(""));
+    assertTrue(should().be(alwaysTrue).test(1));
 
-    testFail(should().be(noMoreThan5Chars), "12345");
-    testFail(should().be(noMoreThan5Chars), 12345);
-    testFail(should().be(alwaysFalse), value);
-    testFail(should().be(alwaysFalse), "");
-    testFail(should().be(alwaysFalse), 1);
+    assertFalse(should().be(noMoreThan5Chars).test("12345"));
+    assertFalse(should().be(noMoreThan5Chars).test(12345));
+    assertFalse(should().be(alwaysFalse).test(value));
+    assertFalse(should().be(alwaysFalse).test(""));
+    assertFalse(should().be(alwaysFalse).test(1));
   }
 
   @Test
   public void testHaveWithPredicate() {
-    test(should().have(noMoreThan5Chars), "123456");
-    test(should().have(noMoreThan5Chars), 123456);
-    test(should().have(alwaysTrue), value);
-    test(should().have(alwaysTrue), "");
-    test(should().have(alwaysTrue), 1);
+    assertTrue(should().have(noMoreThan5Chars).test("123456"));
+    assertTrue(should().have(noMoreThan5Chars).test(123456));
+    assertTrue(should().have(alwaysTrue).test(value));
+    assertTrue(should().have(alwaysTrue).test(""));
+    assertTrue(should().have(alwaysTrue).test(1));
 
-    testFail(should().have(noMoreThan5Chars), "12345");
-    testFail(should().have(noMoreThan5Chars), 12345);
-    testFail(should().have(alwaysFalse), value);
-    testFail(should().have(alwaysFalse), "");
-    testFail(should().have(alwaysFalse), 1);
+    assertFalse(should().have(noMoreThan5Chars).test("12345"));
+    assertFalse(should().have(noMoreThan5Chars).test(12345));
+    assertFalse(should().have(alwaysFalse).test(value));
+    assertFalse(should().have(alwaysFalse).test(""));
+    assertFalse(should().have(alwaysFalse).test(1));
   }
 
   @Test
   public void testRaise() {
-    test(should().raise(IllegalArgumentException.class), new IllegalArgumentException());
-    test(should().raise(RuntimeException.class), new IllegalArgumentException());
+    assertTrue(should().raise(IllegalArgumentException.class).test(new IllegalArgumentException()));
+    assertTrue(should().raise(RuntimeException.class).test(new IllegalArgumentException()));
 
-    testFail(should().raise(IllegalArgumentException.class), null);
-    testFail(should().raise(IllegalArgumentException.class), new RuntimeException());
+    assertFalse(should().raise(IllegalArgumentException.class).test(null));
+    assertFalse(should().raise(IllegalArgumentException.class).test(new RuntimeException()));
   }
 
   @Test
   public void testSucceed() {
-    test(should().succeed(), null);
+    assertTrue(should().succeed().test(null));
 
-    testFail(should().succeed(), new RuntimeException());
-    testFail(should().succeed(), new IllegalArgumentException());
-    testFail(should().succeed(), new IllegalArgumentException());
+    assertFalse(should().succeed().test(new RuntimeException()));
+    assertFalse(should().succeed().test(new IllegalArgumentException()));
+    assertFalse(should().succeed().test(new IllegalArgumentException()));
+  }
+
+  @Test
+  public void testFail2() {
+    assertFalse(should().fail().test(null));
+
+    assertTrue(should().fail().test(new RuntimeException()));
+    assertTrue(should().fail().test(new IllegalArgumentException()));
+    assertTrue(should().fail().test(new IllegalArgumentException()));
   }
 
   @Test
   public void testMatch() {
-    test(should().match(is(nullValue())), null);
-    testFail(should().match(is(nullValue())), "");
+    assertTrue(should().match(is(nullValue())).test(null));
+    assertFalse(should().match(is(nullValue())).test(""));
   }
 
   @Test
@@ -139,8 +148,8 @@ public class SpecTests {
     when(negate.test(value)).thenReturn(true);
     when(predicate.negate()).thenReturn(negate);
 
-    test(should().not().be(predicate), value);
-    test(should().not(predicate), value);
+    assertTrue(should().not().be(predicate).test(value));
+    assertTrue(should().not(predicate).test(value));
 
     verify(predicate, times(2)).negate();
     verify(negate, times(2)).test(value);

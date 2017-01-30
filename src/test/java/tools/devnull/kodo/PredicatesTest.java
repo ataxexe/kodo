@@ -5,17 +5,17 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static tools.devnull.kodo.Predicates.FALSE;
 import static tools.devnull.kodo.Predicates.NOT_NULL;
 import static tools.devnull.kodo.Predicates.NULL;
 import static tools.devnull.kodo.Predicates.TRUE;
 import static tools.devnull.kodo.Predicates.eachOne;
-import static tools.devnull.kodo.Predicates.greatherThan;
-import static tools.devnull.kodo.Predicates.greatherThanOrEqual;
+import static tools.devnull.kodo.Predicates.greaterThan;
+import static tools.devnull.kodo.Predicates.greaterThanOrEqual;
 import static tools.devnull.kodo.Predicates.lessThan;
 import static tools.devnull.kodo.Predicates.lessThanOrEqual;
-import static tools.devnull.kodo.TestHelper.test;
-import static tools.devnull.kodo.TestHelper.testFail;
 
 /**
  * The test suite for the {@link Predicates}
@@ -24,64 +24,64 @@ public class PredicatesTest {
 
   @Test
   public void testNull() {
-    test(NULL, null);
-    testFail(NULL, "");
+    assertTrue(NULL.test(null));
+    assertFalse(NULL.test(""));
 
-    test(NOT_NULL, "");
-    testFail(NOT_NULL, null);
+    assertTrue(NOT_NULL.test(""));
+    assertFalse(NOT_NULL.test(null));
   }
 
   @Test
   public void testBeTrue() {
-    test(TRUE, true);
-    testFail(TRUE, false);
+    assertTrue(TRUE.test(true));
+    assertFalse(TRUE.test(false));
   }
 
   @Test
   public void testBeFalse() {
-    test(FALSE, false);
-    testFail(FALSE, true);
+    assertTrue(FALSE.test(false));
+    assertFalse(FALSE.test(true));
   }
 
   @Test
   public void testBeNull() {
-    test(NULL, null);
-    testFail(NULL, "string");
+    assertTrue(NULL.test(null));
+    assertFalse(NULL.test("string"));
   }
 
   @Test
-  public void testGreatherThan() {
-    test(greatherThan(10), 11);
-    testFail(greatherThan(10), 10);
-    testFail(greatherThan(10), 9);
+  public void testGreaterThan() {
+    assertTrue(greaterThan(10).test(11));
+    assertFalse(greaterThan(10).test(10));
+    assertFalse(greaterThan(10).test(9));
   }
 
   @Test
-  public void testGreatherThanOrEqual() {
-    test(greatherThanOrEqual(10), 11);
-    test(greatherThanOrEqual(10), 10);
-    testFail(greatherThanOrEqual(10), 9);
+  public void testGreaterThanOrEqual() {
+    assertTrue(greaterThanOrEqual(10).test(11));
+    assertTrue(greaterThanOrEqual(10).test(10));
+    assertFalse(greaterThanOrEqual(10).test(9));
   }
 
   @Test
   public void testLessThan() {
-    test(lessThan(10), 9);
-    testFail(lessThan(10), 10);
-    testFail(lessThan(10), 11);
+    assertTrue(lessThan(10).test(9));
+    assertFalse(lessThan(10).test(10));
+    assertFalse(lessThan(10).test(11));
   }
 
   @Test
   public void testLessThanOrEqual() {
-    test(lessThanOrEqual(10), 9);
-    test(lessThanOrEqual(10), 10);
-    testFail(lessThanOrEqual(10), 11);
+    assertTrue(lessThanOrEqual(10).test(9));
+    assertTrue(lessThanOrEqual(10).test(10));
+    assertFalse(lessThanOrEqual(10).test(11));
   }
 
   @Test
   public void testEachOne() {
-    List<Integer> list = Arrays.asList(1, 2, 3, 4);
-    test(eachOne(lessThan(5)), list);
-    testFail(eachOne(lessThan(4)), list);
+    List<Comparable> list = Arrays.asList(1, 2, 3, 4);
+    assertTrue(eachOne(lessThan(5)).test(list));
+    assertFalse(eachOne(lessThan(4)).test(list));
   }
 
 }

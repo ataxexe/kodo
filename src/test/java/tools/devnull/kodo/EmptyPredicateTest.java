@@ -31,10 +31,10 @@ import org.junit.Test;
 import java.util.Collection;
 import java.util.Map;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static tools.devnull.kodo.TestHelper.test;
-import static tools.devnull.kodo.TestHelper.testFail;
 
 /**
  * @author Marcelo Guimarães
@@ -42,13 +42,13 @@ import static tools.devnull.kodo.TestHelper.testFail;
 public class EmptyPredicateTest {
 
   private void testPredicate(Object target) {
-    test(Predicates.EMPTY, target);
-    test(Predicates.empty(), target);
+    assertTrue(Predicates.EMPTY.test(target));
+    assertTrue(Predicates.empty().test(target));
   }
 
   private void testFailPredicate(Object target) {
-    testFail(Predicates.EMPTY, target);
-    testFail(Predicates.empty(), target);
+    assertFalse(Predicates.EMPTY.test(target));
+    assertFalse(Predicates.empty().test(target));
   }
 
   @Test
