@@ -65,7 +65,7 @@ public interface Scenario<T> {
    * @return a reference to this object.
    * @see Spec#raise(Class)
    */
-  Scenario<T> then(Consumer<? super T> operation, Predicate<? extends Throwable> test);
+  Scenario<T> then(Consumer<? super T> operation, Predicate<Throwable> test);
 
   /**
    * Defines an operation that may throw an exception.
@@ -77,7 +77,7 @@ public interface Scenario<T> {
    * @param message   the message to throw if the test fail
    * @return a reference to this object.
    */
-  Scenario<T> then(Consumer<? super T> operation, Predicate<? extends Throwable> test, String message);
+  Scenario<T> then(Consumer<? super T> operation, Predicate<Throwable> test, String message);
 
   /**
    * Defines a test for some target operation that returns a value.

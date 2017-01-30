@@ -93,7 +93,7 @@ public class TestScenario<T> implements Scenario<T> {
   }
 
   @Override
-  public Scenario<T> then(Consumer<? super T> operation, Predicate<? extends Throwable> test) {
+  public Scenario<T> then(Consumer<? super T> operation, Predicate<Throwable> test) {
     return then(operation, test, "");
   }
 
