@@ -106,6 +106,13 @@ public class Spec {
   }
 
   /**
+   * Indicates that the operation should fail by throwing any exception.
+   */
+  public Predicate<Throwable> fail() {
+    return not(succeed());
+  }
+
+  /**
    * Creates a new Spec that will negates the given predicates.
    *
    * @return a new Spec that negates every given predicate
