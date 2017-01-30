@@ -48,7 +48,7 @@ public interface Predicates {
    * Predicate that returns <code>true</code> if the value is greather than
    * the given one
    */
-  static Predicate<Comparable> greatherThan(Comparable value) {
+  static Predicate<Comparable> greaterThan(Comparable value) {
     return comparable -> comparable.compareTo(value) > 0;
   }
 
@@ -56,7 +56,7 @@ public interface Predicates {
    * Predicate that returns <code>true</code> if the value is greather or equal
    * than the given one
    */
-  static Predicate<Comparable> greatherThanOrEqual(Comparable value) {
+  static Predicate<Comparable> greaterThanOrEqual(Comparable value) {
     return comparable -> comparable.compareTo(value) >= 0;
   }
 
