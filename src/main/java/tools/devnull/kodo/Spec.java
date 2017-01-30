@@ -94,15 +94,15 @@ public class Spec {
   /**
    * Indicates that the operation should throw the given exception.
    */
-  public Predicate<? extends Throwable> raise(Class<? extends Throwable> exception) {
+  public Predicate<Throwable> raise(Class<? extends Throwable> exception) {
     return create(error -> error != null && exception.isAssignableFrom(error.getClass()));
   }
 
   /**
-   * Indicates that the operation should not throw any exceptions.
+   * Indicates that the operation should not throw any exception.
    */
-  public Predicate<? extends Throwable> succeed() {
-    return create(error -> error == null);
+  public Predicate<Throwable> succeed() {
+    return create(Objects::isNull);
   }
 
   /**
