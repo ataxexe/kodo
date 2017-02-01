@@ -8,7 +8,7 @@ import java.util.function.Predicate;
 public interface Predicates {
 
   /**
-   * Predicate that returns <code>true</code> if the value is greather than
+   * Predicate that returns <code>true</code> if the value is greater than
    * the given one
    */
   static Predicate<Comparable> greaterThan(Comparable value) {
@@ -16,7 +16,7 @@ public interface Predicates {
   }
 
   /**
-   * Predicate that returns <code>true</code> if the value is greather or equal
+   * Predicate that returns <code>true</code> if the value is greater or equal
    * than the given one
    */
   static Predicate<Comparable> greaterThanOrEqual(Comparable value) {
