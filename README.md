@@ -59,10 +59,6 @@ TestScenario.given(new Orange())
   .it(should().be(fresh()))
   .when(squeeze())
   .it(should().not().be(fresh())));
-
-// using a collection
-TestScenario.given(lotsOfOranges)
-  .then(eachOne(should().be(fresh())));
   
 // defining exceptions
 TestScenario.given(someObject)
