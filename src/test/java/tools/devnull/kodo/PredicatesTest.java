@@ -2,16 +2,12 @@ package tools.devnull.kodo;
 
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.List;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static tools.devnull.kodo.Predicates.FALSE;
 import static tools.devnull.kodo.Predicates.NOT_NULL;
 import static tools.devnull.kodo.Predicates.NULL;
 import static tools.devnull.kodo.Predicates.TRUE;
-import static tools.devnull.kodo.Predicates.eachOne;
 import static tools.devnull.kodo.Predicates.greaterThan;
 import static tools.devnull.kodo.Predicates.greaterThanOrEqual;
 import static tools.devnull.kodo.Predicates.lessThan;
@@ -75,13 +71,6 @@ public class PredicatesTest {
     assertTrue(lessThanOrEqual(10).test(9));
     assertTrue(lessThanOrEqual(10).test(10));
     assertFalse(lessThanOrEqual(10).test(11));
-  }
-
-  @Test
-  public void testEachOne() {
-    List<Comparable> list = Arrays.asList(1, 2, 3, 4);
-    assertTrue(eachOne(lessThan(5)).test(list));
-    assertFalse(eachOne(lessThan(4)).test(list));
   }
 
 }
