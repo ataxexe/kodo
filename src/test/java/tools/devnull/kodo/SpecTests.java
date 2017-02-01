@@ -28,6 +28,7 @@ package tools.devnull.kodo;
 
 import org.junit.Test;
 
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static junit.framework.TestCase.assertSame;
@@ -39,6 +40,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static tools.devnull.kodo.Spec.exec;
 import static tools.devnull.kodo.Spec.should;
 import static tools.devnull.kodo.Spec.to;
 
@@ -159,6 +161,16 @@ public class SpecTests {
   public void testHelpers() {
     assertSame(alwaysTrue, should(alwaysTrue));
     assertSame(alwaysFalse, to(alwaysFalse));
+  }
+
+  @Test
+  public void testExec() {
+    Function function = mock(Function.class);
+    when(function.apply(value)).thenReturn(value);
+
+    exec(function).accept(value);
+
+    verify(function).apply(value);
   }
 
 }

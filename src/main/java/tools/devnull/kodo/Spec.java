@@ -29,6 +29,7 @@ package tools.devnull.kodo;
 import org.hamcrest.Matcher;
 
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -171,6 +172,18 @@ public class Spec {
    */
   public static <T> Predicate<T> to(Predicate<T> predicate) {
     return predicate;
+  }
+
+  /**
+   * Wraps a function into a consumer in case you need to use a function
+   * to test if it succeed or fail.
+   *
+   * @param function the function to execute
+   * @return a consumer that uses the given function
+   * @since 2.2
+   */
+  public static <T> Consumer<T> exec(Function<T, ?> function) {
+    return function::apply;
   }
 
 }
