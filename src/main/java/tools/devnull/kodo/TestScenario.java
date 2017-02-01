@@ -50,7 +50,7 @@ public class TestScenario<T> implements Scenario<T> {
 
   private void test(Predicate predicate, Object target, String message) {
     if (!predicate.test(target)) {
-      throw new AssertionError(message.isEmpty() ? defaultMessage(target) : message);
+      throw new AssertionError(message == null ? defaultMessage(target) : message);
     }
   }
 
@@ -82,36 +82,14 @@ public class TestScenario<T> implements Scenario<T> {
   }
 
   @Override
-  public Scenario<T> it(Predicate<? super T> test) {
-    return it(test, "");
-  }
-
-  @Override
   public Scenario<T> when(Runnable operation) {
     operation.run();
     return this;
   }
 
   @Override
-  public Scenario<T> then(Consumer<? super T> operation, Predicate<Throwable> test) {
-    return then(operation, test, "");
-  }
-
-  @Override
-  public <E> Scenario<T> then(Function<? super T, E> function, Predicate<? super E> test) {
-    test(test, function.apply(target), "");
-    return this;
-  }
-
-  @Override
   public <E> Scenario<T> then(Function<? super T, E> function, Predicate<? super E> test, String message) {
     test(test, function.apply(target), message);
-    return this;
-  }
-
-  @Override
-  public <E> Scenario<T> expect(E value, Predicate<E> test) {
-    test(test, value, "");
     return this;
   }
 

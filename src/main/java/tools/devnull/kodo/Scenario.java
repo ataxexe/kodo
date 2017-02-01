@@ -59,22 +59,24 @@ public interface Scenario<T> {
    * Defines an operation that may throw an exception.
    *
    * @param operation the operation to do with the target
-   * @param test      the test to do with the raised exception (if no exception
+   * @param test      the test to execute with the raised exception (if no exception
    *                  is thrown, a <code>null</code> value will be given to this
    *                  test
    * @return a reference to this object.
    * @see Spec#raise(Class)
    */
-  Scenario<T> then(Consumer<? super T> operation, Predicate<Throwable> test);
+  default Scenario<T> then(Consumer<? super T> operation, Predicate<Throwable> test) {
+    return then(operation, test, null);
+  }
 
   /**
    * Defines an operation that may throw an exception.
    *
    * @param operation the operation to do with the target
-   * @param test      the test to do with the raised exception (if no exception
+   * @param test      the test to execute with the raised exception (if no exception
    *                  is thrown, a <code>null</code> value will be given to this
    *                  test
-   * @param message   the message to throw if the test fail
+   * @param message   the message to throw if the test fails
    * @return a reference to this object.
    */
   Scenario<T> then(Consumer<? super T> operation, Predicate<Throwable> test, String message);
@@ -83,20 +85,22 @@ public interface Scenario<T> {
    * Defines a test for some target operation that returns a value.
    *
    * @param function the operation to do with the target
-   * @param test     the test to do with the value returned by the given
+   * @param test     the test to execute with the value returned by the given
    *                 function
    * @return a reference to this object
    * @see Spec
    */
-  <E> Scenario<T> then(Function<? super T, E> function, Predicate<? super E> test);
+  default <E> Scenario<T> then(Function<? super T, E> function, Predicate<? super E> test) {
+    return then(function, test, null);
+  }
 
   /**
    * Defines a test for some target operation that returns a value.
    *
    * @param function the operation to do with the target
-   * @param test     the test to do with the value returned by the given
+   * @param test     the test to execute with the value returned by the given
    *                 function
-   * @param message  the message to throw if the test fail
+   * @param message  the message to throw if the test fails
    * @return a reference to this object
    */
   <E> Scenario<T> then(Function<? super T, E> function, Predicate<? super E> test, String message);
@@ -104,16 +108,18 @@ public interface Scenario<T> {
   /**
    * Defines a test to do with the target.
    *
-   * @param test the test to do with the target
+   * @param test the test to execute
    * @return a reference to this object
    */
-  Scenario<T> it(Predicate<? super T> test);
+  default Scenario<T> it(Predicate<? super T> test) {
+    return it(test, null);
+  }
 
   /**
    * Defines a test to do with the target.
    *
-   * @param test    the test to do with the target
-   * @param message the message to throw if the test fail
+   * @param test    the test to execute
+   * @param message the message to throw if the test fails
    * @return a reference to this object
    */
   Scenario<T> it(Predicate<? super T> test, String message);
@@ -122,17 +128,19 @@ public interface Scenario<T> {
    * Defines a test to do with a value.
    *
    * @param value the value to test
-   * @param test  the test to do with the value
+   * @param test  the test to execute with the value
    * @return a reference to this object
    */
-  <E> Scenario<T> expect(E value, Predicate<E> test);
+  default <E> Scenario<T> expect(E value, Predicate<E> test) {
+    return expect(value, test, null);
+  }
 
   /**
    * Defines a test to do with a value.
    *
    * @param value   the value to test
-   * @param test    the test to do with the value
-   * @param message the message to throw if the test fail
+   * @param test    the test to execute with the value
+   * @param message the message to throw if the test fails
    * @return a reference to this object
    */
   <E> Scenario<T> expect(E value, Predicate<E> test, String message);
