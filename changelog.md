@@ -1,10 +1,20 @@
 # Changelog
 
-## v2.1.0
+## v2.2.0
+
+- Removed useless predicates TRUE, FALSE, NULL and NOT_NULL (just use the values directly)
+- Removed `eachOne` predicate (it's way simpler to just use a loop/lambda)
+- Removed `EmptyPredicate`
+- Added `#fail` to Spec
+- Fixed dummy typos
+- Added a Function wrapper for using in exceptions tests
+- Minor code improvements
+
+## v2.1.0 (2016-09-12)
 
 - Added `#not(Predicate)` method to the `Spec` class
 
-## v2.0.0
+## v2.0.0 (2016-08-18)
 
 - DSL changes
 
