@@ -65,7 +65,7 @@ public class TestScenario<T> implements Scenario<T> {
   }
 
   @Override
-  public Scenario<T> then(Consumer operation, Predicate test, String message) {
+  public Scenario<T> expect(Consumer operation, Predicate test, String message) {
     try {
       operation.accept(target);
       test(test, null, message);
@@ -76,26 +76,14 @@ public class TestScenario<T> implements Scenario<T> {
   }
 
   @Override
-  public Scenario<T> it(Predicate<? super T> test, String message) {
-    test(test, target, message);
-    return this;
-  }
-
-  @Override
   public Scenario<T> when(Runnable operation) {
     operation.run();
     return this;
   }
 
   @Override
-  public <E> Scenario<T> then(Function<? super T, E> function, Predicate<? super E> test, String message) {
+  public <E> Scenario<T> expect(Function<? super T, E> function, Predicate<? super E> test, String message) {
     test(test, function.apply(target), message);
-    return this;
-  }
-
-  @Override
-  public <E> Scenario<T> expect(E value, Predicate<E> test, String message) {
-    test(test, value, message);
     return this;
   }
 

@@ -41,7 +41,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static tools.devnull.kodo.Spec.exec;
-import static tools.devnull.kodo.Spec.should;
 import static tools.devnull.kodo.Spec.to;
 
 /**
@@ -57,11 +56,11 @@ public class SpecTests {
 
   @Test
   public void testBeWithObject() {
-    assertTrue(should().be("test").test("test"));
-    assertFalse(should().be("test").test(""));
+    assertTrue(to().be("test").test("test"));
+    assertFalse(to().be("test").test(""));
 
-    assertTrue(should().be(1).test(1));
-    assertFalse(should().be(1).test(2));
+    assertTrue(to().be(1).test(1));
+    assertFalse(to().be(1).test(2));
 
     assertTrue(to().be("test").test("test"));
     assertFalse(to().be("test").test(""));
@@ -75,74 +74,74 @@ public class SpecTests {
 
   @Test
   public void testEqual() {
-    assertTrue(should().equal("test").test("test"));
-    assertFalse(should().equal("test").test(""));
+    assertTrue(to().equal("test").test("test"));
+    assertFalse(to().equal("test").test(""));
 
-    assertTrue(should().equal(1).test(1));
-    assertFalse(should().equal(1).test(2));
+    assertTrue(to().equal(1).test(1));
+    assertFalse(to().equal(1).test(2));
   }
 
   @Test
   public void testBeWithPredicate() {
-    assertTrue(should().be(noMoreThan5Chars).test("123456"));
-    assertTrue(should().be(noMoreThan5Chars).test(123456));
-    assertTrue(should().be(alwaysTrue).test(value));
-    assertTrue(should().be(alwaysTrue).test(""));
-    assertTrue(should().be(alwaysTrue).test(1));
+    assertTrue(to().be(noMoreThan5Chars).test("123456"));
+    assertTrue(to().be(noMoreThan5Chars).test(123456));
+    assertTrue(to().be(alwaysTrue).test(value));
+    assertTrue(to().be(alwaysTrue).test(""));
+    assertTrue(to().be(alwaysTrue).test(1));
 
-    assertFalse(should().be(noMoreThan5Chars).test("12345"));
-    assertFalse(should().be(noMoreThan5Chars).test(12345));
-    assertFalse(should().be(alwaysFalse).test(value));
-    assertFalse(should().be(alwaysFalse).test(""));
-    assertFalse(should().be(alwaysFalse).test(1));
+    assertFalse(to().be(noMoreThan5Chars).test("12345"));
+    assertFalse(to().be(noMoreThan5Chars).test(12345));
+    assertFalse(to().be(alwaysFalse).test(value));
+    assertFalse(to().be(alwaysFalse).test(""));
+    assertFalse(to().be(alwaysFalse).test(1));
   }
 
   @Test
   public void testHaveWithPredicate() {
-    assertTrue(should().have(noMoreThan5Chars).test("123456"));
-    assertTrue(should().have(noMoreThan5Chars).test(123456));
-    assertTrue(should().have(alwaysTrue).test(value));
-    assertTrue(should().have(alwaysTrue).test(""));
-    assertTrue(should().have(alwaysTrue).test(1));
+    assertTrue(to().have(noMoreThan5Chars).test("123456"));
+    assertTrue(to().have(noMoreThan5Chars).test(123456));
+    assertTrue(to().have(alwaysTrue).test(value));
+    assertTrue(to().have(alwaysTrue).test(""));
+    assertTrue(to().have(alwaysTrue).test(1));
 
-    assertFalse(should().have(noMoreThan5Chars).test("12345"));
-    assertFalse(should().have(noMoreThan5Chars).test(12345));
-    assertFalse(should().have(alwaysFalse).test(value));
-    assertFalse(should().have(alwaysFalse).test(""));
-    assertFalse(should().have(alwaysFalse).test(1));
+    assertFalse(to().have(noMoreThan5Chars).test("12345"));
+    assertFalse(to().have(noMoreThan5Chars).test(12345));
+    assertFalse(to().have(alwaysFalse).test(value));
+    assertFalse(to().have(alwaysFalse).test(""));
+    assertFalse(to().have(alwaysFalse).test(1));
   }
 
   @Test
   public void testRaise() {
-    assertTrue(should().raise(IllegalArgumentException.class).test(new IllegalArgumentException()));
-    assertTrue(should().raise(RuntimeException.class).test(new IllegalArgumentException()));
+    assertTrue(to().raise(IllegalArgumentException.class).test(new IllegalArgumentException()));
+    assertTrue(to().raise(RuntimeException.class).test(new IllegalArgumentException()));
 
-    assertFalse(should().raise(IllegalArgumentException.class).test(null));
-    assertFalse(should().raise(IllegalArgumentException.class).test(new RuntimeException()));
+    assertFalse(to().raise(IllegalArgumentException.class).test(null));
+    assertFalse(to().raise(IllegalArgumentException.class).test(new RuntimeException()));
   }
 
   @Test
   public void testSucceed() {
-    assertTrue(should().succeed().test(null));
+    assertTrue(to().succeed().test(null));
 
-    assertFalse(should().succeed().test(new RuntimeException()));
-    assertFalse(should().succeed().test(new IllegalArgumentException()));
-    assertFalse(should().succeed().test(new IllegalArgumentException()));
+    assertFalse(to().succeed().test(new RuntimeException()));
+    assertFalse(to().succeed().test(new IllegalArgumentException()));
+    assertFalse(to().succeed().test(new IllegalArgumentException()));
   }
 
   @Test
   public void testFail2() {
-    assertFalse(should().fail().test(null));
+    assertFalse(to().fail().test(null));
 
-    assertTrue(should().fail().test(new RuntimeException()));
-    assertTrue(should().fail().test(new IllegalArgumentException()));
-    assertTrue(should().fail().test(new IllegalArgumentException()));
+    assertTrue(to().fail().test(new RuntimeException()));
+    assertTrue(to().fail().test(new IllegalArgumentException()));
+    assertTrue(to().fail().test(new IllegalArgumentException()));
   }
 
   @Test
   public void testMatch() {
-    assertTrue(should().match(is(nullValue())).test(null));
-    assertFalse(should().match(is(nullValue())).test(""));
+    assertTrue(to().match(is(nullValue())).test(null));
+    assertFalse(to().match(is(nullValue())).test(""));
   }
 
   @Test
@@ -153,8 +152,8 @@ public class SpecTests {
     when(negate.test(value)).thenReturn(true);
     when(predicate.negate()).thenReturn(negate);
 
-    assertTrue(should().not().be(predicate).test(value));
-    assertTrue(should().not(predicate).test(value));
+    assertTrue(to().not().be(predicate).test(value));
+    assertTrue(to().not(predicate).test(value));
 
     verify(predicate, times(2)).negate();
     verify(negate, times(2)).test(value);
@@ -162,7 +161,7 @@ public class SpecTests {
 
   @Test
   public void testHelpers() {
-    assertSame(alwaysTrue, should(alwaysTrue));
+    assertSame(alwaysTrue, to(alwaysTrue));
     assertSame(alwaysFalse, to(alwaysFalse));
   }
 

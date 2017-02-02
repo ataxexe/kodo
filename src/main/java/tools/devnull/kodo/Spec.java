@@ -137,29 +137,8 @@ public class Spec {
    *
    * @return the created Spec object
    */
-  public static Spec should() {
-    return new Spec(Function.identity());
-  }
-
-  /**
-   * Creates a new Spec
-   *
-   * @return the created Spec object
-   */
   public static Spec to() {
     return new Spec(Function.identity());
-  }
-
-  /**
-   * Returns the given predicate.
-   * <p>
-   * Use this method to write readable code.
-   *
-   * @param predicate the predicate to use
-   * @return the given predicate
-   */
-  public static <T> Predicate<T> should(Predicate<T> predicate) {
-    return predicate;
   }
 
   /**
@@ -180,10 +159,37 @@ public class Spec {
    *
    * @param function the function to execute
    * @return a consumer that uses the given function
-   * @since 2.2
+   * @since 3.0
    */
   public static <T> Consumer<T> exec(Function<T, ?> function) {
     return function::apply;
+  }
+
+  /**
+   * Returns a function that always returns the supplied value.
+   * <p>
+   * Use this to test the target object in a Scenario:
+   * <p>
+   * <code>.expect(it(), to().be(myTest))</code>
+   *
+   * @return a function that always returns the supplied value.
+   * @see Function#identity()
+   * @since 3.0
+   */
+  public static <T> Function<? super T, T> it() {
+    return Function.identity();
+  }
+
+  /**
+   * Returns a function that always returns the given value,
+   * regardless of the supplied one.
+   *
+   * @param value the value to return
+   * @return a function that always returns the given value
+   * @since 3.0
+   */
+  public static <T, E> Function<? super T, E> value(E value) {
+    return t -> value;
   }
 
 }

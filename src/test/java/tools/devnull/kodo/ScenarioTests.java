@@ -40,7 +40,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.anyObject;
 import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -78,17 +77,12 @@ public class ScenarioTests {
 
   @Test
   public void testReturns() {
-    assertSame(scenario, scenario.it(test));
-    assertSame(scenario, scenario.it(test, message));
 
-    assertSame(scenario, scenario.then(function, test));
-    assertSame(scenario, scenario.then(function, test, message));
+    assertSame(scenario, scenario.expect(function, test));
+    assertSame(scenario, scenario.expect(function, test, message));
 
-    assertSame(scenario, scenario.then(operation, test));
-    assertSame(scenario, scenario.then(operation, test, message));
-
-    assertSame(scenario, scenario.expect(value, test));
-    assertSame(scenario, scenario.expect(value, test, message));
+    assertSame(scenario, scenario.expect(operation, test));
+    assertSame(scenario, scenario.expect(operation, test, message));
 
     assertSame(scenario, scenario.when(operation));
     assertSame(scenario, scenario.when(runnableOperation));
@@ -107,45 +101,38 @@ public class ScenarioTests {
   }
 
   @Test
-  public void testIt() {
-    scenario.it(test);
-    verify(test).test(target);
-  }
-
-  @Test
   public void testThenWithFunction() {
-    scenario.then(function, test);
+    scenario.expect(function, test);
     verify(function).apply(target);
     verify(test).test(value);
   }
 
   @Test
-  public void testExpect() {
-    scenario.expect(value, test);
-    verify(test).test(value);
-  }
-
-  @Test
   public void testThenWithConsumer() {
-    scenario.then(operation, test);
+    scenario.expect(operation, test);
     verify(operation).accept(target);
 
-    scenario.then(failOperation, test);
+    scenario.expect(failOperation, test);
     verify(test).test(exception);
   }
 
   @Test
   public void testMessages() {
-    assertMessage(() -> scenario.it(failTest, message));
-    assertMessage(() -> scenario.then(function, failTest, message));
-    assertMessage(() -> scenario.then(operation, failTest, message));
-    assertMessage(() -> scenario.expect(value, failTest, message));
+    assertMessage(() -> scenario.expect(function, failTest, message));
+    assertMessage(() -> scenario.expect(operation, failTest, message));
+  }
+
+  @Test
+  public void testHelpers() {
+    Object o = new Object();
+    assertSame(o, Spec.value(o).apply(null));
+    assertSame(o, Spec.it().apply(o));
   }
 
   @Test
   public void testDefaultMessage() {
     try {
-      scenario.expect("some value", failTest);
+      scenario.expect(o -> "some value", failTest);
       throw new Error();
     } catch (AssertionError error) {
       assertEquals("for value: some value", error.getMessage());
@@ -155,21 +142,11 @@ public class ScenarioTests {
   @Test
   public void testDefaultMessageWithNullTarget() {
     try {
-      scenario.expect(null, failTest);
+      scenario.expect(o -> null, failTest);
       throw new Error();
     } catch (AssertionError error) {
       assertEquals("for value: null", error.getMessage());
     }
-  }
-
-  @Test
-  public void testScenarioWithNoTarget() {
-    Scenario scenario = new TestScenario();
-    Predicate predicate = mock(Predicate.class);
-    when(predicate.test(null)).thenReturn(true);
-
-    scenario.it(predicate);
-    verify(predicate).test(null);
   }
 
   private void assertMessage(Runnable command) {
