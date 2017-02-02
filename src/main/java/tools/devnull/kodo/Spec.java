@@ -87,6 +87,12 @@ public class Spec<T> implements SpecDefinition<T> {
     return this;
   }
 
+  @Override
+  public <E> SpecDefinition<T> each(Class<E> type, Function<T, Iterable<E>> splitter, Consumer<SpecDefinition<E>> spec) {
+    splitter.apply(target).forEach(e -> spec.accept(new Spec<>(e)));
+    return this;
+  }
+
   /**
    * Start defining a new {@link SpecDefinition} based on the given target.
    *

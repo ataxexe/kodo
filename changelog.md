@@ -12,7 +12,7 @@ This release contains a huge facelift in Kodo. The DSL is now more simple but ye
   * TestScenario -> Spec
   * Spec -> Expectation
 - Removed `Predicates` and `Reason` classes
-- Removed `eachOne` predicate (it's way simpler to just use a loop/lambda)
+- Removed `eachOne` predicate in favor of a nested Spec evaluation
 - Removed `EmptyPredicate`
 - Added a Function wrapper for using in exceptions tests
 - Removed `should` method, with the new DSL, only the `to` method is sufficient

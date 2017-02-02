@@ -105,4 +105,29 @@ public interface SpecDefinition<T> {
    */
   <E> SpecDefinition<T> expect(Function<? super T, E> function, Predicate<? super E> test, String message);
 
+  /**
+   * Splits the target object into smaller objects and passes each one to the given consumer.
+   *
+   * @param type     the type of the smaller object
+   * @param splitter a function to split the target object
+   * @param spec     the spec to execute
+   * @return a reference to this object
+   * @since 3.0
+   */
+  <E> SpecDefinition<T> each(Class<E> type, Function<T, Iterable<E>> splitter, Consumer<SpecDefinition<E>> spec);
+
+  /**
+   * Splits the target object into smaller objects and passes each one to the given consumer.
+   * <p>
+   * This method assumes that the target is an {@link Iterable}.
+   *
+   * @param type the type of the smaller object
+   * @param spec the spec to execute
+   * @return a reference to this object
+   * @since 3.0
+   */
+  default <E> SpecDefinition<T> each(Class<E> type, Consumer<SpecDefinition<E>> spec) {
+    return each(type, target -> (Iterable) target, spec);
+  }
+
 }

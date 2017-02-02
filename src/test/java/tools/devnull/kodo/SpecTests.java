@@ -32,16 +32,22 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.anyObject;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static tools.devnull.kodo.Expectation.it;
 
 /**
  * @author Marcelo Guimarães
@@ -86,6 +92,8 @@ public class SpecTests {
 
     assertSame(spec, spec.when(operation));
     assertSame(spec, spec.when(runnableOperation));
+
+    assertSame(spec, spec.each(Object.class, t -> Collections.emptyList(), s -> {}));
   }
 
   @Test
@@ -114,6 +122,20 @@ public class SpecTests {
 
     spec.expect(failOperation, test);
     verify(test).test(exception);
+  }
+
+  @Test
+  public void testEach() {
+    List<Integer> ints = Arrays.asList(1, 2, 3);
+    Predicate<Integer> predicate = mock(Predicate.class);
+    when(predicate.test(anyInt())).thenReturn(true);
+
+    Spec.given(ints)
+        .each(Integer.class, i -> i.expect(it(), predicate));
+
+    verify(predicate).test(1);
+    verify(predicate).test(2);
+    verify(predicate).test(3);
   }
 
   @Test
