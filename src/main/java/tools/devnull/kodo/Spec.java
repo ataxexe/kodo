@@ -71,7 +71,7 @@ public class Spec {
    * given predicate.
    */
   public <T> Predicate<T> be(Predicate<T> predicate) {
-    return create(predicate);
+    return predicate == null ? create(Objects::isNull) : create(predicate);
   }
 
   /**

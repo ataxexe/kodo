@@ -68,6 +68,9 @@ public class SpecTests {
 
     assertTrue(to().be(1).test(1));
     assertFalse(to().be(1).test(2));
+
+    assertTrue(to().be(null).test(null));
+    assertFalse(to().be(null).test(new Object()));
   }
 
   @Test
