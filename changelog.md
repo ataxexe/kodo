@@ -1,5 +1,9 @@
 # Changelog
 
+## v3.0.1 (2017-02-02)
+
+Fixed the uploaded jar /o\
+
 ## v3.0.0 (2017-02-02)
 
 This release contains a huge facelift in Kodo. The DSL is now more simple but yet powerful.
