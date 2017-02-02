@@ -28,6 +28,7 @@ package tools.devnull.kodo;
 
 import org.junit.Test;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -36,6 +37,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -183,6 +185,21 @@ public class ExpectationTests {
     exec(function).accept(value);
 
     verify(function).apply(value);
+  }
+
+  @Test
+  public void testFollow() {
+    Consumer definition = mock(Consumer.class);
+
+    to().follow(definition).test(value);
+    Spec.given(value)
+        .expect(it(), to().follow(definition));
+
+    verify(definition, times(2)).accept(any(SpecDefinition.class));
+
+    Spec.given(value)
+        .expect(it(), to().follow(spec -> spec.
+            expect(it(), to().be(value))));
   }
 
 }

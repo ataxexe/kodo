@@ -108,9 +108,18 @@ public class Expectation {
 
   /**
    * Indicates that the operation should fail by throwing any exception.
+   *
+   * @since 3.0
    */
   public Predicate<Throwable> fail() {
     return not(succeed());
+  }
+
+  public <T> Predicate<T> follow(Consumer<SpecDefinition<T>> definition) {
+    return t -> {
+      definition.accept(Spec.given(t));
+      return true;
+    };
   }
 
   /**
