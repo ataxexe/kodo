@@ -31,13 +31,13 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
- * Interface that defines a common set of methods to define test scenarios for
- * a target object.
+ * Interface that defines a common set of methods to define a specification for a target
+ * object.
  *
  * @author Marcelo Guimarães
  * @see Spec#given(Object)
  */
-public interface Scenario<T> {
+public interface SpecDefinition<T> {
 
   /**
    * Defines something to do with the target.
@@ -45,7 +45,7 @@ public interface Scenario<T> {
    * @param operation the operation to do with the target
    * @return a reference to this object.
    */
-  Scenario<T> when(Consumer<? super T> operation);
+  SpecDefinition<T> when(Consumer<? super T> operation);
 
   /**
    * Defines an operation to execute.
@@ -53,7 +53,7 @@ public interface Scenario<T> {
    * @param operation the operation to execute
    * @return a reference to this object.
    */
-  Scenario<T> when(Runnable operation);
+  SpecDefinition<T> when(Runnable operation);
 
   /**
    * Defines an operation that may throw an exception.
@@ -65,7 +65,7 @@ public interface Scenario<T> {
    * @return a reference to this object.
    * @see Expectation#raise(Class)
    */
-  default Scenario<T> expect(Consumer<? super T> operation, Predicate<Throwable> test) {
+  default SpecDefinition<T> expect(Consumer<? super T> operation, Predicate<Throwable> test) {
     return expect(operation, test, null);
   }
 
@@ -79,7 +79,7 @@ public interface Scenario<T> {
    * @param message   the message to throw if the test fails
    * @return a reference to this object.
    */
-  Scenario<T> expect(Consumer<? super T> operation, Predicate<Throwable> test, String message);
+  SpecDefinition<T> expect(Consumer<? super T> operation, Predicate<Throwable> test, String message);
 
   /**
    * Defines a test for some target operation that returns a value.
@@ -90,7 +90,7 @@ public interface Scenario<T> {
    * @return a reference to this object
    * @see Expectation
    */
-  default <E> Scenario<T> expect(Function<? super T, E> function, Predicate<? super E> test) {
+  default <E> SpecDefinition<T> expect(Function<? super T, E> function, Predicate<? super E> test) {
     return expect(function, test, null);
   }
 
@@ -103,6 +103,6 @@ public interface Scenario<T> {
    * @param message  the message to throw if the test fails
    * @return a reference to this object
    */
-  <E> Scenario<T> expect(Function<? super T, E> function, Predicate<? super E> test, String message);
+  <E> SpecDefinition<T> expect(Function<? super T, E> function, Predicate<? super E> test, String message);
 
 }

@@ -36,7 +36,7 @@ import java.util.function.Predicate;
  * @author Marcelo Guimarães
  * @see #given(Object)
  */
-public class Spec<T> implements Scenario<T> {
+public class Spec<T> implements SpecDefinition<T> {
 
   protected final T target;
 
@@ -59,13 +59,13 @@ public class Spec<T> implements Scenario<T> {
   }
 
   @Override
-  public Scenario<T> when(Consumer<? super T> operation) {
+  public SpecDefinition<T> when(Consumer<? super T> operation) {
     operation.accept(target);
     return this;
   }
 
   @Override
-  public Scenario<T> expect(Consumer operation, Predicate test, String message) {
+  public SpecDefinition<T> expect(Consumer operation, Predicate test, String message) {
     try {
       operation.accept(target);
       test(test, null, message);
@@ -76,25 +76,25 @@ public class Spec<T> implements Scenario<T> {
   }
 
   @Override
-  public Scenario<T> when(Runnable operation) {
+  public SpecDefinition<T> when(Runnable operation) {
     operation.run();
     return this;
   }
 
   @Override
-  public <E> Scenario<T> expect(Function<? super T, E> function, Predicate<? super E> test, String message) {
+  public <E> SpecDefinition<T> expect(Function<? super T, E> function, Predicate<? super E> test, String message) {
     test(test, function.apply(target), message);
     return this;
   }
 
   /**
-   * Start defining a new {@link Scenario} based on the given target.
+   * Start defining a new {@link SpecDefinition} based on the given target.
    *
    * @param object the target object
    * @param <T>    the type of the target
-   * @return a new {@link Scenario}.
+   * @return a new {@link SpecDefinition}.
    */
-  public static <T> Scenario<T> given(T object) {
+  public static <T> SpecDefinition<T> given(T object) {
     return new Spec<>(object);
   }
 

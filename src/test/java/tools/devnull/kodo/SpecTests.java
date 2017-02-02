@@ -50,7 +50,7 @@ import static org.mockito.Mockito.when;
 public class SpecTests {
 
   private Object target = new Object();
-  private Scenario<Object> scenario = Spec.given(target);
+  private SpecDefinition<Object> spec = Spec.given(target);
   private String message = "a message";
   private Object value = new Object();
   @Mock
@@ -78,61 +78,54 @@ public class SpecTests {
   @Test
   public void testReturns() {
 
-    assertSame(scenario, scenario.expect(function, test));
-    assertSame(scenario, scenario.expect(function, test, message));
+    assertSame(spec, spec.expect(function, test));
+    assertSame(spec, spec.expect(function, test, message));
 
-    assertSame(scenario, scenario.expect(operation, test));
-    assertSame(scenario, scenario.expect(operation, test, message));
+    assertSame(spec, spec.expect(operation, test));
+    assertSame(spec, spec.expect(operation, test, message));
 
-    assertSame(scenario, scenario.when(operation));
-    assertSame(scenario, scenario.when(runnableOperation));
+    assertSame(spec, spec.when(operation));
+    assertSame(spec, spec.when(runnableOperation));
   }
 
   @Test
   public void testWhen() {
-    scenario.when(operation);
+    spec.when(operation);
     verify(operation).accept(target);
   }
 
   @Test
   public void testWhenWithRunnable() {
-    scenario.when(runnableOperation);
+    spec.when(runnableOperation);
     verify(runnableOperation).run();
   }
 
   @Test
   public void testThenWithFunction() {
-    scenario.expect(function, test);
+    spec.expect(function, test);
     verify(function).apply(target);
     verify(test).test(value);
   }
 
   @Test
   public void testThenWithConsumer() {
-    scenario.expect(operation, test);
+    spec.expect(operation, test);
     verify(operation).accept(target);
 
-    scenario.expect(failOperation, test);
+    spec.expect(failOperation, test);
     verify(test).test(exception);
   }
 
   @Test
   public void testMessages() {
-    assertMessage(() -> scenario.expect(function, failTest, message));
-    assertMessage(() -> scenario.expect(operation, failTest, message));
-  }
-
-  @Test
-  public void testHelpers() {
-    Object o = new Object();
-    assertSame(o, Expectation.value(o).apply(null));
-    assertSame(o, Expectation.it().apply(o));
+    assertMessage(() -> spec.expect(function, failTest, message));
+    assertMessage(() -> spec.expect(operation, failTest, message));
   }
 
   @Test
   public void testDefaultMessage() {
     try {
-      scenario.expect(o -> "some value", failTest);
+      spec.expect(o -> "some value", failTest);
       throw new Error();
     } catch (AssertionError error) {
       assertEquals("for value: some value", error.getMessage());
@@ -142,7 +135,7 @@ public class SpecTests {
   @Test
   public void testDefaultMessageWithNullTarget() {
     try {
-      scenario.expect(o -> null, failTest);
+      spec.expect(o -> null, failTest);
       throw new Error();
     } catch (AssertionError error) {
       assertEquals("for value: null", error.getMessage());

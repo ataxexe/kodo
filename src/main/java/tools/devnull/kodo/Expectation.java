@@ -168,7 +168,7 @@ public class Expectation {
   /**
    * Returns a function that always returns the supplied value.
    * <p>
-   * Use this to test the target object in a Scenario:
+   * Use this to test the target object in a SpecDefinition:
    * <p>
    * <code>.expect(it(), to().be(myTest))</code>
    *
