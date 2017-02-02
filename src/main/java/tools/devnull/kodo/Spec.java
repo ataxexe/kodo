@@ -40,11 +40,7 @@ public class Spec<T> implements SpecDefinition<T> {
 
   protected final T target;
 
-  public Spec() {
-    this(null);
-  }
-
-  public Spec(T target) {
+  private Spec(T target) {
     this.target = target;
   }
 
@@ -102,6 +98,19 @@ public class Spec<T> implements SpecDefinition<T> {
    */
   public static <T> SpecDefinition<T> given(T object) {
     return new Spec<>(object);
+  }
+
+  /**
+   * Defines a spec without targeting an object.
+   * <p>
+   * You can't use {@link Expectation#it()} nor {@link #each(Class, Consumer)}
+   * while using this definition.
+   *
+   * @return a new {@link SpecDefinition}
+   * @since 3.0
+   */
+  public static SpecDefinition begin() {
+    return new Spec(null);
   }
 
 }
