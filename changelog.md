@@ -2,6 +2,10 @@
 
 ## v3.0.0
 
+This release contains a huge facelift in Kodo. The DSL is now more simple but yet powerful.
+
+## Major Changes
+
 - Changed the Scenario DSL to only use `expect` method names for tests
 - Classes renamed:
   * Scenario -> SpecDefinition
@@ -10,9 +14,13 @@
 - Removed `Predicates` and `Reason` classes
 - Removed `eachOne` predicate (it's way simpler to just use a loop/lambda)
 - Removed `EmptyPredicate`
-- Added `#fail` to Spec
-- Fixed dummy typos
 - Added a Function wrapper for using in exceptions tests
+- Removed `should` method, with the new DSL, only the `to` method is sufficient
+
+## Minor Changes
+
+- Added `fail` method
+- Fixed dummy typos in docs
 - Minor code improvements
 
 ## v2.1.0 (2016-09-12)
