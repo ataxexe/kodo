@@ -28,7 +28,7 @@ With the `Scenario` interface returned, you can use a set of methods to describe
 ~~~java
 TestScenario.given(someObject)
   .when(obj -> obj.foo())
-  .thenIt(should().be(obj -> obj.isValid()));
+  .expect(it(), obj -> obj.isValid());
 ~~~
 
 This can be refactored to a more elegant code:
@@ -36,7 +36,7 @@ This can be refactored to a more elegant code:
 ~~~java
 TestScenario.given(someObject)
   .when(itExecutes()) // an extracted method
-  .thenIt(should().be(valid())); // an extracted method
+  .expect(it(), to().be(valid())); // an extracted method
 ~~~
 
 And messages may be supplied:
@@ -44,26 +44,27 @@ And messages may be supplied:
 ~~~java
 TestScenario.given(someObject)
   .when(itExecutes())
-  .thenIt(should().be(valid()), otherwise("the validation failed"));
+  .expect(it(), to().be(valid()), otherwise("the validation failed"));
   
 TestScenario.given(someObject)
   .when(itExecutes())
-  .thenIt(should().be(valid()), because("the process should not invalidate the object"));
+  .expect(it(), to().be(valid()), because("the process should not invalidate the object"));
 ~~~
 
 Here is more examples:
 
 ~~~java
 TestScenario.given(new Orange())
-  .then(Orange::color, should().be("orange")
-  .it(should().be(fresh()))
-  .when(squeeze())
-  .it(should().not().be(fresh())));
+  .expect(Orange::color, to().be("orange")
+  .expect(it(), to().be(fresh()))
+  .when(Orange::squeeze)
+  .expect(it(), to().not().be(fresh())));
   
 // defining exceptions
 TestScenario.given(someObject)
-  .then(doingForbiddenStuff(), should().raise(IllegalStateException.class))
-  .then(doingAllowedStuff(), should().succeed());
+  .expect(doingForbiddenStuff(), to().raise(IllegalStateException.class))
+  .expect(doingForbiddenStuff(), to().fail())
+  .expect(doingAllowedStuff(), to().succeed());
 ~~~
 
 You can always use the helper classes `Spec` and `Predicates`. They contain a set of useful methods to help you 
