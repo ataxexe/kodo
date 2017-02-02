@@ -30,7 +30,7 @@ apply plugin: 'signing'
 
 configurations {
   project.group = "tools.devnull"
-  project.version = "3.0.0"
+  project.version = "3.0.1"
 
   project.ext["pomFile"] = "$buildDir/${project.name}-${project.version}.pom"
 
