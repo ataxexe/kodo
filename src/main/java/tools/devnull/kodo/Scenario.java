@@ -35,7 +35,7 @@ import java.util.function.Predicate;
  * a target object.
  *
  * @author Marcelo Guimarães
- * @see TestScenario#given(Object)
+ * @see Spec#given(Object)
  */
 public interface Scenario<T> {
 
@@ -63,7 +63,7 @@ public interface Scenario<T> {
    *                  is thrown, a <code>null</code> value will be given to this
    *                  test
    * @return a reference to this object.
-   * @see Spec#raise(Class)
+   * @see Expectation#raise(Class)
    */
   default Scenario<T> expect(Consumer<? super T> operation, Predicate<Throwable> test) {
     return expect(operation, test, null);
@@ -88,7 +88,7 @@ public interface Scenario<T> {
    * @param test     the test to execute with the value returned by the given
    *                 function
    * @return a reference to this object
-   * @see Spec
+   * @see Expectation
    */
   default <E> Scenario<T> expect(Function<? super T, E> function, Predicate<? super E> test) {
     return expect(function, test, null);

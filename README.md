@@ -67,8 +67,7 @@ TestScenario.given(someObject)
   .expect(doingAllowedStuff(), to().succeed());
 ~~~
 
-You can always use the helper classes `Spec` and `Predicates`. They contain a set of useful methods to help you 
-write your awesome tests!
+You can always use the helper class `Expectation`. It contain a set of useful methods to help you write your awesome tests!
 
 # How To Contribute
 

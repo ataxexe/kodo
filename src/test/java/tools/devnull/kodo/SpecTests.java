@@ -26,153 +26,136 @@
 
 package tools.devnull.kodo;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import static junit.framework.TestCase.assertSame;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+import static org.mockito.Mockito.anyObject;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static tools.devnull.kodo.Spec.exec;
-import static tools.devnull.kodo.Spec.to;
 
 /**
- * The test suite for {@link Spec}
+ * @author Marcelo Guimarães
  */
+@RunWith(MockitoJUnitRunner.class)
 public class SpecTests {
 
-  private Predicate noMoreThan5Chars =
-      value -> value.toString().length() > 5;
-  private Predicate alwaysTrue = value -> true;
-  private Predicate alwaysFalse = value -> false;
+  private Object target = new Object();
+  private Scenario<Object> scenario = Spec.given(target);
+  private String message = "a message";
   private Object value = new Object();
+  @Mock
+  private Consumer operation;
+  @Mock
+  private Runnable runnableOperation;
+  @Mock
+  private Consumer failOperation;
+  private RuntimeException exception = new RuntimeException();
+  @Mock
+  private Predicate test;
+  @Mock
+  private Predicate failTest;
+  @Mock
+  private Function function;
 
-  @Test
-  public void testBeWithObject() {
-    assertTrue(to().be("test").test("test"));
-    assertFalse(to().be("test").test(""));
-
-    assertTrue(to().be(1).test(1));
-    assertFalse(to().be(1).test(2));
-
-    assertTrue(to().be("test").test("test"));
-    assertFalse(to().be("test").test(""));
-
-    assertTrue(to().be(1).test(1));
-    assertFalse(to().be(1).test(2));
-
-    assertTrue(to().be(null).test(null));
-    assertFalse(to().be(null).test(new Object()));
+  @Before
+  public void initialize() {
+    when(test.test(anyObject())).thenReturn(true);
+    when(failTest.test(anyObject())).thenReturn(false);
+    when(function.apply(target)).thenReturn(value);
+    doThrow(exception).when(failOperation).accept(anyObject());
   }
 
   @Test
-  public void testEqual() {
-    assertTrue(to().equal("test").test("test"));
-    assertFalse(to().equal("test").test(""));
+  public void testReturns() {
 
-    assertTrue(to().equal(1).test(1));
-    assertFalse(to().equal(1).test(2));
+    assertSame(scenario, scenario.expect(function, test));
+    assertSame(scenario, scenario.expect(function, test, message));
+
+    assertSame(scenario, scenario.expect(operation, test));
+    assertSame(scenario, scenario.expect(operation, test, message));
+
+    assertSame(scenario, scenario.when(operation));
+    assertSame(scenario, scenario.when(runnableOperation));
   }
 
   @Test
-  public void testBeWithPredicate() {
-    assertTrue(to().be(noMoreThan5Chars).test("123456"));
-    assertTrue(to().be(noMoreThan5Chars).test(123456));
-    assertTrue(to().be(alwaysTrue).test(value));
-    assertTrue(to().be(alwaysTrue).test(""));
-    assertTrue(to().be(alwaysTrue).test(1));
-
-    assertFalse(to().be(noMoreThan5Chars).test("12345"));
-    assertFalse(to().be(noMoreThan5Chars).test(12345));
-    assertFalse(to().be(alwaysFalse).test(value));
-    assertFalse(to().be(alwaysFalse).test(""));
-    assertFalse(to().be(alwaysFalse).test(1));
+  public void testWhen() {
+    scenario.when(operation);
+    verify(operation).accept(target);
   }
 
   @Test
-  public void testHaveWithPredicate() {
-    assertTrue(to().have(noMoreThan5Chars).test("123456"));
-    assertTrue(to().have(noMoreThan5Chars).test(123456));
-    assertTrue(to().have(alwaysTrue).test(value));
-    assertTrue(to().have(alwaysTrue).test(""));
-    assertTrue(to().have(alwaysTrue).test(1));
-
-    assertFalse(to().have(noMoreThan5Chars).test("12345"));
-    assertFalse(to().have(noMoreThan5Chars).test(12345));
-    assertFalse(to().have(alwaysFalse).test(value));
-    assertFalse(to().have(alwaysFalse).test(""));
-    assertFalse(to().have(alwaysFalse).test(1));
+  public void testWhenWithRunnable() {
+    scenario.when(runnableOperation);
+    verify(runnableOperation).run();
   }
 
   @Test
-  public void testRaise() {
-    assertTrue(to().raise(IllegalArgumentException.class).test(new IllegalArgumentException()));
-    assertTrue(to().raise(RuntimeException.class).test(new IllegalArgumentException()));
-
-    assertFalse(to().raise(IllegalArgumentException.class).test(null));
-    assertFalse(to().raise(IllegalArgumentException.class).test(new RuntimeException()));
+  public void testThenWithFunction() {
+    scenario.expect(function, test);
+    verify(function).apply(target);
+    verify(test).test(value);
   }
 
   @Test
-  public void testSucceed() {
-    assertTrue(to().succeed().test(null));
+  public void testThenWithConsumer() {
+    scenario.expect(operation, test);
+    verify(operation).accept(target);
 
-    assertFalse(to().succeed().test(new RuntimeException()));
-    assertFalse(to().succeed().test(new IllegalArgumentException()));
-    assertFalse(to().succeed().test(new IllegalArgumentException()));
+    scenario.expect(failOperation, test);
+    verify(test).test(exception);
   }
 
   @Test
-  public void testFail2() {
-    assertFalse(to().fail().test(null));
-
-    assertTrue(to().fail().test(new RuntimeException()));
-    assertTrue(to().fail().test(new IllegalArgumentException()));
-    assertTrue(to().fail().test(new IllegalArgumentException()));
-  }
-
-  @Test
-  public void testMatch() {
-    assertTrue(to().match(is(nullValue())).test(null));
-    assertFalse(to().match(is(nullValue())).test(""));
-  }
-
-  @Test
-  public void testNegate() {
-    Predicate predicate = mock(Predicate.class);
-    Predicate negate = mock(Predicate.class);
-
-    when(negate.test(value)).thenReturn(true);
-    when(predicate.negate()).thenReturn(negate);
-
-    assertTrue(to().not().be(predicate).test(value));
-    assertTrue(to().not(predicate).test(value));
-
-    verify(predicate, times(2)).negate();
-    verify(negate, times(2)).test(value);
+  public void testMessages() {
+    assertMessage(() -> scenario.expect(function, failTest, message));
+    assertMessage(() -> scenario.expect(operation, failTest, message));
   }
 
   @Test
   public void testHelpers() {
-    assertSame(alwaysTrue, to(alwaysTrue));
-    assertSame(alwaysFalse, to(alwaysFalse));
+    Object o = new Object();
+    assertSame(o, Expectation.value(o).apply(null));
+    assertSame(o, Expectation.it().apply(o));
   }
 
   @Test
-  public void testExec() {
-    Function function = mock(Function.class);
-    when(function.apply(value)).thenReturn(value);
+  public void testDefaultMessage() {
+    try {
+      scenario.expect(o -> "some value", failTest);
+      throw new Error();
+    } catch (AssertionError error) {
+      assertEquals("for value: some value", error.getMessage());
+    }
+  }
 
-    exec(function).accept(value);
+  @Test
+  public void testDefaultMessageWithNullTarget() {
+    try {
+      scenario.expect(o -> null, failTest);
+      throw new Error();
+    } catch (AssertionError error) {
+      assertEquals("for value: null", error.getMessage());
+    }
+  }
 
-    verify(function).apply(value);
+  private void assertMessage(Runnable command) {
+    try {
+      command.run();
+      throw new Error();
+    } catch (AssertionError error) {
+      assertEquals(message, error.getMessage());
+    }
   }
 
 }

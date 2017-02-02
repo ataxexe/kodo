@@ -26,170 +26,76 @@
 
 package tools.devnull.kodo;
 
-import org.hamcrest.Matcher;
-
-import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
- * Helper class that contains usefull methods to create the assertions for the
- * fluent interface.
+ * A class to create scenarios for testing.
  *
  * @author Marcelo Guimarães
+ * @see #given(Object)
  */
-public class Spec {
+public class Spec<T> implements Scenario<T> {
 
-  private final Function<Predicate, Predicate> modifier;
+  protected final T target;
 
-  Spec(Function<Predicate, Predicate> modifier) {
-    this.modifier = modifier;
+  public Spec() {
+    this(null);
   }
 
-  private <T> Predicate<T> create(Predicate<T> predicate) {
-    return modifier.apply(predicate);
+  public Spec(T target) {
+    this.target = target;
+  }
+
+  private void test(Predicate predicate, Object target, String message) {
+    if (!predicate.test(target)) {
+      throw new AssertionError(message == null ? defaultMessage(target) : message);
+    }
+  }
+
+  private String defaultMessage(Object target) {
+    return String.format("for value: %s", target);
+  }
+
+  @Override
+  public Scenario<T> when(Consumer<? super T> operation) {
+    operation.accept(target);
+    return this;
+  }
+
+  @Override
+  public Scenario<T> expect(Consumer operation, Predicate test, String message) {
+    try {
+      operation.accept(target);
+      test(test, null, message);
+    } catch (Throwable t) {
+      test(test, t, message);
+    }
+    return this;
+  }
+
+  @Override
+  public Scenario<T> when(Runnable operation) {
+    operation.run();
+    return this;
+  }
+
+  @Override
+  public <E> Scenario<T> expect(Function<? super T, E> function, Predicate<? super E> test, String message) {
+    test(test, function.apply(target), message);
+    return this;
   }
 
   /**
-   * Indicates that the value should
-   * {@link java.lang.Object#equals(Object) equal} the given value.
-   */
-  public <T> Predicate<T> be(T value) {
-    return create(obj -> Objects.equals(obj, value));
-  }
-
-  /**
-   * @see #be(Object)
-   */
-  public <T> Predicate<T> equal(T value) {
-    return be(value);
-  }
-
-  /**
-   * Indicates that the value should {@link Predicate#test(Object) match} the
-   * given predicate.
-   */
-  public <T> Predicate<T> be(Predicate<T> predicate) {
-    return predicate == null ? create(Objects::isNull) : create(predicate);
-  }
-
-  /**
-   * Indicates that the target should have something that is tested with
-   * the given predicate.
+   * Start defining a new {@link Scenario} based on the given target.
    *
-   * @param predicate the predicate to test the target.
-   * @return a consumer that uses the given predicate to test the target.
+   * @param object the target object
+   * @param <T>    the type of the target
+   * @return a new {@link Scenario}.
    */
-  public <T> Predicate<T> have(Predicate<T> predicate) {
-    return create(predicate);
-  }
-
-  /**
-   * Indicates that the value should match the given matcher.
-   */
-  public <T> Predicate<T> match(Matcher matcher) {
-    return create(obj -> matcher.matches(obj));
-  }
-
-  /**
-   * Indicates that the operation should throw the given exception.
-   */
-  public Predicate<Throwable> raise(Class<? extends Throwable> exception) {
-    return create(error -> error != null && exception.isAssignableFrom(error.getClass()));
-  }
-
-  /**
-   * Indicates that the operation should not throw any exception.
-   */
-  public Predicate<Throwable> succeed() {
-    return create(Objects::isNull);
-  }
-
-  /**
-   * Indicates that the operation should fail by throwing any exception.
-   */
-  public Predicate<Throwable> fail() {
-    return not(succeed());
-  }
-
-  /**
-   * Creates a new Spec that will negates the given predicates.
-   *
-   * @return a new Spec that negates every given predicate
-   */
-  public Spec not() {
-    return new Spec(Predicate::negate);
-  }
-
-  /**
-   * Returns the negate function of the given predicate.
-   *
-   * @param predicate the predicate to negate
-   * @return the given predicate negated
-   */
-  public <T> Predicate<T> not(Predicate<T> predicate) {
-    return predicate.negate();
-  }
-
-  /**
-   * Creates a new Spec
-   *
-   * @return the created Spec object
-   */
-  public static Spec to() {
-    return new Spec(Function.identity());
-  }
-
-  /**
-   * Returns the given predicate.
-   * <p>
-   * Use this method to write readable code.
-   *
-   * @param predicate the predicate to use
-   * @return the given predicate
-   */
-  public static <T> Predicate<T> to(Predicate<T> predicate) {
-    return predicate;
-  }
-
-  /**
-   * Wraps a function into a consumer in case you need to use a function
-   * to test if it succeed or fail.
-   *
-   * @param function the function to execute
-   * @return a consumer that uses the given function
-   * @since 3.0
-   */
-  public static <T> Consumer<T> exec(Function<T, ?> function) {
-    return function::apply;
-  }
-
-  /**
-   * Returns a function that always returns the supplied value.
-   * <p>
-   * Use this to test the target object in a Scenario:
-   * <p>
-   * <code>.expect(it(), to().be(myTest))</code>
-   *
-   * @return a function that always returns the supplied value.
-   * @see Function#identity()
-   * @since 3.0
-   */
-  public static <T> Function<? super T, T> it() {
-    return Function.identity();
-  }
-
-  /**
-   * Returns a function that always returns the given value,
-   * regardless of the supplied one.
-   *
-   * @param value the value to return
-   * @return a function that always returns the given value
-   * @since 3.0
-   */
-  public static <T, E> Function<? super T, E> value(E value) {
-    return t -> value;
+  public static <T> Scenario<T> given(T object) {
+    return new Spec<>(object);
   }
 
 }

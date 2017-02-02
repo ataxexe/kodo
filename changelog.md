@@ -3,7 +3,11 @@
 ## v3.0.0
 
 - Changed the Scenario DSL to only use `expect` method names for tests
-- Removed `Predicates` class
+- Classes renamed:
+  * Scenario -> SpecDefinition
+  * TestScenario -> Spec
+  * Spec -> Expectation
+- Removed `Predicates` and `Reason` classes
 - Removed `eachOne` predicate (it's way simpler to just use a loop/lambda)
 - Removed `EmptyPredicate`
 - Added `#fail` to Spec
