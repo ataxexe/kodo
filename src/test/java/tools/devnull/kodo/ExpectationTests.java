@@ -26,7 +26,6 @@
 
 package tools.devnull.kodo;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.function.Function;
@@ -43,8 +42,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static tools.devnull.kodo.Expectation.exec;
 import static tools.devnull.kodo.Expectation.it;
-import static tools.devnull.kodo.Expectation.value;
 import static tools.devnull.kodo.Expectation.to;
+import static tools.devnull.kodo.Expectation.value;
 
 /**
  * The test suite for {@link Expectation}
@@ -168,12 +167,12 @@ public class ExpectationTests {
     assertSame(alwaysFalse, to(alwaysFalse));
 
     Object o = new Object();
-    Assert.assertSame(o, value(o).apply(null));
-    Assert.assertSame(o, it().apply(o));
+    assertSame(o, value(o).apply(null));
+    assertSame(o, it().apply(o));
 
     String message = "Lorem ipsum laboris excepteur minim in quis.";
-    Assert.assertSame(message, Expectation.because(message));
-    Assert.assertSame(message, Expectation.otherwise(message));
+    assertSame(message, Expectation.because(message));
+    assertSame(message, Expectation.otherwise(message));
   }
 
   @Test
