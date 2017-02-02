@@ -65,6 +65,12 @@ TestScenario.given(someObject)
   .expect(doingForbiddenStuff(), to().raise(IllegalStateException.class))
   .expect(doingForbiddenStuff(), to().fail())
   .expect(doingAllowedStuff(), to().succeed());
+
+
+// using a collection
+TestScenario.given(oranges)
+  .each(Orange.class, spec -> spec
+      .expect(it(), to().be(fresh())));
 ~~~
 
 You can always use the helper class `Expectation`. It contain a set of useful methods to help you write your awesome tests!
