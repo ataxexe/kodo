@@ -3,7 +3,7 @@
 ## v3.0.0
 
 - Changed the Scenario DSL to only use `expect` method names for tests
-- Removed useless predicates TRUE, FALSE, NULL and NOT_NULL (just use the values directly)
+- Removed `Predicates` class
 - Removed `eachOne` predicate (it's way simpler to just use a loop/lambda)
 - Removed `EmptyPredicate`
 - Added `#fail` to Spec
