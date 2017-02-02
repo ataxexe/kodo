@@ -1,6 +1,6 @@
 # Overview
 
-Kodo is a test framework that helps you creating test scenarios with the help of a fluent interface.
+Kodo is a test framework that helps you defining specifications with the help of a fluent interface.
 
 ## How To Build
 
@@ -15,18 +15,20 @@ Just put the really small kodo jar file on your classpath. You can also install 
 
 Kodo is also in Maven Central. Just use the above `groupId` and `artifactId` to declare the dependency.
 
-# Creating Test Scenarios
+# Defining Specifications
 
-To create a new test scenario, use the `TestScenario` helper class. It defines an entry point to the fluent interface:
+To define a new specification, use the `Spec` class. It defines an entry point to the fluent interface:
 
 ~~~java
-TestScenario.given(someObject);
+Spec.given(someObject);
+
+Spec.begin(); // for specifications without a target 
 ~~~
 
-With the `Scenario` interface returned, you can use a set of methods to describe behaviours:
+With the `SpecDefinition` interface returned, you can use a set of methods to describe behaviours:
 
 ~~~java
-TestScenario.given(someObject)
+Spec.given(someObject)
   .when(obj -> obj.foo())
   .expect(it(), obj -> obj.isValid());
 ~~~
@@ -34,7 +36,7 @@ TestScenario.given(someObject)
 This can be refactored to a more elegant code:
 
 ~~~java
-TestScenario.given(someObject)
+Spec.given(someObject)
   .when(itExecutes()) // an extracted method
   .expect(it(), to().be(valid())); // an extracted method
 ~~~
@@ -42,11 +44,11 @@ TestScenario.given(someObject)
 And messages may be supplied:
 
 ~~~java
-TestScenario.given(someObject)
+Spec.given(someObject)
   .when(itExecutes())
   .expect(it(), to().be(valid()), otherwise("the validation failed"));
   
-TestScenario.given(someObject)
+Spec.given(someObject)
   .when(itExecutes())
   .expect(it(), to().be(valid()), because("the process should not invalidate the object"));
 ~~~
@@ -54,29 +56,35 @@ TestScenario.given(someObject)
 Here is more examples:
 
 ~~~java
-TestScenario.given(new Orange())
+Spec.given(new Orange())
   .expect(Orange::color, to().be("orange")
   .expect(it(), to().be(fresh()))
   .when(Orange::squeeze)
   .expect(it(), to().not().be(fresh())));
   
 // defining exceptions
-TestScenario.given(someObject)
+Spec.given(someObject)
   .expect(doingForbiddenStuff(), to().raise(IllegalStateException.class))
   .expect(doingForbiddenStuff(), to().fail())
   .expect(doingAllowedStuff(), to().succeed());
 
 
 // using a collection
-TestScenario.given(oranges)
+Spec.given(oranges)
   .each(Orange.class, spec -> spec
       .expect(it(), to().be(fresh())));
+
+// you can also define nested specs
+Spec.given(car)
+  .expect(it(), to().be(NEW))
+  .expect(car::engine, to().follow(spec -> spec.
+      expect(it(), to().have(highPower()))));
 ~~~
 
-You can always use the helper class `Expectation`. It contain a set of useful methods to help you write your awesome tests!
+You can always use the helper class `Expectation`. It contain a set of useful methods to help you write your awesome specifications!
 
 # How To Contribute
 
-Fork it, fire an issue, spread the project, use the project... any help will be great! And let me know if you're liking (or not).
+Fork it, fire an issue, spread the project, use the project... any help will be great! And, please, let me know if you're liking Kodo (or not).
 
 [gradle]: <http://gradle.org>
