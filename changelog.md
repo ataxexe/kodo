@@ -7,6 +7,7 @@ This release contains a huge facelift in Kodo. The DSL is now more simple but ye
 ## Major Changes
 
 - Changed the Scenario DSL to only use `expect` method names for tests
+- Added a way of defining specs without target objects
 - Classes renamed:
   * Scenario -> SpecDefinition
   * TestScenario -> Spec
@@ -16,12 +17,15 @@ This release contains a huge facelift in Kodo. The DSL is now more simple but ye
 - Removed `EmptyPredicate`
 - Added a Function wrapper for using in exceptions tests
 - Removed `should` method, with the new DSL, only the `to` method is sufficient
+- Added a `follow` method to define nested specs
 
 ## Minor Changes
 
 - Added `fail` method
 - Fixed dummy typos in docs
 - Minor code improvements
+- Added a `begin` builder method for defining specs without a specific target
+- Changed access to private for `Spec` constructor (use the static builder methods instead)
 
 ## v2.1.0 (2016-09-12)
 
