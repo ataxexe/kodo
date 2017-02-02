@@ -30,7 +30,7 @@ apply plugin: 'signing'
 
 configurations {
   project.group = "tools.devnull"
-  project.version = "2.1.0"
+  project.version = "2.2.0"
 
   project.ext["pomFile"] = "$buildDir/${project.name}-${project.version}.pom"
 
@@ -80,7 +80,7 @@ task pom << {
       name project.name
       description project.description
 
-      url 'https://github.com/ataxexe/kodo'
+      url 'https://github.com/devnull-tools/kodo'
 
       licenses {
         license {
@@ -96,13 +96,13 @@ task pom << {
           name 'Marcelo Guimarães'
           email 'ataxexe@devnull.tools'
           organizationUrl 'http://devnull.tools'
-          url 'http://entra.la'
+          url 'http://www.unbelievableexception.com'
         }
       }
 
       scm {
-        connection 'scm:git:git@github.com:ataxexe/kodo.git'
-        url 'https://github.com/ataxexe/kodo'
+        connection 'scm:git:git@github.com:devnull-tools/kodo.git'
+        url 'https://github.com/devnull-tools/kodo'
       }
 
     }
