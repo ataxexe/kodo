@@ -134,7 +134,7 @@ public class ExpectationTests {
   }
 
   @Test
-  public void testFail2() {
+  public void testFail() {
     assertFalse(to().fail().test(null));
 
     assertTrue(to().fail().test(new RuntimeException()));
