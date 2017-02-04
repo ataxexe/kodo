@@ -89,7 +89,7 @@ public class Expectation {
    * Indicates that the value should match the given matcher.
    */
   public <T> Predicate<T> match(Matcher matcher) {
-    return create(obj -> matcher.matches(obj));
+    return create(matcher::matches);
   }
 
   /**
