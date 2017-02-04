@@ -40,6 +40,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.anyObject;
@@ -83,7 +84,6 @@ public class SpecTests {
 
   @Test
   public void testReturns() {
-
     assertSame(spec, spec.expect(function, test));
     assertSame(spec, spec.expect(function, test, message));
 
@@ -94,6 +94,11 @@ public class SpecTests {
     assertSame(spec, spec.when(runnableOperation));
 
     assertSame(spec, spec.each(Object.class, t -> Collections.emptyList(), s -> {}));
+  }
+
+  @Test
+  public void testBegin() {
+    assertNotNull(Spec.begin());
   }
 
   @Test
