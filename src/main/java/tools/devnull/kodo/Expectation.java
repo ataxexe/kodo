@@ -202,6 +202,19 @@ public class Expectation {
   }
 
   /**
+   * Returns a function that always returns the given value,
+   * regardless of the supplied one.
+   *
+   * @param value the value to return
+   * @return a function that always returns the given value
+   * @since 3.1
+   * @see #value(Object)
+   */
+  public static <T, E> Function<? super T, E> object(E value) {
+    return value(value);
+  }
+
+  /**
    * Helper method to improve code readability. It returns the given string.
    * <p>
    * Use it with the methods that takes a message.

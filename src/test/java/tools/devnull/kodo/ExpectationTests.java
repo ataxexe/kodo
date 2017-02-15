@@ -44,6 +44,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static tools.devnull.kodo.Expectation.exec;
 import static tools.devnull.kodo.Expectation.it;
+import static tools.devnull.kodo.Expectation.object;
 import static tools.devnull.kodo.Expectation.to;
 import static tools.devnull.kodo.Expectation.value;
 
@@ -170,6 +171,7 @@ public class ExpectationTests {
 
     Object o = new Object();
     assertSame(o, value(o).apply(null));
+    assertSame(o, object(o).apply(null));
     assertSame(o, it().apply(o));
 
     String message = "Lorem ipsum laboris excepteur minim in quis.";
