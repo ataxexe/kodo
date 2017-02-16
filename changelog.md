@@ -1,5 +1,15 @@
 # Changelog
 
+## v3.1.0
+
+### Major Changes
+
+- Added a `beNull` method to `Expectation` class.
+
+### Minor Changes
+
+- Added a `object` method like the `value`
+
 ## v3.0.1 (2017-02-02)
 
 Fixed the uploaded jar /o\

@@ -60,6 +60,16 @@ public class Expectation {
   }
 
   /**
+   * A predicate that tests if the object is null.
+   *
+   * @return a predicate that tests if the object is null.
+   * @since 3.1
+   */
+  public <T> Predicate<T> beNull() {
+    return create(Objects::isNull);
+  }
+
+  /**
    * @see #be(Object)
    */
   public <T> Predicate<T> equal(T value) {
@@ -71,7 +81,7 @@ public class Expectation {
    * given predicate.
    */
   public <T> Predicate<T> be(Predicate<T> predicate) {
-    return predicate == null ? create(Objects::isNull) : create(predicate);
+    return create(predicate);
   }
 
   /**
