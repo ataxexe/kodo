@@ -46,8 +46,12 @@ And messages may be supplied:
 ~~~java
 Spec.given(someObject)
   .when(itExecutes())
-  .expect(it(), to().be(valid()), otherwise("the validation failed"));
-  
+  .expect(it(), to().be(valid()), "the process should not invalidate the object");
+~~~
+
+But you can use a helper to make things fancier:
+
+~~~java
 Spec.given(someObject)
   .when(itExecutes())
   .expect(it(), to().be(valid()), because("the process should not invalidate the object"));
@@ -56,32 +60,34 @@ Spec.given(someObject)
 Here is more examples:
 
 ~~~java
-Spec.given(new Orange())
-  .expect(Orange::color, to().be("orange")
-  .expect(it(), to().be(fresh()))
-  .when(Orange::squeeze)
-  .expect(it(), to().not().be(fresh())));
+Account accountA = new Account(500);
+Account accountB = new Account(500);
+
+Spec.begin()
+  .expect(the(accountA), to().have(balanceOf(500)))
+  .expect(the(accountB), to().have(balanceOf(500)))
   
-// defining exceptions
-Spec.given(someObject)
-  .expect(doingForbiddenStuff(), to().raise(IllegalStateException.class))
-  .expect(doingForbiddenStuff(), to().fail())
-  .expect(doingAllowedStuff(), to().succeed());
+  .when(() -> accountA.transfer(100).to(accountB))
+  
+  .expect(the(accountA), to().have(balanceOf(400)))
+  .expect(the(accountB), to().have(balanceOf(600)))
 
+  .expect(() -> accountA.transfer(1000).to(accountB), to().raise(InsufficientBalanceException.class))
+  
+  .expect(the(accountA), to().have(balanceOf(400)))
+  .expect(the(accountB), to().have(balanceOf(600)));
 
-// using a collection
-Spec.given(oranges)
-  .each(Orange.class, spec -> spec
-      .expect(it(), to().be(fresh())));
+// -------
 
-// you can also define nested specs
-Spec.given(car)
-  .expect(it(), to().be(NEW))
-  .expect(car::engine, to().follow(spec -> spec.
-      expect(it(), to().have(highPower()))));
+  public static Predicate<Account> balanceOf(double value) {
+    // Please don't use this comparisson in a real case scenario
+    // this is just an example
+    return account -> account.balance() == value;
+  }
 ~~~
 
-You can always use the helper class `Expectation`. It contain a set of useful methods to help you write your awesome specifications!
+Also, take a look at the `Expectation` class. It contains a set of useful methods to help you write your awesome 
+specifications!
 
 # How To Contribute
 
