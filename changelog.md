@@ -4,11 +4,9 @@
 
 ### Major Changes
 
-- Added a `beNull` method to `Expectation` class.
-
-### Minor Changes
-
-- Added a `object` method like the `value`
+- Added `#beNull` method to `Expectation` class.
+- Renamed `#value` to `#the` in `Expectation`.
+- Removed `#otherwise` method.
 
 ## v3.0.1 (2017-02-02)
 
