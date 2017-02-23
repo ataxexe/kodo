@@ -4,7 +4,7 @@ Kodo is a test framework that helps you defining specifications with the help of
 
 ## How To Build
 
-Just make sure you have [Gradle][] and run the command `gradle dist`. To simply build the jar files, execute the command `gradle jar` and to install **kodo** on your local maven repository, use the command `gradle install`.
+Just make sure you have [Maven][] and run the command `maven package`. To install **kodo** on your local maven repository, use the command `maven install`.
 
 ## How to Use
 
@@ -93,4 +93,4 @@ specifications!
 
 Fork it, fire an issue, spread the project, use the project... any help will be great! And, please, let me know if you're liking Kodo (or not).
 
-[gradle]: <http://gradle.org>
+[maven]: <https://maven.apache.org>
