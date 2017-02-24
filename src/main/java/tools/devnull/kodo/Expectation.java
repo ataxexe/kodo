@@ -174,18 +174,6 @@ public class Expectation {
 
   /**
    * Wraps a function into a consumer in case you need to use a function
-   * to test if it succeed or fail.
-   *
-   * @param function the function to execute
-   * @return a consumer that uses the given function
-   * @since 3.0
-   */
-  public static <T> Consumer<T> performing(Function<T, ?> function) {
-    return function::apply;
-  }
-
-  /**
-   * Wraps a function into a consumer in case you need to use a function
    * to test if it succeed or failed.
    *
    * @param function the function to execute

@@ -5,9 +5,10 @@
 ### Major Changes
 
 - Added `#beNull` method to `Expectation` class.
+- Added `#expect` for booleans and functions that returns a boolean value
 - Refactor in `Expectation` class:
   * Renamed `#value` to `#the`
-  * Renamed `#exec` to `#performing`
+  * Renamed `#exec` to `#the`
   * Removed `#otherwise` method
 
 ## v3.0.1 (2017-02-02)
