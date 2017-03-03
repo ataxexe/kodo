@@ -60,6 +60,16 @@ public class Expectation {
   }
 
   /**
+   * A predicate that tests if the object is null.
+   *
+   * @return a predicate that tests if the object is null.
+   * @since 3.1
+   */
+  public <T> Predicate<T> beNull() {
+    return create(Objects::isNull);
+  }
+
+  /**
    * @see #be(Object)
    */
   public <T> Predicate<T> equal(T value) {
@@ -71,7 +81,7 @@ public class Expectation {
    * given predicate.
    */
   public <T> Predicate<T> be(Predicate<T> predicate) {
-    return predicate == null ? create(Objects::isNull) : create(predicate);
+    return create(predicate);
   }
 
   /**
@@ -89,7 +99,7 @@ public class Expectation {
    * Indicates that the value should match the given matcher.
    */
   public <T> Predicate<T> match(Matcher matcher) {
-    return create(obj -> matcher.matches(obj));
+    return create(matcher::matches);
   }
 
   /**
@@ -164,13 +174,13 @@ public class Expectation {
 
   /**
    * Wraps a function into a consumer in case you need to use a function
-   * to test if it succeed or fail.
+   * to test if it succeed or failed.
    *
    * @param function the function to execute
    * @return a consumer that uses the given function
-   * @since 3.0
+   * @since 3.1
    */
-  public static <T> Consumer<T> exec(Function<T, ?> function) {
+  public static <T> Consumer<T> the(Function<T, ?> function) {
     return function::apply;
   }
 
@@ -195,9 +205,9 @@ public class Expectation {
    *
    * @param value the value to return
    * @return a function that always returns the given value
-   * @since 3.0
+   * @since 3.1
    */
-  public static <T, E> Function<? super T, E> value(E value) {
+  public static <T, E> Function<? super T, E> the(E value) {
     return t -> value;
   }
 
@@ -208,15 +218,6 @@ public class Expectation {
    */
   public static String because(String reason) {
     return reason;
-  }
-
-  /**
-   * Helper method to improve code readability. It returns the given string.
-   * <p>
-   * Use it with the methods that takes a message.
-   */
-  public static String otherwise(String description) {
-    return description;
   }
 
 }

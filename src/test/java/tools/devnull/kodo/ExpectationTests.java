@@ -42,10 +42,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static tools.devnull.kodo.Expectation.exec;
 import static tools.devnull.kodo.Expectation.it;
+import static tools.devnull.kodo.Expectation.the;
 import static tools.devnull.kodo.Expectation.to;
-import static tools.devnull.kodo.Expectation.value;
 
 /**
  * The test suite for {@link Expectation}
@@ -71,9 +70,12 @@ public class ExpectationTests {
 
     assertTrue(to().be(1).test(1));
     assertFalse(to().be(1).test(2));
+  }
 
-    assertTrue(to().be(null).test(null));
-    assertFalse(to().be(null).test(new Object()));
+  @Test
+  public void testBeNull() {
+    assertTrue(to().beNull().test(null));
+    assertFalse(to().beNull().test(new Object()));
   }
 
   @Test
@@ -134,7 +136,7 @@ public class ExpectationTests {
   }
 
   @Test
-  public void testFail2() {
+  public void testFail() {
     assertFalse(to().fail().test(null));
 
     assertTrue(to().fail().test(new RuntimeException()));
@@ -169,12 +171,11 @@ public class ExpectationTests {
     assertSame(alwaysFalse, to(alwaysFalse));
 
     Object o = new Object();
-    assertSame(o, value(o).apply(null));
+    assertSame(o, the(o).apply(null));
     assertSame(o, it().apply(o));
 
     String message = "Lorem ipsum laboris excepteur minim in quis.";
     assertSame(message, Expectation.because(message));
-    assertSame(message, Expectation.otherwise(message));
   }
 
   @Test
@@ -182,7 +183,7 @@ public class ExpectationTests {
     Function function = mock(Function.class);
     when(function.apply(value)).thenReturn(value);
 
-    exec(function).accept(value);
+    the(function).accept(value);
 
     verify(function).apply(value);
   }

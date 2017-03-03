@@ -84,6 +84,18 @@ public class Spec<T> implements SpecDefinition<T> {
   }
 
   @Override
+  public SpecDefinition<T> expect(Function<? super T, Boolean> function, String message) {
+    test(o -> o == Boolean.TRUE, function.apply(target), message);
+    return this;
+  }
+
+  @Override
+  public SpecDefinition<T> expect(boolean value, String message) {
+    test(o -> o == Boolean.TRUE, value, message);
+    return this;
+  }
+
+  @Override
   public <E> SpecDefinition<T> each(Class<E> type, Function<T, Iterable<E>> splitter, Consumer<SpecDefinition<E>> spec) {
     splitter.apply(target).forEach(e -> spec.accept(new Spec<>(e)));
     return this;

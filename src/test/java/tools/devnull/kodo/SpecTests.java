@@ -40,6 +40,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.anyObject;
@@ -72,6 +73,8 @@ public class SpecTests {
   private Predicate failTest;
   @Mock
   private Function function;
+  @Mock
+  private Function<Object, Boolean> booleanFunction;
 
   @Before
   public void initialize() {
@@ -79,21 +82,32 @@ public class SpecTests {
     when(failTest.test(anyObject())).thenReturn(false);
     when(function.apply(target)).thenReturn(value);
     doThrow(exception).when(failOperation).accept(anyObject());
+    when(booleanFunction.apply(target)).thenReturn(true);
   }
 
   @Test
   public void testReturns() {
-
     assertSame(spec, spec.expect(function, test));
     assertSame(spec, spec.expect(function, test, message));
 
     assertSame(spec, spec.expect(operation, test));
     assertSame(spec, spec.expect(operation, test, message));
 
+    assertSame(spec, spec.expect(booleanFunction));
+    assertSame(spec, spec.expect(booleanFunction, message));
+
+    assertSame(spec, spec.expect(true));
+    assertSame(spec, spec.expect(true, message));
+
     assertSame(spec, spec.when(operation));
     assertSame(spec, spec.when(runnableOperation));
 
     assertSame(spec, spec.each(Object.class, t -> Collections.emptyList(), s -> {}));
+  }
+
+  @Test
+  public void testBegin() {
+    assertNotNull(Spec.begin());
   }
 
   @Test
@@ -109,19 +123,46 @@ public class SpecTests {
   }
 
   @Test
-  public void testThenWithFunction() {
+  public void testExpectWithFunction() {
     spec.expect(function, test);
     verify(function).apply(target);
     verify(test).test(value);
   }
 
   @Test
-  public void testThenWithConsumer() {
+  public void testExpectWithConsumer() {
     spec.expect(operation, test);
     verify(operation).accept(target);
 
     spec.expect(failOperation, test);
     verify(test).test(exception);
+  }
+
+  @Test
+  public void testExpectWithBoolean() {
+    spec.expect(booleanFunction);
+
+    verify(booleanFunction).apply(target);
+  }
+
+  @Test(expected = AssertionError.class)
+  public void testFailExpectWithBoolean() {
+    spec.expect(false);
+  }
+
+  @Test(expected = AssertionError.class)
+  public void testFailExpectWithBooleanFunction() {
+    spec.expect(o -> false);
+  }
+
+  @Test
+  public void testSucceedExpectWithBoolean() {
+    spec.expect(true);
+  }
+
+  @Test
+  public void testSucceedExpectWithBooleanFunction() {
+    spec.expect(o -> true);
   }
 
   @Test
@@ -142,6 +183,10 @@ public class SpecTests {
   public void testMessages() {
     assertMessage(() -> spec.expect(function, failTest, message));
     assertMessage(() -> spec.expect(operation, failTest, message));
+
+    when(booleanFunction.apply(target)).thenReturn(false);
+    assertMessage(() -> spec.expect(booleanFunction, message));
+    assertMessage(() -> spec.expect(false, message));
   }
 
   @Test
