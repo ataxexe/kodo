@@ -42,11 +42,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static tools.devnull.kodo.Expectation.exec;
 import static tools.devnull.kodo.Expectation.it;
-import static tools.devnull.kodo.Expectation.object;
+import static tools.devnull.kodo.Expectation.the;
 import static tools.devnull.kodo.Expectation.to;
-import static tools.devnull.kodo.Expectation.value;
 
 /**
  * The test suite for {@link Expectation}
@@ -173,13 +171,11 @@ public class ExpectationTests {
     assertSame(alwaysFalse, to(alwaysFalse));
 
     Object o = new Object();
-    assertSame(o, value(o).apply(null));
-    assertSame(o, object(o).apply(null));
+    assertSame(o, the(o).apply(null));
     assertSame(o, it().apply(o));
 
     String message = "Lorem ipsum laboris excepteur minim in quis.";
     assertSame(message, Expectation.because(message));
-    assertSame(message, Expectation.otherwise(message));
   }
 
   @Test
@@ -187,7 +183,7 @@ public class ExpectationTests {
     Function function = mock(Function.class);
     when(function.apply(value)).thenReturn(value);
 
-    exec(function).accept(value);
+    the(function).accept(value);
 
     verify(function).apply(value);
   }

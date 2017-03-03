@@ -174,13 +174,13 @@ public class Expectation {
 
   /**
    * Wraps a function into a consumer in case you need to use a function
-   * to test if it succeed or fail.
+   * to test if it succeed or failed.
    *
    * @param function the function to execute
    * @return a consumer that uses the given function
-   * @since 3.0
+   * @since 3.1
    */
-  public static <T> Consumer<T> exec(Function<T, ?> function) {
+  public static <T> Consumer<T> the(Function<T, ?> function) {
     return function::apply;
   }
 
@@ -205,23 +205,10 @@ public class Expectation {
    *
    * @param value the value to return
    * @return a function that always returns the given value
-   * @since 3.0
-   */
-  public static <T, E> Function<? super T, E> value(E value) {
-    return t -> value;
-  }
-
-  /**
-   * Returns a function that always returns the given value,
-   * regardless of the supplied one.
-   *
-   * @param value the value to return
-   * @return a function that always returns the given value
    * @since 3.1
-   * @see #value(Object)
    */
-  public static <T, E> Function<? super T, E> object(E value) {
-    return value(value);
+  public static <T, E> Function<? super T, E> the(E value) {
+    return t -> value;
   }
 
   /**
@@ -231,15 +218,6 @@ public class Expectation {
    */
   public static String because(String reason) {
     return reason;
-  }
-
-  /**
-   * Helper method to improve code readability. It returns the given string.
-   * <p>
-   * Use it with the methods that takes a message.
-   */
-  public static String otherwise(String description) {
-    return description;
   }
 
 }

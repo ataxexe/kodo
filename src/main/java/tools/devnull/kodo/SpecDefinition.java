@@ -106,6 +106,48 @@ public interface SpecDefinition<T> {
   <E> SpecDefinition<T> expect(Function<? super T, E> function, Predicate<? super E> test, String message);
 
   /**
+   * Defines a test for some target operation that returns a boolean value. The
+   * test will succeed if the return value is {@code true}.
+   *
+   * @param function the operation to do with the target
+   * @return a reference to this object
+   */
+  default SpecDefinition<T> expect(Function<? super T, Boolean> function){
+    return expect(function, (String) null);
+  }
+
+  /**
+   * Defines a test for some target operation that returns a boolean value. The
+   * test will succeed if the return value is {@code true}.
+   *
+   * @param function the operation to do with the target
+   * @param message  the message to throw if the test fails
+   * @return a reference to this object
+   */
+  SpecDefinition<T> expect(Function<? super T, Boolean> function, String message);
+
+  /**
+   * Defines a test for a boolean value. The test will succeed if the value is
+   * {@code true}.
+   *
+   * @param value the value to test
+   * @return a reference to this object
+   */
+  default SpecDefinition<T> expect(boolean value) {
+    return expect(value, null);
+  }
+
+  /**
+   * Defines a test for a boolean value. The test will succeed if the value is
+   * {@code true}.
+   *
+   * @param value   the value to test
+   * @param message the message to throw if the test fails
+   * @return a reference to this object
+   */
+  SpecDefinition<T> expect(boolean value, String message);
+
+  /**
    * Splits the target object into smaller objects and passes each one to the given consumer.
    *
    * @param type     the type of the smaller object
