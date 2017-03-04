@@ -1,4 +1,4 @@
-# Overview
+# Kodo
 
 Kodo is a test framework that helps you defining specifications with the help of a fluent interface. The idea behind
 is to put some functional interfaces present in Java 8 together to provide a beautiful way to define specifications
@@ -19,7 +19,7 @@ and then define it on your pom or gradle build:
 
 Kodo is also in Maven Central. Just use the above `groupId` and `artifactId` to declare the dependency.
 
-# Defining Specifications
+## Defining Specifications
 
 To define a new specification, use the `Spec` class. It defines an entry point to the fluent interface:
 
@@ -106,7 +106,7 @@ Spec.describe("A trader is alerted of status")
 Also, take a look at the `Expectation` class. It contains a set of useful methods to help you write your awesome 
 specifications!
 
-# How To Contribute
+## How To Contribute
 
 Fork it, fire an issue, spread the project, use the project... any help will be great! And, please, let me know if
 you're liking Kodo (or not).
