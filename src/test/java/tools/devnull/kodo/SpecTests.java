@@ -112,6 +112,8 @@ public class SpecTests {
     assertNotSame(spec, spec.given(new Object()));
 
     assertNotSame(spec, spec.begin());
+
+    assertNotSame(spec, spec.onFail(throwAssertionError));
   }
 
   @Test

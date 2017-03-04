@@ -6,8 +6,9 @@
 
 - New `given` and `begin` methods inside `SpecDefinition`.
 - New `describe` method to describe the spec.
+- Added the `onFail` method to control the default behaviour of a failed expectation
 - Messages are now encapsulated in a Consumer object, bringing flexibility to 
-  do whatever you want when the expectation fails. 
+  do whatever you want when the expectation fails.
 
 ## v3.1.0 (2017-03-02)
 

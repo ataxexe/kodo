@@ -220,4 +220,31 @@ public class Expectation {
     };
   }
 
+  /**
+   * Returns a consumer that throws an {@link AssertionError} based on the
+   * given object.
+   *
+   * @param format the format to apply to the message
+   *               (see {@link String#format(String, Object...)}), there will
+   *               be only one parameter to the message
+   * @return a consumer object
+   * @since 3.2
+   */
+  public static Consumer throwAssertionError(String format) {
+    return object -> {
+      throw new AssertionError(String.format(format, object));
+    };
+  }
+
+  /**
+   * Returns a consumert that throws an {@link AssertionError} with the following
+   * format: {@code "for value: %s"}.
+   *
+   * @return a consumer object
+   * @since 3.2
+   */
+  public static Consumer throwAssertionError() {
+    return throwAssertionError("for value: %s");
+  }
+
 }

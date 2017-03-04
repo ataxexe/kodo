@@ -4,6 +4,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import static tools.devnull.kodo.Expectation.throwAssertionError;
+
 /**
  * The default implementation of a SpecDefinition.
  */
@@ -11,22 +13,24 @@ public class DefaultSpecDefinition<T> implements SpecDefinition<T> {
 
   private final String description;
   private final T target;
+  private final Consumer defaultFailOperation;
 
-  DefaultSpecDefinition(String description, T target) {
+  DefaultSpecDefinition(String description, T target, Consumer<?> defaultFailOperation) {
     this.description = description;
     this.target = target;
+    this.defaultFailOperation = defaultFailOperation;
   }
 
   DefaultSpecDefinition(T target) {
-    this("", target);
+    this("", target, throwAssertionError());
   }
 
   DefaultSpecDefinition(String description) {
-    this(description, null);
+    this(description, null, throwAssertionError());
   }
 
   DefaultSpecDefinition() {
-    this("", null);
+    this("", null, throwAssertionError());
   }
 
   private void test(Predicate predicate, Object object, Consumer consumer) {
@@ -35,15 +39,14 @@ public class DefaultSpecDefinition<T> implements SpecDefinition<T> {
     }
   }
 
-  private Consumer throwAssertionError() {
-    return object -> {
-      throw new AssertionError(String.format("for value: %s", object));
-    };
+  @Override
+  public SpecDefinition<T> onFail(Consumer<?> operation) {
+    return new DefaultSpecDefinition<>(this.description, this.target, operation);
   }
 
   @Override
   public <R> SpecDefinition<R> given(R object) {
-    return new DefaultSpecDefinition<>(this.description, object);
+    return new DefaultSpecDefinition(this.description, object, this.defaultFailOperation);
   }
 
   @Override
@@ -96,27 +99,29 @@ public class DefaultSpecDefinition<T> implements SpecDefinition<T> {
 
   @Override
   public <E> SpecDefinition<T> each(Class<E> type, Function<T, Iterable<E>> splitter, Consumer<SpecDefinition<E>> spec) {
-    splitter.apply(target).forEach(e -> spec.accept(new DefaultSpecDefinition<>(this.description, e)));
+    splitter.apply(target)
+        .forEach(e -> spec.accept(new DefaultSpecDefinition(this.description, e, this.defaultFailOperation)));
     return this;
   }
 
   @Override
   public SpecDefinition<T> expect(Consumer<? super T> operation, Predicate<Throwable> test) {
-    return expect(operation, test, throwAssertionError());
+    return expect(operation, test, this.defaultFailOperation);
   }
 
   @Override
   public <E> SpecDefinition<T> expect(Function<? super T, E> function, Predicate<? super E> test) {
-    return expect(function, test, throwAssertionError());
+    return expect(function, test, this.defaultFailOperation);
   }
 
   @Override
   public SpecDefinition<T> expect(Function<? super T, Boolean> function) {
-    return expect(function, throwAssertionError());
+    return expect(function, this.defaultFailOperation);
   }
 
   @Override
   public SpecDefinition<T> expect(boolean value) {
-    return expect(value, throwAssertionError());
+    return expect(value, this.defaultFailOperation);
   }
+
 }

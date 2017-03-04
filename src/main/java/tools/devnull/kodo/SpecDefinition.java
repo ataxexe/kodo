@@ -56,6 +56,15 @@ public interface SpecDefinition<T> {
   SpecDefinition begin();
 
   /**
+   * Sets the default operation to execute if an expectation fails.
+   *
+   * @param operation the operation to execute
+   *
+   * @return a new Spec object
+   */
+  SpecDefinition<T> onFail(Consumer<?> operation);
+
+  /**
    * Defines something to do with the target.
    *
    * @param operation the operation to do with the target
