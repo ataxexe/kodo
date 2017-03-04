@@ -80,13 +80,26 @@ Spec.begin()
   .expect(the(accountA), to().have(balanceOf(400)))
   .expect(the(accountB), to().have(balanceOf(600)));
 
-// -------
+// helper methods
 
   public static Predicate<Account> balanceOf(double value) {
     // Please don't use this comparisson in a real case scenario
     // this is just an example
     return account -> account.balance() == value;
   }
+~~~
+
+~~~java
+Spec.describe("A trader is alerted of status")
+  .given(newStock("STK").withThresholdOf(15.0))
+
+  .when(tradeAt(5.0))
+  .expect(alert(), to().be("OFF"))
+
+  .when(tradeAt(16.0))
+  .expect(alert(), to().be("ON"));
+
+// helper methods omitted
 ~~~
 
 Also, take a look at the `Expectation` class. It contains a set of useful methods to help you write your awesome 
