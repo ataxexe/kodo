@@ -66,22 +66,22 @@ This release contains a huge facelift in Kodo. The DSL is now more simple but ye
 
 - Fix a NPE when the target is null
 
-## v1.0 (31-12-2014)
+## v1.0 (2014-12-31)
 
 None significant.
 
-## v0.4 (18-07-2014)
+## v0.4 (2014-07-18)
 
 - Package name changed to `tools.devnull.kodo`
 - groupId changed to `tools.devnull`
 
-## v0.3 (14-07-2014)
+## v0.3 (2014-07-14)
 
 - Helpers moved to `Spec` class
 - Empty predicates for common objects (arrays, maps, collections, strings, ...)
 - Added more methods to Scenario
 
-## v0.2 (12-06-2014)
+## v0.2 (2014-06-12)
 
 - DSL refactoring
 - `Should` renamed to `Spec` and a new method `should` was added to it to
@@ -89,6 +89,6 @@ None significant.
 - Messages to specs
 - No more Junit dependency for compile
 
-## v0.1 (02-06-2014)
+## v0.1 (2014-06-02)
 
 Initial release.
