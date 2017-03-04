@@ -1,5 +1,12 @@
 # Changelog
 
+## v3.2.0
+
+### Major Changes
+
+- New `given` and `begin` methods inside `SpecDefinition`
+- New `describe` method to describe the spec
+
 ## v3.1.0 (2017-03-02)
 
 ### Major Changes
