@@ -2,7 +2,8 @@
 
 Kodo is a test framework that helps you defining specifications with the help of a fluent interface. The idea behind
 is to put some functional interfaces present in Java 8 together to provide a beautiful way to define specifications
-in pure Java code.
+in pure Java code. Its main use if for testing but you can use for any purposes that requires the writing of a
+specification.
 
 ## How To Build
 
