@@ -43,16 +43,19 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.anyObject;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static tools.devnull.kodo.Expectation.because;
 import static tools.devnull.kodo.Expectation.it;
 
 /**
- * @author Marcelo Guimarães
+ * Tests for the SpecDefinition implementation
+ *
+ * @author ataxexe
  */
 @RunWith(MockitoJUnitRunner.class)
 public class SpecTests {
@@ -60,6 +63,7 @@ public class SpecTests {
   private Object target = new Object();
   private SpecDefinition<Object> spec = Spec.given(target);
   private String message = "a message";
+  private Consumer throwAssertionError = because(message);
   private Object value = new Object();
   @Mock
   private Consumer operation;
@@ -79,26 +83,26 @@ public class SpecTests {
 
   @Before
   public void initialize() {
-    when(test.test(anyObject())).thenReturn(true);
-    when(failTest.test(anyObject())).thenReturn(false);
+    when(test.test(any())).thenReturn(true);
+    when(failTest.test(any())).thenReturn(false);
     when(function.apply(target)).thenReturn(value);
-    doThrow(exception).when(failOperation).accept(anyObject());
+    doThrow(exception).when(failOperation).accept(any());
     when(booleanFunction.apply(target)).thenReturn(true);
   }
 
   @Test
   public void testReturns() {
     assertSame(spec, spec.expect(function, test));
-    assertSame(spec, spec.expect(function, test, message));
+    assertSame(spec, spec.expect(function, test, throwAssertionError));
 
     assertSame(spec, spec.expect(operation, test));
-    assertSame(spec, spec.expect(operation, test, message));
+    assertSame(spec, spec.expect(operation, test, throwAssertionError));
 
     assertSame(spec, spec.expect(booleanFunction));
-    assertSame(spec, spec.expect(booleanFunction, message));
+    assertSame(spec, spec.expect(booleanFunction, throwAssertionError));
 
     assertSame(spec, spec.expect(true));
-    assertSame(spec, spec.expect(true, message));
+    assertSame(spec, spec.expect(true, throwAssertionError));
 
     assertSame(spec, spec.when(operation));
     assertSame(spec, spec.when(runnableOperation));
@@ -188,12 +192,12 @@ public class SpecTests {
 
   @Test
   public void testMessages() {
-    assertMessage(() -> spec.expect(function, failTest, message));
-    assertMessage(() -> spec.expect(operation, failTest, message));
+    assertMessage(() -> spec.expect(function, failTest, throwAssertionError));
+    assertMessage(() -> spec.expect(operation, failTest, throwAssertionError));
 
     when(booleanFunction.apply(target)).thenReturn(false);
-    assertMessage(() -> spec.expect(booleanFunction, message));
-    assertMessage(() -> spec.expect(false, message));
+    assertMessage(() -> spec.expect(booleanFunction, throwAssertionError));
+    assertMessage(() -> spec.expect(false, throwAssertionError));
   }
 
   @Test

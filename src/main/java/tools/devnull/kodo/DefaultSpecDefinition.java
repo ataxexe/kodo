@@ -29,14 +29,16 @@ public class DefaultSpecDefinition<T> implements SpecDefinition<T> {
     this("", null);
   }
 
-  private void test(Predicate predicate, Object target, String message) {
-    if (!predicate.test(target)) {
-      throw new AssertionError(message == null ? defaultMessage(target) : message);
+  private void test(Predicate predicate, Object object, Consumer consumer) {
+    if (!predicate.test(object)) {
+      consumer.accept(object);
     }
   }
 
-  private String defaultMessage(Object target) {
-    return String.format("for value: %s", target);
+  private Consumer throwAssertionError() {
+    return object -> {
+      throw new AssertionError(String.format("for value: %s", object));
+    };
   }
 
   @Override
@@ -56,12 +58,12 @@ public class DefaultSpecDefinition<T> implements SpecDefinition<T> {
   }
 
   @Override
-  public SpecDefinition<T> expect(Consumer operation, Predicate test, String message) {
+  public SpecDefinition<T> expect(Consumer operation, Predicate test, Consumer consumer) {
     try {
       operation.accept(target);
-      test(test, null, message);
+      test(test, null, consumer);
     } catch (Throwable t) {
-      test(test, t, message);
+      test(test, t, consumer);
     }
     return this;
   }
@@ -73,20 +75,22 @@ public class DefaultSpecDefinition<T> implements SpecDefinition<T> {
   }
 
   @Override
-  public <E> SpecDefinition<T> expect(Function<? super T, E> function, Predicate<? super E> test, String message) {
-    test(test, function.apply(target), message);
+  public <E> SpecDefinition<T> expect(Function<? super T, E> function,
+                                      Predicate<? super E> test,
+                                      Consumer<E> consumer) {
+    test(test, function.apply(target), consumer);
     return this;
   }
 
   @Override
-  public SpecDefinition<T> expect(Function<? super T, Boolean> function, String message) {
-    test(o -> o == Boolean.TRUE, function.apply(target), message);
+  public SpecDefinition<T> expect(Function<? super T, Boolean> function, Consumer<Boolean> consumer) {
+    test(o -> o == Boolean.TRUE, function.apply(target), consumer);
     return this;
   }
 
   @Override
-  public SpecDefinition<T> expect(boolean value, String message) {
-    test(o -> o == Boolean.TRUE, value, message);
+  public SpecDefinition<T> expect(boolean value, Consumer<Boolean> consumer) {
+    test(o -> o == Boolean.TRUE, value, consumer);
     return this;
   }
 
@@ -96,4 +100,23 @@ public class DefaultSpecDefinition<T> implements SpecDefinition<T> {
     return this;
   }
 
+  @Override
+  public SpecDefinition<T> expect(Consumer<? super T> operation, Predicate<Throwable> test) {
+    return expect(operation, test, throwAssertionError());
+  }
+
+  @Override
+  public <E> SpecDefinition<T> expect(Function<? super T, E> function, Predicate<? super E> test) {
+    return expect(function, test, throwAssertionError());
+  }
+
+  @Override
+  public SpecDefinition<T> expect(Function<? super T, Boolean> function) {
+    return expect(function, throwAssertionError());
+  }
+
+  @Override
+  public SpecDefinition<T> expect(boolean value) {
+    return expect(value, throwAssertionError());
+  }
 }

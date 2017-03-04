@@ -212,12 +212,12 @@ public class Expectation {
   }
 
   /**
-   * Helper method to improve code readability. It returns the given string.
-   * <p>
-   * Use it with the methods that takes a message.
+   * Helper method to throw an {@link AssertionError} using the given reason as a message.
    */
-  public static String because(String reason) {
-    return reason;
+  public static <T> Consumer<T> because(String reason) {
+    return obj -> {
+      throw new AssertionError(reason);
+    };
   }
 
 }

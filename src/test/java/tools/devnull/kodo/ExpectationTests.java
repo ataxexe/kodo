@@ -173,9 +173,6 @@ public class ExpectationTests {
     Object o = new Object();
     assertSame(o, the(o).apply(null));
     assertSame(o, it().apply(o));
-
-    String message = "Lorem ipsum laboris excepteur minim in quis.";
-    assertSame(message, Expectation.because(message));
   }
 
   @Test
