@@ -1,6 +1,8 @@
 # Overview
 
-Kodo is a test framework that helps you defining specifications with the help of a fluent interface.
+Kodo is a test framework that helps you defining specifications with the help of a fluent interface. The idea behind
+is to put some functional interfaces present in Java 8 together to provide a beautiful way to define specifications
+in pure Java code.
 
 ## How To Build
 
@@ -8,7 +10,8 @@ Just make sure you have [Maven][] and run the command `maven package`. To instal
 
 ## How to Use
 
-Just put the really small kodo jar file on your classpath. You can also install **kodo** on your local repository and then define it on your pom or gradle build:
+Just put the really small kodo jar file on your classpath. You can also install **kodo** on your local repository
+and then define it on your pom or gradle build:
 
 - **groupId:** tools.devnull
 - **artifactId:** kodo
@@ -46,15 +49,15 @@ And messages may be supplied:
 ~~~java
 Spec.given(someObject)
   .when(itExecutes())
-  .expect(it(), to().be(valid()), "the process should not invalidate the object");
+  .expect(it(), to().be(valid()), because("the process should not invalidate the object"));
 ~~~
 
-But you can use a helper to make things fancier:
+You can also describe the whole Spec:
 
 ~~~java
-Spec.given(someObject)
-  .when(itExecutes())
-  .expect(it(), to().be(valid()), because("the process should not invalidate the object"));
+Spec.describe("My spec for testing my object")
+  .given(myObject)
+  .expect ...
 ~~~
 
 Here is more examples:
@@ -91,6 +94,7 @@ specifications!
 
 # How To Contribute
 
-Fork it, fire an issue, spread the project, use the project... any help will be great! And, please, let me know if you're liking Kodo (or not).
+Fork it, fire an issue, spread the project, use the project... any help will be great! And, please, let me know if
+you're liking Kodo (or not).
 
 [maven]: <https://maven.apache.org>
