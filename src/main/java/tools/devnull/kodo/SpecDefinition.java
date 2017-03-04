@@ -40,6 +40,22 @@ import java.util.function.Predicate;
 public interface SpecDefinition<T> {
 
   /**
+   * Returns a new Spec based on the given object.
+   *
+   * @param object the new target
+   * @param <R>    the type of the target
+   * @return a new Spec definition
+   */
+  <R> SpecDefinition<R> given(R object);
+
+  /**
+   * Indicates that a new spec will begin.
+   *
+   * @return a new Spec object
+   */
+  SpecDefinition begin();
+
+  /**
    * Defines something to do with the target.
    *
    * @param operation the operation to do with the target
@@ -112,7 +128,7 @@ public interface SpecDefinition<T> {
    * @param function the operation to do with the target
    * @return a reference to this object
    */
-  default SpecDefinition<T> expect(Function<? super T, Boolean> function){
+  default SpecDefinition<T> expect(Function<? super T, Boolean> function) {
     return expect(function, (String) null);
   }
 

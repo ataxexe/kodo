@@ -30,7 +30,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -41,6 +41,7 @@ import java.util.function.Predicate;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.anyObject;
@@ -103,11 +104,17 @@ public class SpecTests {
     assertSame(spec, spec.when(runnableOperation));
 
     assertSame(spec, spec.each(Object.class, t -> Collections.emptyList(), s -> {}));
+
+    assertNotSame(spec, spec.given(new Object()));
+
+    assertNotSame(spec, spec.begin());
   }
 
   @Test
   public void testBegin() {
     assertNotNull(Spec.begin());
+    assertNotNull(Spec.describe(""));
+    assertNotNull(Spec.given(new Object()));
   }
 
   @Test
