@@ -4,8 +4,10 @@
 
 ### Major Changes
 
-- New `given` and `begin` methods inside `SpecDefinition`
-- New `describe` method to describe the spec
+- New `given` and `begin` methods inside `SpecDefinition`.
+- New `describe` method to describe the spec.
+- Messages are now encapsulated in a Consumer object, bringing flexibility to 
+  do whatever you want when the expectation fails. 
 
 ## v3.1.0 (2017-03-02)
 
