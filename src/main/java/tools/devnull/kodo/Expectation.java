@@ -43,7 +43,7 @@ public class Expectation {
 
   private final Function<Predicate, Predicate> modifier;
 
-  Expectation(Function<Predicate, Predicate> modifier) {
+  private Expectation(Function<Predicate, Predicate> modifier) {
     this.modifier = modifier;
   }
 
