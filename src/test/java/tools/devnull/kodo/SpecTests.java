@@ -125,6 +125,13 @@ public class SpecTests {
   }
 
   @Test
+  public void testGiven() {
+    Function f = mock(Function.class);
+    Spec.given(target).given(f);
+    verify(f).apply(target);
+  }
+
+  @Test
   public void testWhen() {
     spec.when(operation);
     verify(operation).accept(target);
@@ -230,6 +237,27 @@ public class SpecTests {
     } catch (AssertionError error) {
       assertEquals(message, error.getMessage());
     }
+  }
+
+  @Test
+  public void testAttributes() {
+    String description = "";
+    Object newTarget = new Object();
+
+    DefaultSpecDefinition s = new DefaultSpecDefinition(description, target, throwAssertionError);
+    assertSame(s.target, target);
+    assertSame(s.description, description);
+    assertSame(s.defaultFailOperation, throwAssertionError);
+
+    DefaultSpecDefinition s1 = (DefaultSpecDefinition) s.given(newTarget);
+    assertSame(s1.target, newTarget);
+    assertSame(s1.description, description);
+    assertSame(s1.defaultFailOperation, throwAssertionError);
+
+    s1 = (DefaultSpecDefinition) s.given(o ->  newTarget);
+    assertSame(s1.target, newTarget);
+    assertSame(s1.description, description);
+    assertSame(s1.defaultFailOperation, throwAssertionError);
   }
 
 }
