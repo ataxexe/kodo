@@ -11,9 +11,9 @@ import static tools.devnull.kodo.Expectation.throwAssertionError;
  */
 public class DefaultSpecDefinition<T> implements SpecDefinition<T> {
 
-  private final String description;
-  private final T target;
-  private final Consumer defaultFailOperation;
+  final String description;
+  final T target;
+  final Consumer defaultFailOperation;
 
   DefaultSpecDefinition(String description, T target, Consumer<?> defaultFailOperation) {
     this.description = description;
