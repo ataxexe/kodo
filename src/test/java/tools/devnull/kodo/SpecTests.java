@@ -230,6 +230,17 @@ public class SpecTests {
     }
   }
 
+  @Test
+  public void testFailExpectation() {
+    Consumer consumer = mock(Consumer.class);
+    try {
+      spec.expect(o -> null, failTest, consumer);
+      throw new Error();
+    } catch (AssertionError error) {
+      verify(consumer).accept(error);
+    }
+  }
+
   private void assertMessage(Runnable command) {
     try {
       command.run();
