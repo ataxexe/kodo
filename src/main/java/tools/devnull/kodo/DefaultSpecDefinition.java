@@ -50,6 +50,11 @@ public class DefaultSpecDefinition<T> implements SpecDefinition<T> {
   }
 
   @Override
+  public <R> SpecDefinition<R> given(Function<T, R> function) {
+    return new DefaultSpecDefinition<>(this.description, function.apply(this.target), this.defaultFailOperation);
+  }
+
+  @Override
   public SpecDefinition begin() {
     return new DefaultSpecDefinition<T>(this.description);
   }

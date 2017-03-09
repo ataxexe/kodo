@@ -110,6 +110,7 @@ public class SpecTests {
     assertSame(spec, spec.each(Object.class, t -> Collections.emptyList(), s -> {}));
 
     assertNotSame(spec, spec.given(new Object()));
+    assertNotSame(spec, spec.given(t -> new Object()));
 
     assertNotSame(spec, spec.begin());
 

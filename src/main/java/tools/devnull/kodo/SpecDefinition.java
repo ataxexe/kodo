@@ -49,6 +49,16 @@ public interface SpecDefinition<T> {
   <R> SpecDefinition<R> given(R object);
 
   /**
+   * Returns a new Spec based on the return of the given function
+   * applied to this Spec's target
+   *
+   * @param function the function to apply
+   * @param <R>      the type of the return
+   * @return a new Spec definition
+   */
+  <R> SpecDefinition<R> given(Function<T, R> function);
+
+  /**
    * Indicates that a new spec will begin.
    *
    * @return a new Spec object
@@ -59,7 +69,6 @@ public interface SpecDefinition<T> {
    * Sets the default operation to execute if an expectation fails.
    *
    * @param operation the operation to execute
-   *
    * @return a new Spec object
    */
   SpecDefinition<T> onFail(Consumer<?> operation);
