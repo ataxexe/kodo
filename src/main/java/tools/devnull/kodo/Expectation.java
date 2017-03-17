@@ -212,6 +212,16 @@ public class Expectation {
   }
 
   /**
+   * Returns the given consumer. Use this to improve code readability.
+   *
+   * @param consumer the consumer to return
+   * @return the given consumer
+   */
+  public static <T> Consumer<T> otherwise(Consumer<T> consumer) {
+    return consumer;
+  }
+
+  /**
    * Helper method to throw an {@link AssertionError} using the given reason as a message.
    */
   public static <T> Consumer<T> because(String reason) {

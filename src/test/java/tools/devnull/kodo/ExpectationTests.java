@@ -43,6 +43,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static tools.devnull.kodo.Expectation.it;
+import static tools.devnull.kodo.Expectation.otherwise;
 import static tools.devnull.kodo.Expectation.the;
 import static tools.devnull.kodo.Expectation.to;
 
@@ -173,6 +174,9 @@ public class ExpectationTests {
     Object o = new Object();
     assertSame(o, the(o).apply(null));
     assertSame(o, it().apply(o));
+
+    Consumer consumer = mock(Consumer.class);
+    assertSame(consumer, otherwise(consumer));
   }
 
   @Test
