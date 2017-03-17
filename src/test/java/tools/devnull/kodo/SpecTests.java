@@ -107,7 +107,8 @@ public class SpecTests {
     assertSame(spec, spec.when(operation));
     assertSame(spec, spec.when(runnableOperation));
 
-    assertSame(spec, spec.each(Object.class, t -> Collections.emptyList(), s -> {}));
+    assertSame(spec, spec.each(Object.class, t -> Collections.emptyList(), s -> {
+    }));
 
     assertNotSame(spec, spec.given(new Object()));
     assertNotSame(spec, spec.given(t -> new Object()));
@@ -233,12 +234,9 @@ public class SpecTests {
   @Test
   public void testFailExpectation() {
     Consumer consumer = mock(Consumer.class);
-    try {
-      spec.expect(o -> null, failTest, consumer);
-      throw new Error();
-    } catch (AssertionError error) {
-      verify(consumer).accept(error);
-    }
+    Object object = new Object();
+    spec.expect(o -> object, failTest, consumer);
+    verify(consumer).accept(object);
   }
 
   private void assertMessage(Runnable command) {
@@ -265,7 +263,7 @@ public class SpecTests {
     assertSame(s1.description, description);
     assertSame(s1.defaultFailOperation, throwAssertionError);
 
-    s1 = (DefaultSpecDefinition) s.given(o ->  newTarget);
+    s1 = (DefaultSpecDefinition) s.given(o -> newTarget);
     assertSame(s1.target, newTarget);
     assertSame(s1.description, description);
     assertSame(s1.defaultFailOperation, throwAssertionError);
