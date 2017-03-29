@@ -1,6 +1,6 @@
 # Changelog
 
-## v3.2.0
+## v3.2.0 (2017-03-29)
 
 ### Major Changes
 
@@ -9,7 +9,9 @@
 - Added the `onFail` method to control the default behaviour of a failed expectation
 - Messages are now encapsulated in a Consumer object, bringing flexibility to 
   do whatever you want when the expectation fails.
-- Changed the `because` to return a `Consumer` object in order to minimize the impact of migrations
+- Changed the `because` to return a `Consumer` object in order to minimize the impact of migrations.
+- Added the `otherwise` method to `Expectation`.
+- Added OSGi MANIFEST
 
 ## v3.1.0 (2017-03-02)
 
