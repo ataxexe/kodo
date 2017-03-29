@@ -43,6 +43,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static tools.devnull.kodo.Expectation.it;
+import static tools.devnull.kodo.Expectation.otherwise;
 import static tools.devnull.kodo.Expectation.the;
 import static tools.devnull.kodo.Expectation.to;
 
@@ -174,8 +175,8 @@ public class ExpectationTests {
     assertSame(o, the(o).apply(null));
     assertSame(o, it().apply(o));
 
-    String message = "Lorem ipsum laboris excepteur minim in quis.";
-    assertSame(message, Expectation.because(message));
+    Consumer consumer = mock(Consumer.class);
+    assertSame(consumer, otherwise(consumer));
   }
 
   @Test

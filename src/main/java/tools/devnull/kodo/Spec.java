@@ -27,79 +27,14 @@
 package tools.devnull.kodo;
 
 import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
 
 /**
- * A class to create scenarios for testing.
+ * A class to create Spec Definitions.
  *
  * @author Marcelo Guimarães
  * @see #given(Object)
  */
-public class Spec<T> implements SpecDefinition<T> {
-
-  protected final T target;
-
-  private Spec(T target) {
-    this.target = target;
-  }
-
-  private void test(Predicate predicate, Object target, String message) {
-    if (!predicate.test(target)) {
-      throw new AssertionError(message == null ? defaultMessage(target) : message);
-    }
-  }
-
-  private String defaultMessage(Object target) {
-    return String.format("for value: %s", target);
-  }
-
-  @Override
-  public SpecDefinition<T> when(Consumer<? super T> operation) {
-    operation.accept(target);
-    return this;
-  }
-
-  @Override
-  public SpecDefinition<T> expect(Consumer operation, Predicate test, String message) {
-    try {
-      operation.accept(target);
-      test(test, null, message);
-    } catch (Throwable t) {
-      test(test, t, message);
-    }
-    return this;
-  }
-
-  @Override
-  public SpecDefinition<T> when(Runnable operation) {
-    operation.run();
-    return this;
-  }
-
-  @Override
-  public <E> SpecDefinition<T> expect(Function<? super T, E> function, Predicate<? super E> test, String message) {
-    test(test, function.apply(target), message);
-    return this;
-  }
-
-  @Override
-  public SpecDefinition<T> expect(Function<? super T, Boolean> function, String message) {
-    test(o -> o == Boolean.TRUE, function.apply(target), message);
-    return this;
-  }
-
-  @Override
-  public SpecDefinition<T> expect(boolean value, String message) {
-    test(o -> o == Boolean.TRUE, value, message);
-    return this;
-  }
-
-  @Override
-  public <E> SpecDefinition<T> each(Class<E> type, Function<T, Iterable<E>> splitter, Consumer<SpecDefinition<E>> spec) {
-    splitter.apply(target).forEach(e -> spec.accept(new Spec<>(e)));
-    return this;
-  }
+public interface Spec {
 
   /**
    * Start defining a new {@link SpecDefinition} based on the given target.
@@ -108,21 +43,31 @@ public class Spec<T> implements SpecDefinition<T> {
    * @param <T>    the type of the target
    * @return a new {@link SpecDefinition}.
    */
-  public static <T> SpecDefinition<T> given(T object) {
-    return new Spec<>(object);
+  static <T> SpecDefinition<T> given(T object) {
+    return new DefaultSpecDefinition<>(object);
   }
 
   /**
    * Defines a spec without targeting an object.
    * <p>
-   * You can't use {@link Expectation#it()} nor {@link #each(Class, Consumer)}
+   * You can't use {@link Expectation#it()} nor {@link DefaultSpecDefinition#each(Class, Consumer)}
    * while using this definition.
    *
    * @return a new {@link SpecDefinition}
    * @since 3.0
    */
-  public static SpecDefinition begin() {
-    return new Spec(null);
+  static SpecDefinition begin() {
+    return new DefaultSpecDefinition();
+  }
+
+  /**
+   * Starts the specification by describing it.
+   *
+   * @param description the description of this specification
+   * @return a new {@link SpecDefinition}
+   */
+  static SpecDefinition describe(String description) {
+    return new DefaultSpecDefinition(description);
   }
 
 }

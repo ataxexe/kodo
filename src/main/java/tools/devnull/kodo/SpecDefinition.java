@@ -40,6 +40,40 @@ import java.util.function.Predicate;
 public interface SpecDefinition<T> {
 
   /**
+   * Returns a new Spec based on the given object.
+   *
+   * @param object the new target
+   * @param <R>    the type of the target
+   * @return a new Spec definition
+   */
+  <R> SpecDefinition<R> given(R object);
+
+  /**
+   * Returns a new Spec based on the return of the given function
+   * applied to this Spec's target
+   *
+   * @param function the function to apply
+   * @param <R>      the type of the return
+   * @return a new Spec definition
+   */
+  <R> SpecDefinition<R> given(Function<T, R> function);
+
+  /**
+   * Indicates that a new spec will begin.
+   *
+   * @return a new Spec object
+   */
+  SpecDefinition begin();
+
+  /**
+   * Sets the default operation to execute if an expectation fails.
+   *
+   * @param operation the operation to execute
+   * @return a new Spec object
+   */
+  SpecDefinition<T> onFail(Consumer<?> operation);
+
+  /**
    * Defines something to do with the target.
    *
    * @param operation the operation to do with the target
@@ -65,9 +99,7 @@ public interface SpecDefinition<T> {
    * @return a reference to this object.
    * @see Expectation#raise(Class)
    */
-  default SpecDefinition<T> expect(Consumer<? super T> operation, Predicate<Throwable> test) {
-    return expect(operation, test, null);
-  }
+  SpecDefinition<T> expect(Consumer<? super T> operation, Predicate<Throwable> test);
 
   /**
    * Defines an operation that may throw an exception.
@@ -76,10 +108,11 @@ public interface SpecDefinition<T> {
    * @param test      the test to execute with the raised exception (if no exception
    *                  is thrown, a <code>null</code> value will be given to this
    *                  test
-   * @param message   the message to throw if the test fails
-   * @return a reference to this object.
+   * @param consumer  the operation to do with the evaluated value
+   * @return a reference to this object
+   * @see Expectation#because(String)
    */
-  SpecDefinition<T> expect(Consumer<? super T> operation, Predicate<Throwable> test, String message);
+  SpecDefinition<T> expect(Consumer<? super T> operation, Predicate<Throwable> test, Consumer<Throwable> consumer);
 
   /**
    * Defines a test for some target operation that returns a value.
@@ -90,9 +123,7 @@ public interface SpecDefinition<T> {
    * @return a reference to this object
    * @see Expectation
    */
-  default <E> SpecDefinition<T> expect(Function<? super T, E> function, Predicate<? super E> test) {
-    return expect(function, test, null);
-  }
+  <E> SpecDefinition<T> expect(Function<? super T, E> function, Predicate<? super E> test);
 
   /**
    * Defines a test for some target operation that returns a value.
@@ -100,10 +131,11 @@ public interface SpecDefinition<T> {
    * @param function the operation to do with the target
    * @param test     the test to execute with the value returned by the given
    *                 function
-   * @param message  the message to throw if the test fails
+   * @param consumer the operation to do with the evaluated value
    * @return a reference to this object
+   * @see Expectation#because(String)
    */
-  <E> SpecDefinition<T> expect(Function<? super T, E> function, Predicate<? super E> test, String message);
+  <E> SpecDefinition<T> expect(Function<? super T, E> function, Predicate<? super E> test, Consumer<E> consumer);
 
   /**
    * Defines a test for some target operation that returns a boolean value. The
@@ -112,19 +144,18 @@ public interface SpecDefinition<T> {
    * @param function the operation to do with the target
    * @return a reference to this object
    */
-  default SpecDefinition<T> expect(Function<? super T, Boolean> function){
-    return expect(function, (String) null);
-  }
+  SpecDefinition<T> expect(Function<? super T, Boolean> function);
 
   /**
    * Defines a test for some target operation that returns a boolean value. The
    * test will succeed if the return value is {@code true}.
    *
    * @param function the operation to do with the target
-   * @param message  the message to throw if the test fails
+   * @param consumer the operation to do with the evaluated value
    * @return a reference to this object
+   * @see Expectation#because(String)
    */
-  SpecDefinition<T> expect(Function<? super T, Boolean> function, String message);
+  SpecDefinition<T> expect(Function<? super T, Boolean> function, Consumer<Boolean> consumer);
 
   /**
    * Defines a test for a boolean value. The test will succeed if the value is
@@ -133,19 +164,18 @@ public interface SpecDefinition<T> {
    * @param value the value to test
    * @return a reference to this object
    */
-  default SpecDefinition<T> expect(boolean value) {
-    return expect(value, null);
-  }
+  SpecDefinition<T> expect(boolean value);
 
   /**
    * Defines a test for a boolean value. The test will succeed if the value is
    * {@code true}.
    *
-   * @param value   the value to test
-   * @param message the message to throw if the test fails
+   * @param value    the value to test
+   * @param consumer the operation to do with the evaluated value
    * @return a reference to this object
+   * @see Expectation#because(String)
    */
-  SpecDefinition<T> expect(boolean value, String message);
+  SpecDefinition<T> expect(boolean value, Consumer<Boolean> consumer);
 
   /**
    * Splits the target object into smaller objects and passes each one to the given consumer.

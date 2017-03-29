@@ -1,6 +1,9 @@
-# Overview
+# Kodo
 
-Kodo is a test framework that helps you defining specifications with the help of a fluent interface.
+Kodo is a test framework that helps you defining specifications with the help of a fluent interface. The idea behind
+is to put some functional interfaces present in Java 8 together to provide a beautiful way to define specifications
+in pure Java code. Its main use if for testing but you can use for any purposes that requires the writing of a
+specification.
 
 ## How To Build
 
@@ -8,14 +11,15 @@ Just make sure you have [Maven][] and run the command `maven package`. To instal
 
 ## How to Use
 
-Just put the really small kodo jar file on your classpath. You can also install **kodo** on your local repository and then define it on your pom or gradle build:
+Just put the really small kodo jar file on your classpath. You can also install **kodo** on your local repository
+and then define it on your pom or gradle build:
 
 - **groupId:** tools.devnull
 - **artifactId:** kodo
 
 Kodo is also in Maven Central. Just use the above `groupId` and `artifactId` to declare the dependency.
 
-# Defining Specifications
+## Defining Specifications
 
 To define a new specification, use the `Spec` class. It defines an entry point to the fluent interface:
 
@@ -46,15 +50,15 @@ And messages may be supplied:
 ~~~java
 Spec.given(someObject)
   .when(itExecutes())
-  .expect(it(), to().be(valid()), "the process should not invalidate the object");
+  .expect(it(), to().be(valid()), because("the process should not invalidate the object"));
 ~~~
 
-But you can use a helper to make things fancier:
+You can also describe the whole Spec:
 
 ~~~java
-Spec.given(someObject)
-  .when(itExecutes())
-  .expect(it(), to().be(valid()), because("the process should not invalidate the object"));
+Spec.describe("My spec for testing my object")
+  .given(myObject)
+  .expect ...
 ~~~
 
 Here is more examples:
@@ -77,7 +81,7 @@ Spec.begin()
   .expect(the(accountA), to().have(balanceOf(400)))
   .expect(the(accountB), to().have(balanceOf(600)));
 
-// -------
+// helper methods
 
   public static Predicate<Account> balanceOf(double value) {
     // Please don't use this comparisson in a real case scenario
@@ -86,11 +90,25 @@ Spec.begin()
   }
 ~~~
 
+~~~java
+Spec.describe("A trader is alerted of status")
+  .given(newStock("STK").withThresholdOf(15.0))
+
+  .when(tradeAt(5.0))
+  .expect(alert(), to().be("OFF"))
+
+  .when(tradeAt(16.0))
+  .expect(alert(), to().be("ON"));
+
+// helper methods omitted
+~~~
+
 Also, take a look at the `Expectation` class. It contains a set of useful methods to help you write your awesome 
 specifications!
 
-# How To Contribute
+## How To Contribute
 
-Fork it, fire an issue, spread the project, use the project... any help will be great! And, please, let me know if you're liking Kodo (or not).
+Fork it, fire an issue, spread the project, use the project... any help will be great! And, please, let me know if
+you're liking Kodo (or not).
 
 [maven]: <https://maven.apache.org>

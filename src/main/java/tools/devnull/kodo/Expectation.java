@@ -43,7 +43,7 @@ public class Expectation {
 
   private final Function<Predicate, Predicate> modifier;
 
-  Expectation(Function<Predicate, Predicate> modifier) {
+  private Expectation(Function<Predicate, Predicate> modifier) {
     this.modifier = modifier;
   }
 
@@ -212,12 +212,49 @@ public class Expectation {
   }
 
   /**
-   * Helper method to improve code readability. It returns the given string.
-   * <p>
-   * Use it with the methods that takes a message.
+   * Returns the given consumer. Use this to improve code readability.
+   *
+   * @param consumer the consumer to return
+   * @return the given consumer
    */
-  public static String because(String reason) {
-    return reason;
+  public static <T> Consumer<T> otherwise(Consumer<T> consumer) {
+    return consumer;
+  }
+
+  /**
+   * Helper method to throw an {@link AssertionError} using the given reason as a message.
+   */
+  public static <T> Consumer<T> because(String reason) {
+    return obj -> {
+      throw new AssertionError(reason);
+    };
+  }
+
+  /**
+   * Returns a consumer that throws an {@link AssertionError} based on the
+   * given object.
+   *
+   * @param format the format to apply to the message
+   *               (see {@link String#format(String, Object...)}), there will
+   *               be only one parameter to the message
+   * @return a consumer object
+   * @since 3.2
+   */
+  public static Consumer throwAssertionError(String format) {
+    return object -> {
+      throw new AssertionError(String.format(format, object));
+    };
+  }
+
+  /**
+   * Returns a consumert that throws an {@link AssertionError} with the following
+   * format: {@code "for value: %s"}.
+   *
+   * @return a consumer object
+   * @since 3.2
+   */
+  public static Consumer throwAssertionError() {
+    return throwAssertionError("for value: %s");
   }
 
 }
