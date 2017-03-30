@@ -29,6 +29,7 @@ package tools.devnull.kodo;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 /**
  * Interface that defines a common set of methods to define a specification for a target
@@ -136,6 +137,29 @@ public interface SpecDefinition<T> {
    * @see Expectation#because(String)
    */
   <E> SpecDefinition<T> expect(Function<? super T, E> function, Predicate<? super E> test, Consumer<E> consumer);
+
+  /**
+   * Defines a test for a value returned by a supplier.
+   *
+   * @param supplier the supplier to obtain a value
+   * @param test     the test to execute with the value returned by the given
+   *                 function
+   * @return a reference to this object
+   * @see Expectation
+   */
+  <E> SpecDefinition<T> expect(Supplier<E> supplier, Predicate<? super E> test);
+
+  /**
+   * Defines a test for a value returned by a supplier.
+   *
+   * @param supplier the supplier to obtain a value
+   * @param test     the test to execute with the value returned by the given
+   *                 function
+   * @param consumer the operation to do with the evaluated value
+   * @return a reference to this object
+   * @see Expectation#because(String)
+   */
+  <E> SpecDefinition<T> expect(Supplier<E> supplier, Predicate<? super E> test, Consumer<E> consumer);
 
   /**
    * Defines a test for some target operation that returns a boolean value. The
