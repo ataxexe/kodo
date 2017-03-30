@@ -1,5 +1,12 @@
 # Changelog
 
+## v3.3.0
+
+### Major Changes
+
+- Added `#expect` with a `Consumer`
+- Changed `#the` with a `Function` to `#doing` to avoid ambiguous calls
+
 ## v3.2.0 (2017-03-29)
 
 ### Major Changes
