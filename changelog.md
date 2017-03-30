@@ -1,6 +1,6 @@
 # Changelog
 
-## v3.3.0
+## v3.3.0 (2017-03-30)
 
 ### Major Changes
 
