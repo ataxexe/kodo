@@ -32,6 +32,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 /**
  * Helper class that contains useful methods to create the assertions for the
@@ -178,9 +179,9 @@ public class Expectation {
    *
    * @param function the function to execute
    * @return a consumer that uses the given function
-   * @since 3.1
+   * @since 3.3
    */
-  public static <T> Consumer<T> the(Function<T, ?> function) {
+  public static <T> Consumer<T> doing(Function<T, ?> function) {
     return function::apply;
   }
 
@@ -200,15 +201,14 @@ public class Expectation {
   }
 
   /**
-   * Returns a function that always returns the given value,
-   * regardless of the supplied one.
+   * Returns a supplier that always returns the given value.
    *
    * @param value the value to return
-   * @return a function that always returns the given value
-   * @since 3.1
+   * @return a supplier that always returns the given value
+   * @since 3.3
    */
-  public static <T, E> Function<? super T, E> the(E value) {
-    return t -> value;
+  public static <E> Supplier<E> the(E value) {
+    return () -> value;
   }
 
   /**

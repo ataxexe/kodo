@@ -172,7 +172,8 @@ public class ExpectationTests {
     assertSame(alwaysFalse, to(alwaysFalse));
 
     Object o = new Object();
-    assertSame(o, the(o).apply(null));
+
+    assertSame(o, the(o).get());
     assertSame(o, it().apply(o));
 
     Consumer consumer = mock(Consumer.class);
@@ -184,7 +185,7 @@ public class ExpectationTests {
     Function function = mock(Function.class);
     when(function.apply(value)).thenReturn(value);
 
-    the(function).accept(value);
+    Expectation.doing(function).accept(value);
 
     verify(function).apply(value);
   }

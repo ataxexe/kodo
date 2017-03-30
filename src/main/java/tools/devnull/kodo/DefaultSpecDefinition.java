@@ -3,6 +3,7 @@ package tools.devnull.kodo;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import static tools.devnull.kodo.Expectation.throwAssertionError;
 
@@ -87,6 +88,17 @@ public class DefaultSpecDefinition<T> implements SpecDefinition<T> {
                                       Predicate<? super E> test,
                                       Consumer<E> consumer) {
     test(test, function.apply(target), consumer);
+    return this;
+  }
+
+  @Override
+  public <E> SpecDefinition<T> expect(Supplier<E> supplier, Predicate<? super E> test) {
+    return expect(supplier, test, this.defaultFailOperation);
+  }
+
+  @Override
+  public <E> SpecDefinition<T> expect(Supplier<E> supplier, Predicate<? super E> test, Consumer<E> consumer) {
+    test(test, supplier.get(), consumer);
     return this;
   }
 

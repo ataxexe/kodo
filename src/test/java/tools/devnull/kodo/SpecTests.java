@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -79,6 +80,8 @@ public class SpecTests {
   @Mock
   private Function function;
   @Mock
+  private Supplier supplier;
+  @Mock
   private Function<Object, Boolean> booleanFunction;
 
   @Before
@@ -116,6 +119,9 @@ public class SpecTests {
     assertNotSame(spec, spec.begin());
 
     assertNotSame(spec, spec.onFail(throwAssertionError));
+
+    assertSame(spec, spec.expect(supplier, test));
+    assertSame(spec, spec.expect(supplier, test, throwAssertionError));
   }
 
   @Test
@@ -158,6 +164,13 @@ public class SpecTests {
 
     spec.expect(failOperation, test);
     verify(test).test(exception);
+  }
+
+  @Test
+  public void testExpectWithSupplier() {
+    spec.expect(supplier, test);
+    verify(supplier).get();
+    verify(test).test(any());
   }
 
   @Test
@@ -205,6 +218,7 @@ public class SpecTests {
   public void testMessages() {
     assertMessage(() -> spec.expect(function, failTest, throwAssertionError));
     assertMessage(() -> spec.expect(operation, failTest, throwAssertionError));
+    assertMessage(() -> spec.expect(supplier, failTest, throwAssertionError));
 
     when(booleanFunction.apply(target)).thenReturn(false);
     assertMessage(() -> spec.expect(booleanFunction, throwAssertionError));
