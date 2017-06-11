@@ -71,6 +71,16 @@ public class Expectation {
   }
 
   /**
+   * A predicate that tests if the object is null.
+   *
+   * @return a predicate that tests if the object is null.
+   * @since 3.4
+   */
+  public <T> Predicate<T> beNull(Class<T> type) {
+    return create(Objects::isNull);
+  }
+
+  /**
    * @see #be(Object)
    */
   public <T> Predicate<T> equal(T value) {

@@ -1,5 +1,11 @@
 # Changelog
 
+## v3.4.0 (2017-06-11)
+
+### Minor Changes
+
+- Added `#beNull(Class)` to avoid ambiguous calls
+
 ## v3.3.0 (2017-03-30)
 
 ### Major Changes

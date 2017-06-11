@@ -76,7 +76,9 @@ public class ExpectationTests {
   @Test
   public void testBeNull() {
     assertTrue(to().beNull().test(null));
+    assertTrue(to().beNull(Object.class).test(null));
     assertFalse(to().beNull().test(new Object()));
+    assertFalse(to().beNull(Object.class).test(new Object()));
   }
 
   @Test
