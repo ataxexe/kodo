@@ -32,7 +32,7 @@
   <artifactId>kodo</artifactId>
   <packaging>bundle</packaging>
 
-  <version>3.4.0</version>
+  <version>3.4.1-SNAPSHOT</version>
   <name>kodo</name>
 
   <description>
