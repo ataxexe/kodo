@@ -114,14 +114,14 @@ public class Expectation {
   /**
    * Indicates that the operation should throw the given exception.
    */
-  public Predicate<Throwable> raise(Class<? extends Throwable> exception) {
+  public Predicate<Throwable> raise(Class<? extends Exception> exception) {
     return create(error -> error != null && exception.isAssignableFrom(error.getClass()));
   }
 
   /**
    * Indicates that the operation should not throw any exception.
    */
-  public Predicate<Throwable> succeed() {
+  public Predicate<Exception> succeed() {
     return create(Objects::isNull);
   }
 
@@ -130,7 +130,7 @@ public class Expectation {
    *
    * @since 3.0
    */
-  public Predicate<Throwable> fail() {
+  public Predicate<Exception> fail() {
     return not(succeed());
   }
 
