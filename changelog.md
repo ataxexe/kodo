@@ -1,5 +1,11 @@
 # Changelog
 
+## v3.4.1
+
+### Minor Changes
+
+- Removed `Throwable` references, using `Exception` instead
+
 ## v3.4.0 (2017-06-11)
 
 ### Minor Changes
