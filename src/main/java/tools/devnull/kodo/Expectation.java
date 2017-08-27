@@ -1,9 +1,8 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2014 Marcelo Guimarães <ataxexe@gmail.com>
+ * Copyright (c) 2014 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
- * ----------------------------------------------------------------------
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
  * "Software"),  to  deal  in the Software without restriction, including
@@ -11,10 +10,9 @@
  * distribute,  sublicense,  and/or  sell  copies of the Software, and to
  * permit  persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- *
  * The  above  copyright  notice  and  this  permission  notice  shall be
  * included  in  all  copies  or  substantial  portions  of the Software.
- *                        -----------------------
+ *
  * THE  SOFTWARE  IS  PROVIDED  "AS  IS",  WITHOUT  WARRANTY OF ANY KIND,
  * EXPRESS  OR  IMPLIED,  INCLUDING  BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -116,14 +114,14 @@ public class Expectation {
   /**
    * Indicates that the operation should throw the given exception.
    */
-  public Predicate<Throwable> raise(Class<? extends Throwable> exception) {
+  public Predicate<Throwable> raise(Class<? extends Exception> exception) {
     return create(error -> error != null && exception.isAssignableFrom(error.getClass()));
   }
 
   /**
    * Indicates that the operation should not throw any exception.
    */
-  public Predicate<Throwable> succeed() {
+  public Predicate<Exception> succeed() {
     return create(Objects::isNull);
   }
 
@@ -132,7 +130,7 @@ public class Expectation {
    *
    * @since 3.0
    */
-  public Predicate<Throwable> fail() {
+  public Predicate<Exception> fail() {
     return not(succeed());
   }
 
