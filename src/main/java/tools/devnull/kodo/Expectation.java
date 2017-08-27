@@ -204,7 +204,7 @@ public class Expectation {
    * @see Function#identity()
    * @since 3.0
    */
-  public static <T> Function<? super T, T> it() {
+  public static <T> Function<T, T> it() {
     return Function.identity();
   }
 
