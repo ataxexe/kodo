@@ -95,8 +95,8 @@ public class DefaultSpecDefinition<T> implements SpecDefinition<T> {
     try {
       operation.accept(target);
       test(test, null, consumer);
-    } catch (Throwable t) {
-      test(test, t, consumer);
+    } catch (Exception e) {
+      test(test, e, consumer);
     }
     return this;
   }
