@@ -1,6 +1,12 @@
 # Changelog
 
-## v3.4.1
+## v3.5.0
+
+### Major Changes
+
+- Renamed `Expectation#equal` to `Expectation#eq`
+
+## v3.4.1 (2017-08-27)
 
 ### Minor Changes
 
