@@ -5,6 +5,7 @@
 ### Major Changes
 
 - Renamed `Expectation#equal` to `Expectation#eq`
+- Code smells removed
 
 ## v3.4.1 (2017-08-27)
 
