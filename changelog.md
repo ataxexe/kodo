@@ -1,6 +1,6 @@
 # Changelog
 
-## v3.5.0
+## v3.5.0 (2017-09-22)
 
 ### Major Changes
 
