@@ -81,11 +81,11 @@ public class ExpectationTests {
 
   @Test
   public void testEqual() {
-    assertTrue(to().equal("test").test("test"));
-    assertFalse(to().equal("test").test(""));
+    assertTrue(to().eq("test").test("test"));
+    assertFalse(to().eq("test").test(""));
 
-    assertTrue(to().equal(1).test(1));
-    assertFalse(to().equal(1).test(2));
+    assertTrue(to().eq(1).test(1));
+    assertFalse(to().eq(1).test(2));
   }
 
   @Test
