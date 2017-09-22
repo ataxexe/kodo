@@ -52,7 +52,7 @@ public class Expectation {
 
   /**
    * Indicates that the value should
-   * {@link java.lang.Object#equals(Object) equal} the given value.
+   * {@link java.lang.Object#equals(Object) eq} the given value.
    */
   public <T> Predicate<T> be(T value) {
     return create(obj -> Objects.equals(obj, value));
@@ -81,7 +81,7 @@ public class Expectation {
   /**
    * @see #be(Object)
    */
-  public <T> Predicate<T> equal(T value) {
+  public <T> Predicate<T> eq(T value) {
     return be(value);
   }
 
@@ -204,7 +204,7 @@ public class Expectation {
    * @see Function#identity()
    * @since 3.0
    */
-  public static <T> Function<? super T, T> it() {
+  public static <T> Function<T, T> it() {
     return Function.identity();
   }
 
