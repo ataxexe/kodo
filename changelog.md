@@ -1,5 +1,11 @@
 # Changelog
 
+## v3.5.1
+
+### Minor Changes
+
+- Using parent pom
+
 ## v3.5.0 (2017-09-22)
 
 ### Major Changes
