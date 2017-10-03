@@ -114,7 +114,7 @@ public class Expectation {
   /**
    * Indicates that the operation should throw the given exception.
    */
-  public Predicate<Throwable> raise(Class<? extends Exception> exception) {
+  public Predicate<Exception> raise(Class<? extends Exception> exception) {
     return create(error -> error != null && exception.isAssignableFrom(error.getClass()));
   }
 
