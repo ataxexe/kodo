@@ -98,7 +98,7 @@ public interface SpecDefinition<T> {
    * @return a reference to this object.
    * @see Expectation#raise(Class)
    */
-  SpecDefinition<T> expect(Consumer<? super T> operation, Predicate<Exception> test);
+  SpecDefinition<T> expect(Consumer<? super T> operation, Predicate<? extends Exception> test);
 
   /**
    * Defines an operation that may throw an exception.
@@ -111,7 +111,7 @@ public interface SpecDefinition<T> {
    * @return a reference to this object
    * @see Expectation#because(String)
    */
-  SpecDefinition<T> expect(Consumer<? super T> operation, Predicate<Exception> test, Consumer<Exception> consumer);
+  SpecDefinition<T> expect(Consumer<? super T> operation, Predicate<? extends Exception> test, Consumer<? extends Exception> consumer);
 
   /**
    * Defines a test for some target operation that returns a value.
