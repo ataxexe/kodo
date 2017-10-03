@@ -146,7 +146,7 @@ public class DefaultSpecDefinition<T> implements SpecDefinition<T> {
   }
 
   @Override
-  public SpecDefinition<T> expect(Consumer<? super T> operation, Predicate<Throwable> test) {
+  public SpecDefinition<T> expect(Consumer<? super T> operation, Predicate<Exception> test) {
     return expect(operation, test, this.defaultFailOperation);
   }
 
