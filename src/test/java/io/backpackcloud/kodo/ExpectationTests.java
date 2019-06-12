@@ -1,7 +1,7 @@
 /*
  * The MIT License
  *
- * Copyright (c) 2014 Marcelo Guimaraes <ataxexe@backpackcloud.com>
+ * Copyright (c) 2014 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
  *
  * Permission  is hereby granted, free of charge, to any person obtaining
  * a  copy  of  this  software  and  associated  documentation files (the
@@ -22,7 +22,7 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.kodo;
+package io.backpackcloud.kodo;
 
 import org.junit.Test;
 
@@ -40,10 +40,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static tools.devnull.kodo.Expectation.it;
-import static tools.devnull.kodo.Expectation.otherwise;
-import static tools.devnull.kodo.Expectation.the;
-import static tools.devnull.kodo.Expectation.to;
+import static io.backpackcloud.kodo.Expectation.it;
+import static io.backpackcloud.kodo.Expectation.otherwise;
+import static io.backpackcloud.kodo.Expectation.the;
+import static io.backpackcloud.kodo.Expectation.to;
 
 /**
  * The test suite for {@link Expectation}
