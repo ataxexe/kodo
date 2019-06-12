@@ -2,7 +2,7 @@
 <!--
   ~ The MIT License
   ~
-  ~ Copyright (c) 2014 Marcelo "Ataxexe" Guimarães <ataxexe@devnull.tools>
+  ~ Copyright (c) 2014 Marcelo Guimaraes <ataxexe@backpackcloud.com>
   ~
   ~ Permission  is hereby granted, free of charge, to any person obtaining
   ~ a  copy  of  this  software  and  associated  documentation files (the
@@ -29,26 +29,22 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>tools.devnull</groupId>
-    <artifactId>parent</artifactId>
-    <version>1.1</version>
+    <groupId>io.backpackcloud</groupId>
+    <artifactId>pom-parent</artifactId>
+    <version>1.0.0</version>
   </parent>
 
   <artifactId>kodo</artifactId>
   <packaging>bundle</packaging>
 
-  <version>3.5.2</version>
+  <version>4.0.0-SNAPSHOT</version>
   <name>kodo</name>
 
   <description>
     Kodo is a test framework that helps you creating Specs with the help of a fluent interface.
   </description>
 
-  <url>https://github.com/devnull-tools/kodo</url>
-
-  <properties>
-    <maven-bundle-plugin-version>2.5.4</maven-bundle-plugin-version>
-  </properties>
+  <url>https://github.com/backpackcloud/kodo</url>
 
   <licenses>
     <license>
@@ -60,17 +56,17 @@
 
   <developers>
     <developer>
-      <id>Ataxexe</id>
-      <name>Marcelo Guimarães</name>
-      <email>ataxexe@devnull.tools</email>
-      <url>http://www.unbelievableexception.com</url>
-      <organizationUrl>https://github.com/devnull-tools</organizationUrl>
+      <id>ataxexe</id>
+      <name>Marcelo Guimaraes</name>
+      <email>ataxexe@backpackcloud.com</email>
+      <url>https://www.backpackcloud.com</url>
+      <organizationUrl>https://github.com/backpackcloud</organizationUrl>
     </developer>
   </developers>
 
   <scm>
-    <connection>scm:git:git@github.com:devnull-tools/kodo.git</connection>
-    <url>https://github.com/devnull-tools/kodo</url>
+    <connection>scm:git:git@github.com:backpackcloud/kodo.git</connection>
+    <url>https://github.com/backpackcloud/kodo</url>
   </scm>
 
   <dependencies>
@@ -94,23 +90,5 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.felix</groupId>
-        <artifactId>maven-bundle-plugin</artifactId>
-        <version>${maven-bundle-plugin-version}</version>
-        <extensions>true</extensions>
-        <configuration>
-          <instructions>
-            <Export-Package>
-              tools.devnull.kodo
-            </Export-Package>
-          </instructions>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 
 </project>
