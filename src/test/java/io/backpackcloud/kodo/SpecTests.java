@@ -22,7 +22,7 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.kodo;
+package io.backpackcloud.kodo;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -48,8 +48,6 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static tools.devnull.kodo.Expectation.because;
-import static tools.devnull.kodo.Expectation.it;
 
 /**
  * Tests for the SpecDefinition implementation
@@ -62,7 +60,7 @@ public class SpecTests {
   private Object target = new Object();
   private SpecDefinition<Object> spec = Spec.given(target);
   private String message = "a message";
-  private Consumer throwAssertionError = because(message);
+  private Consumer throwAssertionError = Expectation.because(message);
   private Object value = new Object();
   @Mock
   private Consumer operation;
@@ -205,7 +203,7 @@ public class SpecTests {
     when(predicate.test(anyInt())).thenReturn(true);
 
     Spec.given(ints)
-        .each(Integer.class, i -> i.expect(it(), predicate));
+        .each(Integer.class, i -> i.expect(Expectation.it(), predicate));
 
     verify(predicate).test(1);
     verify(predicate).test(2);

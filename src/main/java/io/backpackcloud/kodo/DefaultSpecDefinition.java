@@ -22,14 +22,12 @@
  * SOFTWARE   OR   THE   USE   OR   OTHER   DEALINGS  IN  THE  SOFTWARE.
  */
 
-package tools.devnull.kodo;
+package io.backpackcloud.kodo;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-
-import static tools.devnull.kodo.Expectation.throwAssertionError;
 
 /**
  * The default implementation of a SpecDefinition.
@@ -47,15 +45,15 @@ public class DefaultSpecDefinition<T> implements SpecDefinition<T> {
   }
 
   DefaultSpecDefinition(T target) {
-    this("", target, throwAssertionError());
+    this("", target, Expectation.throwAssertionError());
   }
 
   DefaultSpecDefinition(String description) {
-    this(description, null, throwAssertionError());
+    this(description, null, Expectation.throwAssertionError());
   }
 
   DefaultSpecDefinition() {
-    this("", null, throwAssertionError());
+    this("", null, Expectation.throwAssertionError());
   }
 
   private void test(Predicate predicate, Object object, Consumer consumer) {
