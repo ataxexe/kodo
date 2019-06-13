@@ -14,7 +14,7 @@ Just make sure you have [Maven][] and run the command `maven package`. To instal
 Just put the really small kodo jar file on your classpath. You can also install **kodo** on your local repository
 and then define it on your pom or gradle build:
 
-- **groupId:** tools.devnull
+- **groupId:** io.backpackcloud
 - **artifactId:** kodo
 
 Kodo is also in Maven Central. Just use the above `groupId` and `artifactId` to declare the dependency.
