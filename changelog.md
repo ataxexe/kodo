@@ -1,5 +1,9 @@
 # Changelog
 
+## v4.0.0
+
+- GroupId changed to `io.backpackcloud`
+
 ## v3.5.2
 
 - Fixed the signature of SpecDefinition expectation tests
